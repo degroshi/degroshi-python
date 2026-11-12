@@ -1,0 +1,63 @@
+{
+  "account_id": "x",
+  "account_name": "Картка",
+  "amount": "642.30",
+  "created_at": "2026-11-10T08:12:03Z",
+  "description": "Продукти",
+  "direction": "income",
+  "externalData": {},
+  "financials": {
+    "amounts": {
+      "inAccountCurrency": {
+        "currencyCode": "x",
+        "decimalDigits": 1,
+        "decimalPlaces": 1,
+        "symbol": "x",
+        "value": "0.00"
+      },
+      "inBaseCurrency": {
+        "currencyCode": "x",
+        "decimalDigits": 1,
+        "decimalPlaces": 1,
+        "symbol": "x",
+        "value": "0.00"
+      },
+      "inTransactionCurrency": {
+        "currencyCode": "x",
+        "decimalDigits": 1,
+        "decimalPlaces": 1,
+        "symbol": "x",
+        "value": "0.00"
+      }
+    },
+    "transactionDate": "2026-11-10T08:12:03Z"
+  },
+  "id": "t1",
+  "isDeleted": false,
+  "is_split": false,
+  "metadata": {
+    "childSplitsTotal": "0.00",
+    "hasChildSplits": false,
+    "isIncome": false,
+    "isPending": false,
+    "isReconciled": false,
+    "isSplit": false,
+    "isTransfer": false,
+    "taxDeductible": false,
+    "transactionType": "income",
+    "unallocatedAmount": "0.00"
+  },
+  "relationships": {
+    "accountId": "x",
+    "userId": "x"
+  },
+  "space_id": "x",
+  "status": "completed",
+  "timestamps": {
+    "createdAt": "2026-11-10T08:12:03Z",
+    "updatedAt": "2026-11-10T08:12:03Z"
+  },
+  "transaction_date": "2026-11-10T08:12:03Z",
+  "type": "income",
+  "updated_at": "2026-11-10T08:12:03Z"
+}

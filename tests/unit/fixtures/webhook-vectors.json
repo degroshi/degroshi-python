@@ -1,0 +1,66 @@
+[
+  {
+    "name": "signed with the secret",
+    "secret": "whsec_current_test_secret",
+    "body": "{\"id\":\"0193b7f3-0a4c-7d2e-9b1f-6c5d4e3a2b10\",\"object\":\"event\",\"type\":\"transaction.created\",\"data\":{\"object\":{\"id\":\"t1\",\"amount\":\"642.30\"}}}",
+    "header": "t=1794300000,v1=3b51721091d120ab43431a27080bdc15514737dd4ff9c1827c68a55706243c09",
+    "now": 1794300010,
+    "expected": "ok"
+  },
+  {
+    "name": "a secret change: the old secret's signature also passes",
+    "secret": "whsec_old_test_secret",
+    "body": "{\"id\":\"0193b7f3-0a4c-7d2e-9b1f-6c5d4e3a2b10\",\"object\":\"event\",\"type\":\"transaction.created\",\"data\":{\"object\":{\"id\":\"t1\",\"amount\":\"642.30\"}}}",
+    "header": "t=1794300000,v1=3b51721091d120ab43431a27080bdc15514737dd4ff9c1827c68a55706243c09,v1=99bdafdb0fe67c95bea4a2709fdc3de31d6f81425c55ae45585a2aff6bcbc21e",
+    "now": 1794300000,
+    "expected": "ok"
+  },
+  {
+    "name": "the body changed after signing",
+    "secret": "whsec_current_test_secret",
+    "body": "{\"id\":\"0193b7f3-0a4c-7d2e-9b1f-6c5d4e3a2b10\",\"object\":\"event\",\"type\":\"transaction.created\",\"data\":{\"object\":{\"id\":\"t1\",\"amount\":\"642.30\"}}} ",
+    "header": "t=1794300000,v1=3b51721091d120ab43431a27080bdc15514737dd4ff9c1827c68a55706243c09",
+    "now": 1794300000,
+    "expected": "bad_signature"
+  },
+  {
+    "name": "another secret",
+    "secret": "whsec_someone_else",
+    "body": "{\"id\":\"0193b7f3-0a4c-7d2e-9b1f-6c5d4e3a2b10\",\"object\":\"event\",\"type\":\"transaction.created\",\"data\":{\"object\":{\"id\":\"t1\",\"amount\":\"642.30\"}}}",
+    "header": "t=1794300000,v1=3b51721091d120ab43431a27080bdc15514737dd4ff9c1827c68a55706243c09",
+    "now": 1794300000,
+    "expected": "bad_signature"
+  },
+  {
+    "name": "older than five minutes",
+    "secret": "whsec_current_test_secret",
+    "body": "{\"id\":\"0193b7f3-0a4c-7d2e-9b1f-6c5d4e3a2b10\",\"object\":\"event\",\"type\":\"transaction.created\",\"data\":{\"object\":{\"id\":\"t1\",\"amount\":\"642.30\"}}}",
+    "header": "t=1794300000,v1=3b51721091d120ab43431a27080bdc15514737dd4ff9c1827c68a55706243c09",
+    "now": 1794300301,
+    "expected": "too_old"
+  },
+  {
+    "name": "from the future",
+    "secret": "whsec_current_test_secret",
+    "body": "{\"id\":\"0193b7f3-0a4c-7d2e-9b1f-6c5d4e3a2b10\",\"object\":\"event\",\"type\":\"transaction.created\",\"data\":{\"object\":{\"id\":\"t1\",\"amount\":\"642.30\"}}}",
+    "header": "t=1794300000,v1=3b51721091d120ab43431a27080bdc15514737dd4ff9c1827c68a55706243c09",
+    "now": 1794299699,
+    "expected": "too_old"
+  },
+  {
+    "name": "no v1",
+    "secret": "whsec_current_test_secret",
+    "body": "{\"id\":\"0193b7f3-0a4c-7d2e-9b1f-6c5d4e3a2b10\",\"object\":\"event\",\"type\":\"transaction.created\",\"data\":{\"object\":{\"id\":\"t1\",\"amount\":\"642.30\"}}}",
+    "header": "t=1794300000",
+    "now": 1794300000,
+    "expected": "malformed"
+  },
+  {
+    "name": "unicode body",
+    "secret": "whsec_current_test_secret",
+    "body": "{\"merchant\":\"Сільпо\",\"amount\":\"10.00\"}",
+    "header": "t=1794300000,v1=fe7924466035d3d43c60a63e41aeb38115a3766c96e872c45dcd17e487a1bf5d",
+    "now": 1794300000,
+    "expected": "ok"
+  }
+]

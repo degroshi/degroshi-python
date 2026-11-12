@@ -1,0 +1,6 @@
+# openapi-python-client settings. The generated package lives in src/degroshi/_generated and is never edited by hand:
+# it is regenerated from the public API spec for each release.
+project_name_override: degroshi-generated
+package_name_override: _generated
+post_hooks: []
+literal_enums: true
