@@ -22,11 +22,14 @@ def _get_kwargs(
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
+    category_ids: list[str] | Unset = UNSET,
     include_subcategories: bool | Unset = UNSET,
     uncategorized: bool | Unset = UNSET,
     category_review: bool | Unset = UNSET,
     type_: str | Unset = UNSET,
+    types: list[str] | Unset = UNSET,
     status: str | Unset = UNSET,
+    statuses: list[str] | Unset = UNSET,
     from_date: datetime.date | Unset = UNSET,
     to_date: datetime.date | Unset = UNSET,
     search: str | Unset = UNSET,
@@ -53,6 +56,12 @@ def _get_kwargs(
 
     params["category_id"] = category_id
 
+    json_category_ids: list[str] | Unset = UNSET
+    if not isinstance(category_ids, Unset):
+        json_category_ids = category_ids
+
+    params["category_ids"] = json_category_ids
+
     params["include_subcategories"] = include_subcategories
 
     params["uncategorized"] = uncategorized
@@ -61,7 +70,19 @@ def _get_kwargs(
 
     params["type"] = type_
 
+    json_types: list[str] | Unset = UNSET
+    if not isinstance(types, Unset):
+        json_types = types
+
+    params["types"] = json_types
+
     params["status"] = status
+
+    json_statuses: list[str] | Unset = UNSET
+    if not isinstance(statuses, Unset):
+        json_statuses = statuses
+
+    params["statuses"] = json_statuses
 
     json_from_date: str | Unset = UNSET
     if not isinstance(from_date, Unset):
@@ -156,11 +177,14 @@ def sync_detailed(
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
+    category_ids: list[str] | Unset = UNSET,
     include_subcategories: bool | Unset = UNSET,
     uncategorized: bool | Unset = UNSET,
     category_review: bool | Unset = UNSET,
     type_: str | Unset = UNSET,
+    types: list[str] | Unset = UNSET,
     status: str | Unset = UNSET,
+    statuses: list[str] | Unset = UNSET,
     from_date: datetime.date | Unset = UNSET,
     to_date: datetime.date | Unset = UNSET,
     search: str | Unset = UNSET,
@@ -183,11 +207,14 @@ def sync_detailed(
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
+        category_ids (list[str] | Unset):
         include_subcategories (bool | Unset):
         uncategorized (bool | Unset):
         category_review (bool | Unset):
         type_ (str | Unset):
+        types (list[str] | Unset):
         status (str | Unset):
+        statuses (list[str] | Unset):
         from_date (datetime.date | Unset):
         to_date (datetime.date | Unset):
         search (str | Unset):
@@ -210,11 +237,14 @@ def sync_detailed(
         account_id=account_id,
         account_ids=account_ids,
         category_id=category_id,
+        category_ids=category_ids,
         include_subcategories=include_subcategories,
         uncategorized=uncategorized,
         category_review=category_review,
         type_=type_,
+        types=types,
         status=status,
+        statuses=statuses,
         from_date=from_date,
         to_date=to_date,
         search=search,
@@ -239,11 +269,14 @@ def sync(
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
+    category_ids: list[str] | Unset = UNSET,
     include_subcategories: bool | Unset = UNSET,
     uncategorized: bool | Unset = UNSET,
     category_review: bool | Unset = UNSET,
     type_: str | Unset = UNSET,
+    types: list[str] | Unset = UNSET,
     status: str | Unset = UNSET,
+    statuses: list[str] | Unset = UNSET,
     from_date: datetime.date | Unset = UNSET,
     to_date: datetime.date | Unset = UNSET,
     search: str | Unset = UNSET,
@@ -266,11 +299,14 @@ def sync(
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
+        category_ids (list[str] | Unset):
         include_subcategories (bool | Unset):
         uncategorized (bool | Unset):
         category_review (bool | Unset):
         type_ (str | Unset):
+        types (list[str] | Unset):
         status (str | Unset):
+        statuses (list[str] | Unset):
         from_date (datetime.date | Unset):
         to_date (datetime.date | Unset):
         search (str | Unset):
@@ -294,11 +330,14 @@ def sync(
         account_id=account_id,
         account_ids=account_ids,
         category_id=category_id,
+        category_ids=category_ids,
         include_subcategories=include_subcategories,
         uncategorized=uncategorized,
         category_review=category_review,
         type_=type_,
+        types=types,
         status=status,
+        statuses=statuses,
         from_date=from_date,
         to_date=to_date,
         search=search,
@@ -317,11 +356,14 @@ async def asyncio_detailed(
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
+    category_ids: list[str] | Unset = UNSET,
     include_subcategories: bool | Unset = UNSET,
     uncategorized: bool | Unset = UNSET,
     category_review: bool | Unset = UNSET,
     type_: str | Unset = UNSET,
+    types: list[str] | Unset = UNSET,
     status: str | Unset = UNSET,
+    statuses: list[str] | Unset = UNSET,
     from_date: datetime.date | Unset = UNSET,
     to_date: datetime.date | Unset = UNSET,
     search: str | Unset = UNSET,
@@ -344,11 +386,14 @@ async def asyncio_detailed(
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
+        category_ids (list[str] | Unset):
         include_subcategories (bool | Unset):
         uncategorized (bool | Unset):
         category_review (bool | Unset):
         type_ (str | Unset):
+        types (list[str] | Unset):
         status (str | Unset):
+        statuses (list[str] | Unset):
         from_date (datetime.date | Unset):
         to_date (datetime.date | Unset):
         search (str | Unset):
@@ -371,11 +416,14 @@ async def asyncio_detailed(
         account_id=account_id,
         account_ids=account_ids,
         category_id=category_id,
+        category_ids=category_ids,
         include_subcategories=include_subcategories,
         uncategorized=uncategorized,
         category_review=category_review,
         type_=type_,
+        types=types,
         status=status,
+        statuses=statuses,
         from_date=from_date,
         to_date=to_date,
         search=search,
@@ -398,11 +446,14 @@ async def asyncio(
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
+    category_ids: list[str] | Unset = UNSET,
     include_subcategories: bool | Unset = UNSET,
     uncategorized: bool | Unset = UNSET,
     category_review: bool | Unset = UNSET,
     type_: str | Unset = UNSET,
+    types: list[str] | Unset = UNSET,
     status: str | Unset = UNSET,
+    statuses: list[str] | Unset = UNSET,
     from_date: datetime.date | Unset = UNSET,
     to_date: datetime.date | Unset = UNSET,
     search: str | Unset = UNSET,
@@ -425,11 +476,14 @@ async def asyncio(
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
+        category_ids (list[str] | Unset):
         include_subcategories (bool | Unset):
         uncategorized (bool | Unset):
         category_review (bool | Unset):
         type_ (str | Unset):
+        types (list[str] | Unset):
         status (str | Unset):
+        statuses (list[str] | Unset):
         from_date (datetime.date | Unset):
         to_date (datetime.date | Unset):
         search (str | Unset):
@@ -454,11 +508,14 @@ async def asyncio(
             account_id=account_id,
             account_ids=account_ids,
             category_id=category_id,
+            category_ids=category_ids,
             include_subcategories=include_subcategories,
             uncategorized=uncategorized,
             category_review=category_review,
             type_=type_,
+            types=types,
             status=status,
+            statuses=statuses,
             from_date=from_date,
             to_date=to_date,
             search=search,

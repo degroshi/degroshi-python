@@ -3,6 +3,18 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b1 (2026-11-13)
+
+### API
+
+- `GET /v1/transactions` takes the new optional filters `types`, `statuses`, `category_ids` and
+  `treatment_classes`.
+- `GET /v1/transactions/day-totals` takes the new optional filters `types`, `statuses` and `category_ids`.
+
+### SDK
+
+- The generated models and `transactions.list` type the new filters.
+
 ## 1.0.0b0 (2026-11-12)
 
 ### API
