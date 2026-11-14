@@ -21,7 +21,7 @@ T = TypeVar("T", bound="CreateSourceRequest")
 class CreateSourceRequest:
     """
     Attributes:
-        name (str): How the source shows in Settings › Підключення, 1 to 80 characters.
+        name (str): How the source shows in Settings › Connections, 1 to 80 characters.
         is_read_only (bool | Unset): True by default: the app then changes only its rows' category, merchant, note and
             tags (a row can still be deleted, and the source never brings it back), and adds no rows to its accounts. A
             writable source's accounts take manual rows too, and its rows can be edited; a later push of the same row

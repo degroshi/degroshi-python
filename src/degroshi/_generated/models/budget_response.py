@@ -37,8 +37,8 @@ class BudgetResponse:
         name (str):
         period (BudgetPeriod):
         period_end (datetime.datetime):
-        period_start (datetime.datetime): / PeriodEnd are the inclusive calendar dates (space timezone) of the evaluated
-            period: the current one, or the one containing the as_of query date.
+        period_start (datetime.datetime): `period_start` / `period_end` are the inclusive calendar dates (space
+            timezone) of the evaluated period: the current one, or the one containing the as_of query date.
         progress (float):
         remaining (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         space_id (str):
@@ -50,8 +50,8 @@ class BudgetResponse:
             converted at today's rate; null when that is the budget currency, none was sent or there is no rate. Clients
             show it first and the budget's own figures as the second line.
         end_date (datetime.datetime | None | Unset):
-        missing_rates (list[str] | None | Unset): Lists spending currencies without an exchange rate into the budget
-            currency; that spending is excluded from total_spent.
+        missing_rates (list[str] | None | Unset): `missing_rates` lists spending currencies without an exchange rate
+            into the budget currency; that spending is excluded from total_spent.
         total_limit (None | Decimal | Unset): The budget's one amount for all spending (null: the budget is the sum of its
             allocations). When set, total_budget is this amount and total_spent every expense of the space in the period,
             net of refunds; the allocations are inner limits.

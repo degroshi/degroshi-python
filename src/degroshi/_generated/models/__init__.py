@@ -53,12 +53,19 @@ from .category_review_source import CategoryReviewSource
 from .category_spending_kind_type_0 import CategorySpendingKindType0
 from .category_summary import CategorySummary
 from .category_type import CategoryType
+from .change import Change
+from .change_data_type_0 import ChangeDataType0
+from .change_op import ChangeOp
+from .changes_response import ChangesResponse
+from .changes_response_envelope import ChangesResponseEnvelope
 from .connection_status_changed_event import ConnectionStatusChangedEvent
 from .connection_status_changed_event_data import ConnectionStatusChangedEventData
 from .connection_status_changed_event_data_object import ConnectionStatusChangedEventDataObject
 from .connection_status_changed_event_data_previous_attributes import ConnectionStatusChangedEventDataPreviousAttributes
+from .create_place_request import CreatePlaceRequest
 from .create_source_request import CreateSourceRequest
 from .create_transaction_request import CreateTransactionRequest
+from .create_transaction_request_place_source import CreateTransactionRequestPlaceSource
 from .create_transaction_request_provider_data import CreateTransactionRequestProviderData
 from .date_range import DateRange
 from .day_total import DayTotal
@@ -93,6 +100,10 @@ from .import_completed_event_data import ImportCompletedEventData
 from .import_completed_event_data_object import ImportCompletedEventDataObject
 from .interest_payout import InterestPayout
 from .last_paid_response import LastPaidResponse
+from .linked_activity_leg import LinkedActivityLeg
+from .linked_activity_leg_direction import LinkedActivityLegDirection
+from .linked_activity_response import LinkedActivityResponse
+from .linked_activity_response_status import LinkedActivityResponseStatus
 from .list_accounts_status import ListAccountsStatus
 from .list_transactions_sort import ListTransactionsSort
 from .merchant_activity import MerchantActivity
@@ -112,6 +123,7 @@ from .net_worth_response import NetWorthResponse
 from .net_worth_response_envelope import NetWorthResponseEnvelope
 from .net_worth_time_series_response import NetWorthTimeSeriesResponse
 from .net_worth_time_series_response_envelope import NetWorthTimeSeriesResponseEnvelope
+from .object_type import ObjectType
 from .occurrence_day_total import OccurrenceDayTotal
 from .occurrence_display import OccurrenceDisplay
 from .occurrence_response import OccurrenceResponse
@@ -119,7 +131,10 @@ from .occurrence_status import OccurrenceStatus
 from .occurrence_totals import OccurrenceTotals
 from .occurrences_response import OccurrencesResponse
 from .occurrences_response_envelope import OccurrencesResponseEnvelope
+from .places_kind import PlacesKind
+from .point_name import PointName
 from .possible_duplicate import PossibleDuplicate
+from .precision import Precision
 from .push_batch_request import PushBatchRequest
 from .push_batch_response import PushBatchResponse
 from .push_batch_response_envelope import PushBatchResponseEnvelope
@@ -139,6 +154,7 @@ from .reactions_summary_glyph_type_0 import ReactionsSummaryGlyphType0
 from .recurring_due_event import RecurringDueEvent
 from .recurring_due_event_data import RecurringDueEventData
 from .recurring_due_event_data_object import RecurringDueEventDataObject
+from .recurring_occurrence_ref import RecurringOccurrenceRef
 from .recurring_response import RecurringResponse
 from .recurring_response_envelope import RecurringResponseEnvelope
 from .recurring_response_list_envelope import RecurringResponseListEnvelope
@@ -170,10 +186,12 @@ from .transaction_list_response import TransactionListResponse
 from .transaction_list_response_envelope import TransactionListResponseEnvelope
 from .transaction_metadata_response import TransactionMetadataResponse
 from .transaction_metadata_response_provider_data_type_0 import TransactionMetadataResponseProviderDataType0
+from .transaction_place import TransactionPlace
 from .transaction_relationships_response import TransactionRelationshipsResponse
 from .transaction_response import TransactionResponse
 from .transaction_response_envelope import TransactionResponseEnvelope
 from .transaction_response_kind_type_0 import TransactionResponseKindType0
+from .transaction_response_place_source_type_0 import TransactionResponsePlaceSourceType0
 from .transaction_response_uah_status_type_0 import TransactionResponseUahStatusType0
 from .transaction_status import TransactionStatus
 from .transaction_tag import TransactionTag
@@ -198,6 +216,7 @@ from .uncategorized_activity import UncategorizedActivity
 from .uncategorized_spending import UncategorizedSpending
 from .update_source_request import UpdateSourceRequest
 from .update_transaction_request import UpdateTransactionRequest
+from .update_transaction_request_place_source_type_0 import UpdateTransactionRequestPlaceSourceType0
 from .upsert_account_request import UpsertAccountRequest
 from .upsert_account_request_type_type_0 import UpsertAccountRequestTypeType0
 from .upsert_account_response import UpsertAccountResponse
@@ -260,12 +279,19 @@ __all__ = (
     "CategorySpendingKindType0",
     "CategorySummary",
     "CategoryType",
+    "Change",
+    "ChangeDataType0",
+    "ChangeOp",
+    "ChangesResponse",
+    "ChangesResponseEnvelope",
     "ConnectionStatusChangedEvent",
     "ConnectionStatusChangedEventData",
     "ConnectionStatusChangedEventDataObject",
     "ConnectionStatusChangedEventDataPreviousAttributes",
+    "CreatePlaceRequest",
     "CreateSourceRequest",
     "CreateTransactionRequest",
+    "CreateTransactionRequestPlaceSource",
     "CreateTransactionRequestProviderData",
     "DateRange",
     "DayTotal",
@@ -300,6 +326,10 @@ __all__ = (
     "ImportCompletedEventDataObject",
     "InterestPayout",
     "LastPaidResponse",
+    "LinkedActivityLeg",
+    "LinkedActivityLegDirection",
+    "LinkedActivityResponse",
+    "LinkedActivityResponseStatus",
     "ListAccountsStatus",
     "ListTransactionsSort",
     "MerchantActivity",
@@ -319,6 +349,7 @@ __all__ = (
     "NetWorthResponseEnvelope",
     "NetWorthTimeSeriesResponse",
     "NetWorthTimeSeriesResponseEnvelope",
+    "ObjectType",
     "OccurrenceDayTotal",
     "OccurrenceDisplay",
     "OccurrenceResponse",
@@ -326,7 +357,10 @@ __all__ = (
     "OccurrencesResponseEnvelope",
     "OccurrenceStatus",
     "OccurrenceTotals",
+    "PlacesKind",
+    "PointName",
     "PossibleDuplicate",
+    "Precision",
     "PushBatchRequest",
     "PushBatchResponse",
     "PushBatchResponseEnvelope",
@@ -346,6 +380,7 @@ __all__ = (
     "RecurringDueEvent",
     "RecurringDueEventData",
     "RecurringDueEventDataObject",
+    "RecurringOccurrenceRef",
     "RecurringResponse",
     "RecurringResponseEnvelope",
     "RecurringResponseListEnvelope",
@@ -377,10 +412,12 @@ __all__ = (
     "TransactionListResponseEnvelope",
     "TransactionMetadataResponse",
     "TransactionMetadataResponseProviderDataType0",
+    "TransactionPlace",
     "TransactionRelationshipsResponse",
     "TransactionResponse",
     "TransactionResponseEnvelope",
     "TransactionResponseKindType0",
+    "TransactionResponsePlaceSourceType0",
     "TransactionResponseUahStatusType0",
     "TransactionsBulkUpdatedEvent",
     "TransactionsBulkUpdatedEventData",
@@ -405,6 +442,7 @@ __all__ = (
     "UncategorizedSpending",
     "UpdateSourceRequest",
     "UpdateTransactionRequest",
+    "UpdateTransactionRequestPlaceSourceType0",
     "UpsertAccountRequest",
     "UpsertAccountRequestTypeType0",
     "UpsertAccountResponse",

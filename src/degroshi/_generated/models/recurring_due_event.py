@@ -30,7 +30,8 @@ class RecurringDueEvent:
         data (RecurringDueEventData):
         id (UUID):
         object_ (Literal['event']):
-        source (str): Who made the change: app, api, bank_sync, email, import, recurring, assistant or test.
+        source (str): Who made the change: app, api, bank_sync, import, recurring, categorize, rule, budget or test.
+            Every write of a request authenticated by an API key is api.
         space_id (None | UUID): Null for a test event.
         test (bool): True for a test event sent from the endpoint's page.
         type_ (Literal['recurring.due']):

@@ -1,7 +1,7 @@
 import httpx2
 import pytest
 
-from degroshi._retry import RetryTransport, is_retry_safe, retry_delay
+from degroshi._retry import RETRIED_DELETE_HEADER, RetryTransport, is_retry_safe, retry_delay
 
 
 def sequence(*answers: int | Exception) -> tuple[httpx2.MockTransport, list[httpx2.Request]]:
@@ -67,6 +67,33 @@ def test_gives_up_after_the_retries() -> None:
     # Act & Assert
     with pytest.raises(httpx2.ConnectError):
         send(RetryTransport(mock, max_retries=2, sleep=lambda _: None))
+
+
+@pytest.mark.parametrize("first", [503, httpx2.ConnectError("down")], ids=["a 503", "a dropped connection"])
+def test_a_retried_delete_that_finds_nothing_answers_204(first: int | Exception) -> None:
+    # Arrange
+    mock, seen = sequence(first, 404)
+
+    # Act
+    actual = send(RetryTransport(mock, max_retries=2, sleep=lambda _: None), "DELETE")
+
+    # Assert
+    assert actual.status_code == 204
+    assert actual.headers[RETRIED_DELETE_HEADER] == "true"
+    assert actual.content == b""
+    assert len(seen) == 2
+
+
+def test_a_delete_that_finds_nothing_on_its_first_try_stays_404() -> None:
+    # Arrange
+    mock, seen = sequence(404)
+
+    # Act
+    actual = send(RetryTransport(mock, max_retries=2, sleep=lambda _: None), "DELETE")
+
+    # Assert
+    assert actual.status_code == 404
+    assert len(seen) == 1
 
 
 def test_retry_delay() -> None:

@@ -59,6 +59,11 @@ def _parse_response(
 
         return response_403
 
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -85,8 +90,8 @@ def sync_detailed(
 ) -> Response[ErrorResponse | SourceResponseEnvelope]:
     """Create source
 
-     Add a custom source to the space (scope `sources:write`, in the «Імпорт із власного джерела» and
-    «Повний доступ» tokens). A source is read-only by default: the app then changes only its rows'
+     Add a custom source to the space (scope `sources:write`, in the “Import from your own source” and
+    “Full access” tokens). A source is read-only by default: the app then changes only its rows'
     category, merchant, note and tags, and adds no rows of its own to its accounts. Each plan allows a
     number of sources (403 BILL_013 above it).
 
@@ -125,8 +130,8 @@ def sync(
 ) -> ErrorResponse | SourceResponseEnvelope | None:
     """Create source
 
-     Add a custom source to the space (scope `sources:write`, in the «Імпорт із власного джерела» and
-    «Повний доступ» tokens). A source is read-only by default: the app then changes only its rows'
+     Add a custom source to the space (scope `sources:write`, in the “Import from your own source” and
+    “Full access” tokens). A source is read-only by default: the app then changes only its rows'
     category, merchant, note and tags, and adds no rows of its own to its accounts. Each plan allows a
     number of sources (403 BILL_013 above it).
 
@@ -160,8 +165,8 @@ async def asyncio_detailed(
 ) -> Response[ErrorResponse | SourceResponseEnvelope]:
     """Create source
 
-     Add a custom source to the space (scope `sources:write`, in the «Імпорт із власного джерела» and
-    «Повний доступ» tokens). A source is read-only by default: the app then changes only its rows'
+     Add a custom source to the space (scope `sources:write`, in the “Import from your own source” and
+    “Full access” tokens). A source is read-only by default: the app then changes only its rows'
     category, merchant, note and tags, and adds no rows of its own to its accounts. Each plan allows a
     number of sources (403 BILL_013 above it).
 
@@ -198,8 +203,8 @@ async def asyncio(
 ) -> ErrorResponse | SourceResponseEnvelope | None:
     """Create source
 
-     Add a custom source to the space (scope `sources:write`, in the «Імпорт із власного джерела» and
-    «Повний доступ» tokens). A source is read-only by default: the app then changes only its rows'
+     Add a custom source to the space (scope `sources:write`, in the “Import from your own source” and
+    “Full access” tokens). A source is read-only by default: the app then changes only its rows'
     category, merchant, note and tags, and adds no rows of its own to its accounts. Each plan allows a
     number of sources (403 BILL_013 above it).
 

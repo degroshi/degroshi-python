@@ -23,13 +23,12 @@ T = TypeVar("T", bound="TransactionTreatment")
 class TransactionTreatment:
     """
     Attributes:
-        affects_closed_period (bool): AffectsClosedPeriod: the row changes a period whose declaration was already due.
+        affects_closed_period (bool): The row changes a period whose declaration was already due.
         class_ (str): The treatment; only revenue (net of refund_to_customer) feeds the single-tax base.
         confidence (Decimal): 0–1 (three decimals).
         fiscal_receipt_missing (bool):
-        fiscal_required (bool): FiscalRequired: revenue that needs a fiscal receipt (none linked when
-            FiscalReceiptMissing).
-        needs_review (bool): NeedsReview: the review queue lists it.
+        fiscal_required (bool): Revenue that needs a fiscal receipt (none linked when `fiscal_receipt_missing`).
+        needs_review (bool): The review queue lists it.
         reviewed (bool): Reviewed: a person confirmed or set it.
         source (TransactionTreatmentSource): Who decided it: default_rule, user_rule, linker, ai or user.
         version (int): The treatment's version (its If-Match).

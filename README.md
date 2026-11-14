@@ -36,6 +36,29 @@ A token that reaches several spaces needs the space too: `Degroshi(api_key, spac
 The asyncio client has the same methods: `async with AsyncDegroshi(...) as degroshi`, `await` each call, and
 `async for` over the iterators.
 
+## Types
+
+Every call returns the API's model for its answer (`degroshi.accounts.get(...)` is an `AccountResponse`), so your
+editor and type checker know each field. The models live in `degroshi.models`, for annotating your own code:
+
+```python
+from degroshi.models import TransactionResponse
+
+
+def describe(transaction: TransactionResponse) -> str:
+    return f"{transaction.transaction_date}: {transaction.amount}"
+```
+
+Writes take either the model or a plain dict in the API's JSON shape:
+
+```python
+degroshi.transactions.create(
+    {"account_id": account_id, "amount": "642.30", "type": "expense", "transaction_date": "2026-11-10"}
+)
+```
+
+A field the API left out is `UNSET` (`isinstance(value, Unset)`, both from `degroshi.models`).
+
 ## Pagination
 
 `transactions.list()` returns one page: `data` and `meta` (`page`, `per_page`, `total`, `has_next`).
@@ -49,6 +72,26 @@ for transaction in degroshi.transactions.iterate(from_date=date(2026, 11, 1)):
 ```
 
 Lists that use cursors (`sources.iterate_pushed`, `events.iterate`) follow `next_cursor` the same way.
+
+## Keeping a copy
+
+`changes.iterate()` reads the change feed (`GET /v1/changes`): everything that changed since your cursor, deletions
+included, in the order the changes were saved. Without a cursor it starts with every object. Save `feed.cursor` after
+the loop and pass it next time:
+
+```python
+feed = degroshi.changes.iterate(cursor=saved, types=["transaction"])
+for change in feed:
+    if change.op == "delete":
+        copy.pop(change.id, None)
+    else:
+        copy[change.id] = change.data
+save(feed.cursor)
+```
+
+`AsyncDegroshi` gives the same feed for `async for`. A cursor that can't continue (the space's access changed, 180 days
+passed) raises a `DegroshiError` with status 410 and code `CHANGES_RESYNC_REQUIRED`: read again without a cursor and
+replace the copy.
 
 ## Money
 
@@ -83,7 +126,9 @@ except NotFoundError:
 
 Requests that are safe to repeat are retried on network failures, 408, 429, 500, 502, 503 and 504, with backoff and
 respecting `Retry-After`. `max_retries` sets how many times (default 2), and `timeout` how long one try may take, in
-seconds (default 60).
+seconds (default 60). A delete retried after a lost answer that then finds nothing has been done by the earlier try,
+so it returns instead of raising `NotFoundError` (the stand-in answer is a 204 with the `RETRIED_DELETE_HEADER`
+header).
 
 ## Webhooks
 
@@ -110,6 +155,7 @@ you can catch up after downtime.
 - [Developer guide](https://docs.degroshi.com/en/developers): tokens, spaces, limits and errors.
 - [API reference](https://docs.degroshi.com/en/developers/api/me/list-my-spaces): every endpoint and its fields.
 - [Webhooks](https://docs.degroshi.com/en/developers/webhooks): events, signatures and retries.
+- [Keeping a copy](https://docs.degroshi.com/en/developers/changes): the change feed and a Google Sheets recipe.
 
 ## Versions
 

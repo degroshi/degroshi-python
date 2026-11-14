@@ -36,8 +36,8 @@ class BudgetAllocationResponse:
         spent (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         display (AllocationDisplay | None | Unset): The allocation in the display currency the device sent (X-Display-
             Currency), converted at today's rate; null when that is the budget currency, none was sent or there is no rate.
-        missing_rates (list[str] | None | Unset): Lists spending currencies without an exchange rate into the budget
-            currency; that spending is not included in spent.
+        missing_rates (list[str] | None | Unset): `missing_rates` lists spending currencies without an exchange rate
+            into the budget currency; that spending is not included in spent.
         parent_allocation_id (None | str | Unset): The group allocation this one is an inner limit of: the budget's
             allocation of the nearest ancestor category; null at the top level. An inner limit is part of its group's amount
             and the group's spent already includes it, so the budget's totals count only top-level allocations.

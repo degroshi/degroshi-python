@@ -1,8 +1,9 @@
 from typing import Literal
 
-Mode = Literal["post", "track_only"]
+Mode = Literal["confirm", "post", "track_only"]
 
 MODE_VALUES: set[Mode] = {
+    "confirm",
     "post",
     "track_only",
 }

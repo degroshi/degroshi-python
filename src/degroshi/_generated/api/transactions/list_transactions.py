@@ -42,6 +42,10 @@ def _get_kwargs(
     project_id: str | Unset = UNSET,
     recurring_rule_id: str | Unset = UNSET,
     import_id: str | Unset = UNSET,
+    place_id: str | Unset = UNSET,
+    city: str | Unset = UNSET,
+    country: str | Unset = UNSET,
+    online: bool | Unset = UNSET,
     currency_code: str | Unset = UNSET,
     updated_since: datetime.datetime | Unset = UNSET,
     sort: ListTransactionsSort | Unset = UNSET,
@@ -51,10 +55,14 @@ def _get_kwargs(
     include_portfolio_transfers: bool | Unset = UNSET,
     one_row_per_transfer: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     if not isinstance(x_space_id, Unset):
         headers["X-Space-ID"] = x_space_id
+
+    if not isinstance(x_display_currency, Unset):
+        headers["X-Display-Currency"] = x_display_currency
 
     params: dict[str, Any] = {}
 
@@ -130,6 +138,14 @@ def _get_kwargs(
 
     params["import_id"] = import_id
 
+    params["place_id"] = place_id
+
+    params["city"] = city
+
+    params["country"] = country
+
+    params["online"] = online
+
     params["currencyCode"] = currency_code
 
     json_updated_since: str | Unset = UNSET
@@ -192,6 +208,11 @@ def _parse_response(
 
         return response_403
 
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
+
     if response.status_code == 500:
         response_500 = ErrorResponse.from_dict(response.json())
 
@@ -240,6 +261,10 @@ def sync_detailed(
     project_id: str | Unset = UNSET,
     recurring_rule_id: str | Unset = UNSET,
     import_id: str | Unset = UNSET,
+    place_id: str | Unset = UNSET,
+    city: str | Unset = UNSET,
+    country: str | Unset = UNSET,
+    online: bool | Unset = UNSET,
     currency_code: str | Unset = UNSET,
     updated_since: datetime.datetime | Unset = UNSET,
     sort: ListTransactionsSort | Unset = UNSET,
@@ -249,6 +274,7 @@ def sync_detailed(
     include_portfolio_transfers: bool | Unset = UNSET,
     one_row_per_transfer: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> Response[ErrorResponse | TransactionListResponseEnvelope]:
     """List transactions
 
@@ -284,6 +310,10 @@ def sync_detailed(
         project_id (str | Unset):
         recurring_rule_id (str | Unset):
         import_id (str | Unset):
+        place_id (str | Unset):
+        city (str | Unset):
+        country (str | Unset):
+        online (bool | Unset):
         currency_code (str | Unset):
         updated_since (datetime.datetime | Unset):
         sort (ListTransactionsSort | Unset):
@@ -293,6 +323,7 @@ def sync_detailed(
         include_portfolio_transfers (bool | Unset):
         one_row_per_transfer (bool | Unset):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -326,6 +357,10 @@ def sync_detailed(
         project_id=project_id,
         recurring_rule_id=recurring_rule_id,
         import_id=import_id,
+        place_id=place_id,
+        city=city,
+        country=country,
+        online=online,
         currency_code=currency_code,
         updated_since=updated_since,
         sort=sort,
@@ -335,6 +370,7 @@ def sync_detailed(
         include_portfolio_transfers=include_portfolio_transfers,
         one_row_per_transfer=one_row_per_transfer,
         x_space_id=x_space_id,
+        x_display_currency=x_display_currency,
     )
 
     response = client.get_httpx_client().request(
@@ -370,6 +406,10 @@ def sync(
     project_id: str | Unset = UNSET,
     recurring_rule_id: str | Unset = UNSET,
     import_id: str | Unset = UNSET,
+    place_id: str | Unset = UNSET,
+    city: str | Unset = UNSET,
+    country: str | Unset = UNSET,
+    online: bool | Unset = UNSET,
     currency_code: str | Unset = UNSET,
     updated_since: datetime.datetime | Unset = UNSET,
     sort: ListTransactionsSort | Unset = UNSET,
@@ -379,6 +419,7 @@ def sync(
     include_portfolio_transfers: bool | Unset = UNSET,
     one_row_per_transfer: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> ErrorResponse | TransactionListResponseEnvelope | None:
     """List transactions
 
@@ -414,6 +455,10 @@ def sync(
         project_id (str | Unset):
         recurring_rule_id (str | Unset):
         import_id (str | Unset):
+        place_id (str | Unset):
+        city (str | Unset):
+        country (str | Unset):
+        online (bool | Unset):
         currency_code (str | Unset):
         updated_since (datetime.datetime | Unset):
         sort (ListTransactionsSort | Unset):
@@ -423,6 +468,7 @@ def sync(
         include_portfolio_transfers (bool | Unset):
         one_row_per_transfer (bool | Unset):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -457,6 +503,10 @@ def sync(
         project_id=project_id,
         recurring_rule_id=recurring_rule_id,
         import_id=import_id,
+        place_id=place_id,
+        city=city,
+        country=country,
+        online=online,
         currency_code=currency_code,
         updated_since=updated_since,
         sort=sort,
@@ -466,6 +516,7 @@ def sync(
         include_portfolio_transfers=include_portfolio_transfers,
         one_row_per_transfer=one_row_per_transfer,
         x_space_id=x_space_id,
+        x_display_currency=x_display_currency,
     ).parsed
 
 
@@ -495,6 +546,10 @@ async def asyncio_detailed(
     project_id: str | Unset = UNSET,
     recurring_rule_id: str | Unset = UNSET,
     import_id: str | Unset = UNSET,
+    place_id: str | Unset = UNSET,
+    city: str | Unset = UNSET,
+    country: str | Unset = UNSET,
+    online: bool | Unset = UNSET,
     currency_code: str | Unset = UNSET,
     updated_since: datetime.datetime | Unset = UNSET,
     sort: ListTransactionsSort | Unset = UNSET,
@@ -504,6 +559,7 @@ async def asyncio_detailed(
     include_portfolio_transfers: bool | Unset = UNSET,
     one_row_per_transfer: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> Response[ErrorResponse | TransactionListResponseEnvelope]:
     """List transactions
 
@@ -539,6 +595,10 @@ async def asyncio_detailed(
         project_id (str | Unset):
         recurring_rule_id (str | Unset):
         import_id (str | Unset):
+        place_id (str | Unset):
+        city (str | Unset):
+        country (str | Unset):
+        online (bool | Unset):
         currency_code (str | Unset):
         updated_since (datetime.datetime | Unset):
         sort (ListTransactionsSort | Unset):
@@ -548,6 +608,7 @@ async def asyncio_detailed(
         include_portfolio_transfers (bool | Unset):
         one_row_per_transfer (bool | Unset):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -581,6 +642,10 @@ async def asyncio_detailed(
         project_id=project_id,
         recurring_rule_id=recurring_rule_id,
         import_id=import_id,
+        place_id=place_id,
+        city=city,
+        country=country,
+        online=online,
         currency_code=currency_code,
         updated_since=updated_since,
         sort=sort,
@@ -590,6 +655,7 @@ async def asyncio_detailed(
         include_portfolio_transfers=include_portfolio_transfers,
         one_row_per_transfer=one_row_per_transfer,
         x_space_id=x_space_id,
+        x_display_currency=x_display_currency,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -623,6 +689,10 @@ async def asyncio(
     project_id: str | Unset = UNSET,
     recurring_rule_id: str | Unset = UNSET,
     import_id: str | Unset = UNSET,
+    place_id: str | Unset = UNSET,
+    city: str | Unset = UNSET,
+    country: str | Unset = UNSET,
+    online: bool | Unset = UNSET,
     currency_code: str | Unset = UNSET,
     updated_since: datetime.datetime | Unset = UNSET,
     sort: ListTransactionsSort | Unset = UNSET,
@@ -632,6 +702,7 @@ async def asyncio(
     include_portfolio_transfers: bool | Unset = UNSET,
     one_row_per_transfer: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> ErrorResponse | TransactionListResponseEnvelope | None:
     """List transactions
 
@@ -667,6 +738,10 @@ async def asyncio(
         project_id (str | Unset):
         recurring_rule_id (str | Unset):
         import_id (str | Unset):
+        place_id (str | Unset):
+        city (str | Unset):
+        country (str | Unset):
+        online (bool | Unset):
         currency_code (str | Unset):
         updated_since (datetime.datetime | Unset):
         sort (ListTransactionsSort | Unset):
@@ -676,6 +751,7 @@ async def asyncio(
         include_portfolio_transfers (bool | Unset):
         one_row_per_transfer (bool | Unset):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -711,6 +787,10 @@ async def asyncio(
             project_id=project_id,
             recurring_rule_id=recurring_rule_id,
             import_id=import_id,
+            place_id=place_id,
+            city=city,
+            country=country,
+            online=online,
             currency_code=currency_code,
             updated_since=updated_since,
             sort=sort,
@@ -720,5 +800,6 @@ async def asyncio(
             include_portfolio_transfers=include_portfolio_transfers,
             one_row_per_transfer=one_row_per_transfer,
             x_space_id=x_space_id,
+            x_display_currency=x_display_currency,
         )
     ).parsed

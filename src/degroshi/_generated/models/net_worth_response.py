@@ -34,8 +34,8 @@ class NetWorthResponse:
         total_assets (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         total_liabilities (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         by_account (list[AccountWithConvertedBalance] | None | Unset):
-        missing_rates (list[str] | None | Unset): Lists account currencies without an exchange rate into base_currency;
-            those accounts are excluded from the totals.
+        missing_rates (list[str] | None | Unset): `missing_rates` lists account currencies without an exchange rate into
+            base_currency; those accounts are excluded from the totals.
     """
 
     base_currency: str

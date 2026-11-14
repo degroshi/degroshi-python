@@ -30,8 +30,8 @@ class OccurrenceTotals:
         expense (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         income (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         net (Decimal): Income minus expense.
-        missing_rates (list[str] | None | Unset): Lists currencies without a rate into the display currency; their
-            occurrences are left out of the totals.
+        missing_rates (list[str] | None | Unset): `missing_rates` lists currencies without a rate into the display
+            currency; their occurrences are left out of the totals.
     """
 
     currency: str

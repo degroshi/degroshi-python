@@ -21,6 +21,7 @@ def _get_kwargs(
     body: UpdateTransactionRequest,
     x_space_id: str | Unset = UNSET,
     if_match: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     if not isinstance(x_space_id, Unset):
@@ -28,6 +29,9 @@ def _get_kwargs(
 
     if not isinstance(if_match, Unset):
         headers["If-Match"] = if_match
+
+    if not isinstance(x_display_currency, Unset):
+        headers["X-Display-Currency"] = x_display_currency
 
     _kwargs: dict[str, Any] = {
         "method": "patch",
@@ -77,6 +81,11 @@ def _parse_response(
 
         return response_422
 
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -101,10 +110,11 @@ def sync_detailed(
     body: UpdateTransactionRequest,
     x_space_id: str | Unset = UNSET,
     if_match: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> Response[ErrorResponse | TransactionResponseEnvelope]:
     """Update transaction
 
-     Change a transaction (needs the «Повний доступ» token, scope `transactions:write`); fields left out
+     Change a transaction (needs the “Full access” token, scope `transactions:write`); fields left out
     keep their value. Editing one leg of a transfer updates both. Moving a row to or from `cancelled`
     reverses or re-applies its balance effect. With `If-Match: "<version>"` the change applies only when
     the row still has that version; otherwise 412 SYNC_VERSION_MISMATCH.
@@ -113,6 +123,7 @@ def sync_detailed(
         id (str):
         x_space_id (str | Unset):
         if_match (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
         body (UpdateTransactionRequest):
 
     Raises:
@@ -128,6 +139,7 @@ def sync_detailed(
         body=body,
         x_space_id=x_space_id,
         if_match=if_match,
+        x_display_currency=x_display_currency,
     )
 
     response = client.get_httpx_client().request(
@@ -144,10 +156,11 @@ def sync(
     body: UpdateTransactionRequest,
     x_space_id: str | Unset = UNSET,
     if_match: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> ErrorResponse | TransactionResponseEnvelope | None:
     """Update transaction
 
-     Change a transaction (needs the «Повний доступ» token, scope `transactions:write`); fields left out
+     Change a transaction (needs the “Full access” token, scope `transactions:write`); fields left out
     keep their value. Editing one leg of a transfer updates both. Moving a row to or from `cancelled`
     reverses or re-applies its balance effect. With `If-Match: "<version>"` the change applies only when
     the row still has that version; otherwise 412 SYNC_VERSION_MISMATCH.
@@ -156,6 +169,7 @@ def sync(
         id (str):
         x_space_id (str | Unset):
         if_match (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
         body (UpdateTransactionRequest):
 
     Raises:
@@ -172,6 +186,7 @@ def sync(
         body=body,
         x_space_id=x_space_id,
         if_match=if_match,
+        x_display_currency=x_display_currency,
     ).parsed
 
 
@@ -182,10 +197,11 @@ async def asyncio_detailed(
     body: UpdateTransactionRequest,
     x_space_id: str | Unset = UNSET,
     if_match: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> Response[ErrorResponse | TransactionResponseEnvelope]:
     """Update transaction
 
-     Change a transaction (needs the «Повний доступ» token, scope `transactions:write`); fields left out
+     Change a transaction (needs the “Full access” token, scope `transactions:write`); fields left out
     keep their value. Editing one leg of a transfer updates both. Moving a row to or from `cancelled`
     reverses or re-applies its balance effect. With `If-Match: "<version>"` the change applies only when
     the row still has that version; otherwise 412 SYNC_VERSION_MISMATCH.
@@ -194,6 +210,7 @@ async def asyncio_detailed(
         id (str):
         x_space_id (str | Unset):
         if_match (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
         body (UpdateTransactionRequest):
 
     Raises:
@@ -209,6 +226,7 @@ async def asyncio_detailed(
         body=body,
         x_space_id=x_space_id,
         if_match=if_match,
+        x_display_currency=x_display_currency,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -223,10 +241,11 @@ async def asyncio(
     body: UpdateTransactionRequest,
     x_space_id: str | Unset = UNSET,
     if_match: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> ErrorResponse | TransactionResponseEnvelope | None:
     """Update transaction
 
-     Change a transaction (needs the «Повний доступ» token, scope `transactions:write`); fields left out
+     Change a transaction (needs the “Full access” token, scope `transactions:write`); fields left out
     keep their value. Editing one leg of a transfer updates both. Moving a row to or from `cancelled`
     reverses or re-applies its balance effect. With `If-Match: "<version>"` the change applies only when
     the row still has that version; otherwise 412 SYNC_VERSION_MISMATCH.
@@ -235,6 +254,7 @@ async def asyncio(
         id (str):
         x_space_id (str | Unset):
         if_match (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
         body (UpdateTransactionRequest):
 
     Raises:
@@ -252,5 +272,6 @@ async def asyncio(
             body=body,
             x_space_id=x_space_id,
             if_match=if_match,
+            x_display_currency=x_display_currency,
         )
     ).parsed

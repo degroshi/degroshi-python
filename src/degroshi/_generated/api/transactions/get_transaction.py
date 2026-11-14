@@ -18,10 +18,14 @@ def _get_kwargs(
     id: str,
     *,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     if not isinstance(x_space_id, Unset):
         headers["X-Space-ID"] = x_space_id
+
+    if not isinstance(x_display_currency, Unset):
+        headers["X-Display-Currency"] = x_display_currency
 
     _kwargs: dict[str, Any] = {
         "method": "get",
@@ -47,6 +51,11 @@ def _parse_response(
 
         return response_404
 
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -69,6 +78,7 @@ def sync_detailed(
     *,
     client: AuthenticatedClient,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> Response[ErrorResponse | TransactionResponseEnvelope]:
     """Get transaction
 
@@ -77,6 +87,7 @@ def sync_detailed(
     Args:
         id (str):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -89,6 +100,7 @@ def sync_detailed(
     kwargs = _get_kwargs(
         id=id,
         x_space_id=x_space_id,
+        x_display_currency=x_display_currency,
     )
 
     response = client.get_httpx_client().request(
@@ -103,6 +115,7 @@ def sync(
     *,
     client: AuthenticatedClient,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> ErrorResponse | TransactionResponseEnvelope | None:
     """Get transaction
 
@@ -111,6 +124,7 @@ def sync(
     Args:
         id (str):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -124,6 +138,7 @@ def sync(
         id=id,
         client=client,
         x_space_id=x_space_id,
+        x_display_currency=x_display_currency,
     ).parsed
 
 
@@ -132,6 +147,7 @@ async def asyncio_detailed(
     *,
     client: AuthenticatedClient,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> Response[ErrorResponse | TransactionResponseEnvelope]:
     """Get transaction
 
@@ -140,6 +156,7 @@ async def asyncio_detailed(
     Args:
         id (str):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -152,6 +169,7 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         id=id,
         x_space_id=x_space_id,
+        x_display_currency=x_display_currency,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -164,6 +182,7 @@ async def asyncio(
     *,
     client: AuthenticatedClient,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> ErrorResponse | TransactionResponseEnvelope | None:
     """Get transaction
 
@@ -172,6 +191,7 @@ async def asyncio(
     Args:
         id (str):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -186,5 +206,6 @@ async def asyncio(
             id=id,
             client=client,
             x_space_id=x_space_id,
+            x_display_currency=x_display_currency,
         )
     ).parsed

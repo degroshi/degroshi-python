@@ -32,8 +32,8 @@ class BudgetListItem:
         name (str):
         period (BudgetPeriod):
         period_end (datetime.datetime):
-        period_start (datetime.datetime): / PeriodEnd are the inclusive calendar dates (space timezone) of the current
-            period, or of the period containing as_of.
+        period_start (datetime.datetime): `period_start` / `period_end` are the inclusive calendar dates (space
+            timezone) of the current period, or of the period containing as_of.
         space_id (str):
         start_date (datetime.datetime):
         alerts_muted (bool | None | Unset): Whether you muted this budget's alerts.

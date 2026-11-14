@@ -37,10 +37,10 @@ class MerchantAnalyticsResponse:
         to (datetime.date):
         total (MerchantFigures):
         unattributed (MerchantFigures):
-        missing_rates (list[str] | None | Unset): Lists currencies without an exchange rate; their amounts are left out.
-            Omitted when everything converted.
-        pending_valuation (int | None | Unset): Counts the business-space operations of the period that have no UAH
-            value yet (left out). Omitted when 0.
+        missing_rates (list[str] | None | Unset): `missing_rates` lists currencies without an exchange rate; their
+            amounts are left out. Omitted when everything converted.
+        pending_valuation (int | None | Unset): `pending_valuation` counts the business-space operations of the period
+            that have no UAH value yet (left out). Omitted when 0.
     """
 
     currency_info: AnalyticsCurrencyInfo

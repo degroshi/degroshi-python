@@ -20,6 +20,7 @@ def _get_kwargs(
     body: CreateTransactionRequest,
     x_space_id: str | Unset = UNSET,
     idempotency_key: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     if not isinstance(x_space_id, Unset):
@@ -27,6 +28,9 @@ def _get_kwargs(
 
     if not isinstance(idempotency_key, Unset):
         headers["Idempotency-Key"] = idempotency_key
+
+    if not isinstance(x_display_currency, Unset):
+        headers["X-Display-Currency"] = x_display_currency
 
     _kwargs: dict[str, Any] = {
         "method": "post",
@@ -74,6 +78,11 @@ def _parse_response(
 
         return response_422
 
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -97,10 +106,11 @@ def sync_detailed(
     body: CreateTransactionRequest,
     x_space_id: str | Unset = UNSET,
     idempotency_key: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> Response[ErrorResponse | TransactionResponseEnvelope]:
     """Create transaction
 
-     Add a transaction to a manual account (needs the «Повний доступ» token, scope `transactions:write`).
+     Add a transaction to a manual account (needs the “Full access” token, scope `transactions:write`).
     `amount` is positive and `type` says its direction (income or expense). Completed and pending rows
     move the account's balance; cancelled ones don't. An optional client-made `id` makes the request
     safe to retry: the same id answers 200 with the stored row and the header `Idempotent-Replayed:
@@ -110,6 +120,7 @@ def sync_detailed(
     Args:
         x_space_id (str | Unset):
         idempotency_key (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
         body (CreateTransactionRequest):
 
     Raises:
@@ -124,6 +135,7 @@ def sync_detailed(
         body=body,
         x_space_id=x_space_id,
         idempotency_key=idempotency_key,
+        x_display_currency=x_display_currency,
     )
 
     response = client.get_httpx_client().request(
@@ -139,10 +151,11 @@ def sync(
     body: CreateTransactionRequest,
     x_space_id: str | Unset = UNSET,
     idempotency_key: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> ErrorResponse | TransactionResponseEnvelope | None:
     """Create transaction
 
-     Add a transaction to a manual account (needs the «Повний доступ» token, scope `transactions:write`).
+     Add a transaction to a manual account (needs the “Full access” token, scope `transactions:write`).
     `amount` is positive and `type` says its direction (income or expense). Completed and pending rows
     move the account's balance; cancelled ones don't. An optional client-made `id` makes the request
     safe to retry: the same id answers 200 with the stored row and the header `Idempotent-Replayed:
@@ -152,6 +165,7 @@ def sync(
     Args:
         x_space_id (str | Unset):
         idempotency_key (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
         body (CreateTransactionRequest):
 
     Raises:
@@ -167,6 +181,7 @@ def sync(
         body=body,
         x_space_id=x_space_id,
         idempotency_key=idempotency_key,
+        x_display_currency=x_display_currency,
     ).parsed
 
 
@@ -176,10 +191,11 @@ async def asyncio_detailed(
     body: CreateTransactionRequest,
     x_space_id: str | Unset = UNSET,
     idempotency_key: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> Response[ErrorResponse | TransactionResponseEnvelope]:
     """Create transaction
 
-     Add a transaction to a manual account (needs the «Повний доступ» token, scope `transactions:write`).
+     Add a transaction to a manual account (needs the “Full access” token, scope `transactions:write`).
     `amount` is positive and `type` says its direction (income or expense). Completed and pending rows
     move the account's balance; cancelled ones don't. An optional client-made `id` makes the request
     safe to retry: the same id answers 200 with the stored row and the header `Idempotent-Replayed:
@@ -189,6 +205,7 @@ async def asyncio_detailed(
     Args:
         x_space_id (str | Unset):
         idempotency_key (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
         body (CreateTransactionRequest):
 
     Raises:
@@ -203,6 +220,7 @@ async def asyncio_detailed(
         body=body,
         x_space_id=x_space_id,
         idempotency_key=idempotency_key,
+        x_display_currency=x_display_currency,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -216,10 +234,11 @@ async def asyncio(
     body: CreateTransactionRequest,
     x_space_id: str | Unset = UNSET,
     idempotency_key: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> ErrorResponse | TransactionResponseEnvelope | None:
     """Create transaction
 
-     Add a transaction to a manual account (needs the «Повний доступ» token, scope `transactions:write`).
+     Add a transaction to a manual account (needs the “Full access” token, scope `transactions:write`).
     `amount` is positive and `type` says its direction (income or expense). Completed and pending rows
     move the account's balance; cancelled ones don't. An optional client-made `id` makes the request
     safe to retry: the same id answers 200 with the stored row and the header `Idempotent-Replayed:
@@ -229,6 +248,7 @@ async def asyncio(
     Args:
         x_space_id (str | Unset):
         idempotency_key (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
         body (CreateTransactionRequest):
 
     Raises:
@@ -245,5 +265,6 @@ async def asyncio(
             body=body,
             x_space_id=x_space_id,
             idempotency_key=idempotency_key,
+            x_display_currency=x_display_currency,
         )
     ).parsed

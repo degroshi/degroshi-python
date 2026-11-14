@@ -26,8 +26,8 @@ class DayTotal:
         day (datetime.date):
         earned (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         spent (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
-        rate_pending (bool | None | Unset): Marks a day with a business row still waiting for its NBU rate: that row
-            counts at the display rate, so the day's sum may change.
+        rate_pending (bool | None | Unset): `rate_pending` marks a day with a business row still waiting for its NBU
+            rate: that row counts at the display rate, so the day's sum may change.
     """
 
     day: datetime.date

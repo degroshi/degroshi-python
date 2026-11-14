@@ -5,7 +5,7 @@ from pathlib import Path
 import httpx2
 import pytest
 
-from degroshi import ConflictError, Degroshi, NotFoundError, RateLimitError
+from degroshi import ConflictError, Degroshi, NotFoundError, RateLimitError, models
 
 
 def client(handler, **options) -> tuple[Degroshi, list[httpx2.Request]]:
@@ -108,6 +108,46 @@ def test_creates_send_an_idempotency_key_and_edits_if_match() -> None:
     assert seen[2].headers["If-Match"] == "3"
 
 
+def test_writes_take_a_plain_dict_and_return_public_models() -> None:
+    # Arrange
+    degroshi, seen = client(lambda _: httpx2.Response(201, json={"success": True, "data": TRANSACTION}))
+
+    # Act
+    created = degroshi.transactions.create(
+        {"account_id": "a1", "amount": "642.30", "type": "expense", "transaction_date": "2026-11-10"}
+    )
+    degroshi.transactions.update("t1", {"note": "кава"})
+
+    # Assert
+    assert isinstance(created, models.TransactionResponse)
+    assert json.loads(seen[0].content)["amount"] == "642.30"
+    assert json.loads(seen[1].content) == {"note": "кава"}
+
+
+def test_a_retried_delete_that_finds_nothing_is_done() -> None:
+    # Arrange
+    answers = [
+        httpx2.Response(503, headers={"Retry-After": "0"}, json={"success": False}),
+        httpx2.Response(404, json={"success": False, "error": {"code": "TXN_001", "message": "x"}}),
+    ]
+    seen: list[httpx2.Request] = []
+
+    def record(request: httpx2.Request) -> httpx2.Response:
+        seen.append(request)
+        return answers.pop(0)
+
+    degroshi = Degroshi(
+        "dg_pat_test", base_url="https://api.test", max_retries=1, transport=httpx2.MockTransport(record)
+    )
+
+    # Act
+    actual = degroshi.transactions.delete("t1")
+
+    # Assert
+    assert actual is None
+    assert [request.method for request in seen] == ["DELETE", "DELETE"]
+
+
 def test_an_edit_without_a_version_sends_no_if_match() -> None:
     # Arrange: a response row may carry no version (null or absent).
     from degroshi._generated.types import UNSET
@@ -145,3 +185,46 @@ def test_needs_a_key(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv("DEGROSHI_API_KEY", raising=False)
     with pytest.raises(ValueError, match="api_key"):
         Degroshi()
+
+
+def test_reads_the_change_feed_and_keeps_where_to_start_next_time() -> None:
+    # Arrange
+    def handler(request: httpx2.Request) -> httpx2.Response:
+        if request.url.params.get("cursor") == "c1":
+            deleted = {"type": "transaction", "id": "t2", "op": "delete"}
+            data = {"items": [deleted], "next_cursor": "c2", "has_more": False}
+        else:
+            item = {"type": "transaction", "id": "t1", "op": "upsert", "data": {"id": "t1"}}
+            data = {"items": [item], "next_cursor": "c1", "has_more": True}
+        return httpx2.Response(200, json={"success": True, "data": data})
+
+    degroshi, seen = client(handler)
+
+    # Act
+    feed = degroshi.changes.iterate(types=["transaction"])
+    actual = [(change.op, change.id) for change in feed]
+
+    # Assert
+    assert actual == [("upsert", "t1"), ("delete", "t2")]
+    assert feed.cursor == "c2"
+    assert "cursor" not in seen[0].url.params
+    assert seen[1].url.params["types"] == "transaction"
+
+
+def test_change_feed_stays_at_the_start_of_an_unfinished_page() -> None:
+    # Arrange
+    def handler(request: httpx2.Request) -> httpx2.Response:
+        items = [{"type": "account", "id": account, "op": "upsert", "data": {}} for account in ("a1", "a2")]
+        data = {"items": items, "next_cursor": "c9", "has_more": False}
+        return httpx2.Response(200, json={"success": True, "data": data})
+
+    degroshi, _ = client(handler)
+
+    # Act
+    feed = degroshi.changes.iterate(cursor="c8")
+    for change in feed:
+        if change.id == "a1":
+            break
+
+    # Assert: reading again from c8 repeats a1 and a2 at most, never skips a2.
+    assert feed.cursor == "c8"

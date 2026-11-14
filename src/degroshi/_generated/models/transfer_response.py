@@ -35,20 +35,21 @@ class TransferResponse:
         to_hidden (bool):
         chain (None | str | Unset):
         display (None | TransferDisplay | Unset): Value in the display currency the device sent (X-Display-Currency),
-            converted at today's rate and rounded to cents; absent when that is ValueCurrency, none was sent or there is no
-            value or rate. Clients show it in place of Value.
-        explorer_url (None | str | Unset): TxHash's page in its chain's explorer (Etherscan, Solscan, OKLink for X
-            Layer…); absent when the chain isn't known, then the hash is shown as copyable text.
-        from_account_id (None | str | Unset): And FromAccountName are the sending account; FromHidden marks one the
-            caller can't see (shown as "another account"), and then both are absent. To* likewise.
+            converted at today's rate and rounded to cents; absent when that is `value_currency`, none was sent or there is
+            no value or rate. Clients show it in place of Value.
+        explorer_url (None | str | Unset): The page of `tx_hash` in its chain's explorer (Etherscan, Solscan, OKLink for
+            X Layer…); absent when the chain isn't known, then the hash is shown as copyable text.
+        from_account_id (None | str | Unset): `from_account_id` and `from_account_name` are the sending account;
+            `from_hidden` marks one the caller can't see (shown as "another account"), and then both are absent. To*
+            likewise.
         from_account_name (None | str | Unset):
         in_activity_id (None | str | Unset):
-        out_activity_id (None | str | Unset): And InActivityID are the two activities (each in its account's activity
-            feed); absent for a side the caller can't see.
+        out_activity_id (None | str | Unset): `out_activity_id` and `in_activity_id` are the two activities (each in its
+            account's activity feed); absent for a side the caller can't see.
         to_account_id (None | str | Unset):
         to_account_name (None | str | Unset):
         tx_hash (None | str | Unset):
-        value (None | Decimal | Unset): The fiat value at the time, in ValueCurrency.
+        value (None | Decimal | Unset): The fiat value at the time, in `value_currency`.
         value_currency (None | str | Unset):
     """
 

@@ -13,9 +13,14 @@ from ..types import UNSET, Unset
 
 from ..models.transaction_status import check_transaction_status
 from ..models.transaction_status import TransactionStatus
+from ..models.update_transaction_request_place_source_type_0 import check_update_transaction_request_place_source_type_0
+from ..models.update_transaction_request_place_source_type_0 import UpdateTransactionRequestPlaceSourceType0
 from ..types import UNSET, Unset
 from typing import cast
 import datetime
+
+if TYPE_CHECKING:
+    from ..models.create_place_request import CreatePlaceRequest
 
 
 T = TypeVar("T", bound="UpdateTransactionRequest")
@@ -25,13 +30,13 @@ T = TypeVar("T", bound="UpdateTransactionRequest")
 class UpdateTransactionRequest:
     """
     Attributes:
-        account_id (None | str | Unset): Moves a plain income or expense to another open, manual account of the space in
-            the same currency; its balance effect moves with it (422 TXN_ACCOUNT_CURRENCY_MISMATCH for another currency,
-            TXN_ACCOUNT_CHANGE_NOT_ALLOWED for transfer legs, transfer fees and splits, TXN_ACCOUNT_NOT_MANUAL for bank-
-            synced accounts).
+        account_id (None | str | Unset): `account_id` moves a plain income or expense to another open, manual account of
+            the space in the same currency; its balance effect moves with it (422 TXN_ACCOUNT_CURRENCY_MISMATCH for another
+            currency, TXN_ACCOUNT_CHANGE_NOT_ALLOWED for transfer legs, transfer fees and splits, TXN_ACCOUNT_NOT_MANUAL for
+            bank-synced accounts).
         amount (None | Decimal | Unset): The edited row's amount; on a transfer with to_amount or fee_amount it is the total
-            that leaves the source account, fee included (see ToAmount).
-        category_id (None | str | Unset): Sets the category (a category of the space); null clears it.
+            that leaves the source account, fee included (see `to_amount`).
+        category_id (None | str | Unset): `category_id` sets the category (a category of the space); null clears it.
         description (None | str | Unset): Description and Merchant: a change (ignoring surrounding whitespace) unlinks
             the merchant brand, which is looked up again; an unchanged echo keeps it.
         exchange_rate (None | Decimal | Unset): Replaces the stored exchange rate; balances don't change. Positive (400
@@ -44,30 +49,35 @@ class UpdateTransactionRequest:
             transfer already has a fee).
         merchant (None | str | Unset): Merchant: null clears it, as "" empties it.
         merchant_brand_id (None | str | Unset): Used by the Degroshi apps; leave it out.
-        not_income (bool | None | Unset): Marks an income row as the person's own money coming in (true, «Не дохід»: out
-            of income, budgets and recaps, still in the balance) or counts it as income again (false). Only an income row
-            that isn't a transfer leg takes true (422 VAL_001 otherwise).
+        not_income (bool | None | Unset): `not_income` marks an income row as the person's own money coming in (true,
+            “Not income”: out of income, budgets and recaps, still in the balance) or counts it as income again (false).
+            Only an income row that isn't a transfer leg takes true (422 VAL_001 otherwise).
         note (None | str | Unset): Note: null clears it, as "" empties it.
-        original_amount (None | Decimal | Unset): And OriginalCurrency record what a plain income or expense was paid in
-            another currency (a card purchase abroad): original_currency sets or changes the currency (the account's own
-            currency or "" clears both), original_amount the paid amount (default: the current paid amount, else the current
-            amount). Without amount the charged amount is recomputed from the paid amount at the current exchange rate (422
-            TXN_063 when there is none); with amount it is kept as the bank's own figure. exchange_rate follows the two
-            amounts. Values equal to the stored ones (amounts by value, the currency ignoring case) are echoes and change
-            nothing: no re-conversion. null on either clears the paid amount, its currency and the rate like
-            original_currency "", unless the other one sends a new value, which wins. Transfer legs and fees, splits and
-            connected accounts' rows are refused (422 TXN_011 / TXN_ACCOUNT_CONNECTED).
+        original_amount (None | Decimal | Unset): `original_amount` and `original_currency` record what a plain income or
+            expense was paid in another currency (a card purchase abroad): original_currency sets or changes the currency
+            (the account's own currency or "" clears both), original_amount the paid amount (default: the current paid
+            amount, else the current amount). Without amount the charged amount is recomputed from the paid amount at the
+            current exchange rate (422 TXN_063 when there is none); with amount it is kept as the bank's own figure.
+            exchange_rate follows the two amounts. Values equal to the stored ones (amounts by value, the currency ignoring
+            case) are echoes and change nothing: no re-conversion. null on either clears the paid amount, its currency and
+            the rate like original_currency "", unless the other one sends a new value, which wins. Transfer legs and fees,
+            splits and connected accounts' rows are refused (422 TXN_011 / TXN_ACCOUNT_CONNECTED).
         original_currency (None | str | Unset): "" passes binding (the clear sentinel); any other value must be an ISO
             4217 code (400 VAL_001, checked by the service).
+        place (CreatePlaceRequest | Unset):
+        place_id (None | str | Unset): `place_id` moves the row to another place of the space, Place stores a new choice
+            first, `place_source` says how (default picked); a null place_id clears the place (with the X-Update-Contract: 2
+            header). Ignored while places are off.
+        place_source (None | Unset | UpdateTransactionRequestPlaceSourceType0):
         status (TransactionStatus | Unset):
         tag_ids (list[str] | None | Unset): Replaces the transaction's tags (tags of the space, at most 20); [] removes
             them all, absent keeps them. On a transfer it applies to the edited leg.
-        to_amount (None | Decimal | Unset): And FeeAmount edit the amounts of a transfer (either leg's id): with either of
-            them the request reads like a transfer create — amount is the total that leaves the source account (fee
-            included, default: the current one), to_amount what arrives, fee_amount the fee in the source currency (0
-            removes it). Absent fields keep their current value; a same-currency to_amount below amount books the difference
-            as the fee. The fee expense is created, changed or removed to match. Rejected on transactions that are not
-            transfer legs. Without either of them amount is the edited leg's own amount.
+        to_amount (None | Decimal | Unset): `to_amount` and `fee_amount` edit the amounts of a transfer (either leg's id):
+            with either of them the request reads like a transfer create — amount is the total that leaves the source
+            account (fee included, default: the current one), to_amount what arrives, fee_amount the fee in the source
+            currency (0 removes it). Absent fields keep their current value; a same-currency to_amount below amount books
+            the difference as the fee. The fee expense is created, changed or removed to match. Rejected on transactions
+            that are not transfer legs. Without either of them amount is the edited leg's own amount.
         transaction_date (datetime.datetime | None | Unset):
     """
 
@@ -85,6 +95,9 @@ class UpdateTransactionRequest:
     note: None | str | Unset = UNSET
     original_amount: None | Decimal | Unset = UNSET
     original_currency: None | str | Unset = UNSET
+    place: CreatePlaceRequest | Unset = UNSET
+    place_id: None | str | Unset = UNSET
+    place_source: None | Unset | UpdateTransactionRequestPlaceSourceType0 = UNSET
     status: TransactionStatus | Unset = UNSET
     tag_ids: list[str] | None | Unset = UNSET
     to_amount: None | Decimal | Unset = UNSET
@@ -92,6 +105,8 @@ class UpdateTransactionRequest:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.create_place_request import CreatePlaceRequest  # noqa: PLC0415
+
         account_id: None | str | Unset
         if isinstance(self.account_id, Unset):
             account_id = UNSET
@@ -176,6 +191,24 @@ class UpdateTransactionRequest:
         else:
             original_currency = self.original_currency
 
+        place: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.place, Unset):
+            place = self.place.to_dict()
+
+        place_id: None | str | Unset
+        if isinstance(self.place_id, Unset):
+            place_id = UNSET
+        else:
+            place_id = self.place_id
+
+        place_source: None | str | Unset
+        if isinstance(self.place_source, Unset):
+            place_source = UNSET
+        elif isinstance(self.place_source, str):
+            place_source = self.place_source
+        else:
+            place_source = self.place_source
+
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status
@@ -234,6 +267,12 @@ class UpdateTransactionRequest:
             field_dict["original_amount"] = original_amount
         if original_currency is not UNSET:
             field_dict["original_currency"] = original_currency
+        if place is not UNSET:
+            field_dict["place"] = place
+        if place_id is not UNSET:
+            field_dict["place_id"] = place_id
+        if place_source is not UNSET:
+            field_dict["place_source"] = place_source
         if status is not UNSET:
             field_dict["status"] = status
         if tag_ids is not UNSET:
@@ -247,6 +286,8 @@ class UpdateTransactionRequest:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.create_place_request import CreatePlaceRequest  # noqa: PLC0415
+
         d = dict(src_dict)
 
         def _parse_account_id(data: object) -> None | str | Unset:
@@ -375,6 +416,39 @@ class UpdateTransactionRequest:
 
         original_currency = _parse_original_currency(d.pop("original_currency", UNSET))
 
+        _place = d.pop("place", UNSET)
+        place: CreatePlaceRequest | Unset
+        if isinstance(_place, Unset):
+            place = UNSET
+        else:
+            place = CreatePlaceRequest.from_dict(_place)
+
+        def _parse_place_id(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        place_id = _parse_place_id(d.pop("place_id", UNSET))
+
+        def _parse_place_source(data: object) -> None | Unset | UpdateTransactionRequestPlaceSourceType0:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                place_source_type_0 = check_update_transaction_request_place_source_type_0(data)
+
+                return place_source_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | Unset | UpdateTransactionRequestPlaceSourceType0, data)
+
+        place_source = _parse_place_source(d.pop("place_source", UNSET))
+
         _status = d.pop("status", UNSET)
         status: TransactionStatus | Unset
         if isinstance(_status, Unset):
@@ -440,6 +514,9 @@ class UpdateTransactionRequest:
             note=note,
             original_amount=original_amount,
             original_currency=original_currency,
+            place=place,
+            place_id=place_id,
+            place_source=place_source,
             status=status,
             tag_ids=tag_ids,
             to_amount=to_amount,

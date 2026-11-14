@@ -11,6 +11,8 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
+from ..models.create_transaction_request_place_source import check_create_transaction_request_place_source
+from ..models.create_transaction_request_place_source import CreateTransactionRequestPlaceSource
 from ..models.transaction_status import check_transaction_status
 from ..models.transaction_status import TransactionStatus
 from ..models.transactions_transaction_type import check_transactions_transaction_type
@@ -20,7 +22,9 @@ from typing import cast
 import datetime
 
 if TYPE_CHECKING:
+    from ..models.create_place_request import CreatePlaceRequest
     from ..models.create_transaction_request_provider_data import CreateTransactionRequestProviderData
+    from ..models.recurring_occurrence_ref import RecurringOccurrenceRef
 
 
 T = TypeVar("T", bound="CreateTransactionRequest")
@@ -46,12 +50,18 @@ class CreateTransactionRequest:
         original_amount (Decimal | Unset): Decimal number encoded as a string (for example "1234.5600"); never a JSON
             number.
         original_currency (str | Unset):
+        place (CreatePlaceRequest | Unset):
+        place_id (str | Unset): A place of the space, or Place a choice to store with the row in the same database
+            transaction. `place_source` says how the row got it: device, picked, receipt, merchant (approximate) or ai.
+            Ignored while places are off (feature_flags.places).
+        place_source (CreateTransactionRequestPlaceSource | Unset):
         portfolio_activity_id (str | Unset): Used by the Degroshi apps; leave it out.
         post_date (datetime.datetime | Unset):
         project_id (str | Unset): A project of the business space; 422 TXN_PROJECT_INVALID otherwise.
         provider_data (CreateTransactionRequestProviderData | Unset):
         provider_ref (str | Unset):
         provider_type (str | Unset):
+        recurring_occurrence (RecurringOccurrenceRef | Unset):
         status (TransactionStatus | Unset):
         tag_ids (list[str] | Unset): Tags of the space to put on the row.
     """
@@ -70,18 +80,24 @@ class CreateTransactionRequest:
     note: str | Unset = UNSET
     original_amount: Decimal | Unset = UNSET
     original_currency: str | Unset = UNSET
+    place: CreatePlaceRequest | Unset = UNSET
+    place_id: str | Unset = UNSET
+    place_source: CreateTransactionRequestPlaceSource | Unset = UNSET
     portfolio_activity_id: str | Unset = UNSET
     post_date: datetime.datetime | Unset = UNSET
     project_id: str | Unset = UNSET
     provider_data: CreateTransactionRequestProviderData | Unset = UNSET
     provider_ref: str | Unset = UNSET
     provider_type: str | Unset = UNSET
+    recurring_occurrence: RecurringOccurrenceRef | Unset = UNSET
     status: TransactionStatus | Unset = UNSET
     tag_ids: list[str] | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        from ..models.create_place_request import CreatePlaceRequest  # noqa: PLC0415
         from ..models.create_transaction_request_provider_data import CreateTransactionRequestProviderData  # noqa: PLC0415
+        from ..models.recurring_occurrence_ref import RecurringOccurrenceRef  # noqa: PLC0415
 
         account_id = self.account_id
 
@@ -111,6 +127,16 @@ class CreateTransactionRequest:
 
         original_currency = self.original_currency
 
+        place: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.place, Unset):
+            place = self.place.to_dict()
+
+        place_id = self.place_id
+
+        place_source: str | Unset = UNSET
+        if not isinstance(self.place_source, Unset):
+            place_source = self.place_source
+
         portfolio_activity_id = self.portfolio_activity_id
 
         post_date: str | Unset = UNSET
@@ -126,6 +152,10 @@ class CreateTransactionRequest:
         provider_ref = self.provider_ref
 
         provider_type = self.provider_type
+
+        recurring_occurrence: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.recurring_occurrence, Unset):
+            recurring_occurrence = self.recurring_occurrence.to_dict()
 
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
@@ -165,6 +195,12 @@ class CreateTransactionRequest:
             field_dict["original_amount"] = original_amount
         if original_currency is not UNSET:
             field_dict["original_currency"] = original_currency
+        if place is not UNSET:
+            field_dict["place"] = place
+        if place_id is not UNSET:
+            field_dict["place_id"] = place_id
+        if place_source is not UNSET:
+            field_dict["place_source"] = place_source
         if portfolio_activity_id is not UNSET:
             field_dict["portfolio_activity_id"] = portfolio_activity_id
         if post_date is not UNSET:
@@ -177,6 +213,8 @@ class CreateTransactionRequest:
             field_dict["provider_ref"] = provider_ref
         if provider_type is not UNSET:
             field_dict["provider_type"] = provider_type
+        if recurring_occurrence is not UNSET:
+            field_dict["recurring_occurrence"] = recurring_occurrence
         if status is not UNSET:
             field_dict["status"] = status
         if tag_ids is not UNSET:
@@ -186,7 +224,9 @@ class CreateTransactionRequest:
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
+        from ..models.create_place_request import CreatePlaceRequest  # noqa: PLC0415
         from ..models.create_transaction_request_provider_data import CreateTransactionRequestProviderData  # noqa: PLC0415
+        from ..models.recurring_occurrence_ref import RecurringOccurrenceRef  # noqa: PLC0415
 
         d = dict(src_dict)
         account_id = d.pop("account_id")
@@ -217,6 +257,22 @@ class CreateTransactionRequest:
 
         original_currency = d.pop("original_currency", UNSET)
 
+        _place = d.pop("place", UNSET)
+        place: CreatePlaceRequest | Unset
+        if isinstance(_place, Unset):
+            place = UNSET
+        else:
+            place = CreatePlaceRequest.from_dict(_place)
+
+        place_id = d.pop("place_id", UNSET)
+
+        _place_source = d.pop("place_source", UNSET)
+        place_source: CreateTransactionRequestPlaceSource | Unset
+        if isinstance(_place_source, Unset):
+            place_source = UNSET
+        else:
+            place_source = check_create_transaction_request_place_source(_place_source)
+
         portfolio_activity_id = d.pop("portfolio_activity_id", UNSET)
 
         _post_date = d.pop("post_date", UNSET)
@@ -238,6 +294,13 @@ class CreateTransactionRequest:
         provider_ref = d.pop("provider_ref", UNSET)
 
         provider_type = d.pop("provider_type", UNSET)
+
+        _recurring_occurrence = d.pop("recurring_occurrence", UNSET)
+        recurring_occurrence: RecurringOccurrenceRef | Unset
+        if isinstance(_recurring_occurrence, Unset):
+            recurring_occurrence = UNSET
+        else:
+            recurring_occurrence = RecurringOccurrenceRef.from_dict(_recurring_occurrence)
 
         _status = d.pop("status", UNSET)
         status: TransactionStatus | Unset
@@ -263,12 +326,16 @@ class CreateTransactionRequest:
             note=note,
             original_amount=original_amount,
             original_currency=original_currency,
+            place=place,
+            place_id=place_id,
+            place_source=place_source,
             portfolio_activity_id=portfolio_activity_id,
             post_date=post_date,
             project_id=project_id,
             provider_data=provider_data,
             provider_ref=provider_ref,
             provider_type=provider_type,
+            recurring_occurrence=recurring_occurrence,
             status=status,
             tag_ids=tag_ids,
         )

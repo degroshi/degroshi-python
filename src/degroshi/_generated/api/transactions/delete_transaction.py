@@ -61,6 +61,11 @@ def _parse_response(
 
         return response_412
 
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -87,7 +92,7 @@ def sync_detailed(
 ) -> Response[DeleteDataEnvelope | ErrorResponse]:
     """Delete transaction
 
-     Delete a transaction and reverse its balance effect (needs the «Повний доступ» token, scope
+     Delete a transaction and reverse its balance effect (needs the “Full access” token, scope
     `transactions:write`). Deleting one leg of a transfer deletes both legs; deleting a split deletes
     its parts, and a single part can't be deleted (TXN_047). A repeated delete answers 404. With `If-
     Match: "<version>"` the delete applies only when the row still has that version.
@@ -127,7 +132,7 @@ def sync(
 ) -> DeleteDataEnvelope | ErrorResponse | None:
     """Delete transaction
 
-     Delete a transaction and reverse its balance effect (needs the «Повний доступ» token, scope
+     Delete a transaction and reverse its balance effect (needs the “Full access” token, scope
     `transactions:write`). Deleting one leg of a transfer deletes both legs; deleting a split deletes
     its parts, and a single part can't be deleted (TXN_047). A repeated delete answers 404. With `If-
     Match: "<version>"` the delete applies only when the row still has that version.
@@ -162,7 +167,7 @@ async def asyncio_detailed(
 ) -> Response[DeleteDataEnvelope | ErrorResponse]:
     """Delete transaction
 
-     Delete a transaction and reverse its balance effect (needs the «Повний доступ» token, scope
+     Delete a transaction and reverse its balance effect (needs the “Full access” token, scope
     `transactions:write`). Deleting one leg of a transfer deletes both legs; deleting a split deletes
     its parts, and a single part can't be deleted (TXN_047). A repeated delete answers 404. With `If-
     Match: "<version>"` the delete applies only when the row still has that version.
@@ -200,7 +205,7 @@ async def asyncio(
 ) -> DeleteDataEnvelope | ErrorResponse | None:
     """Delete transaction
 
-     Delete a transaction and reverse its balance effect (needs the «Повний доступ» token, scope
+     Delete a transaction and reverse its balance effect (needs the “Full access” token, scope
     `transactions:write`). Deleting one leg of a transfer deletes both legs; deleting a split deletes
     its parts, and a single part can't be deleted (TXN_047). A repeated delete answers 404. With `If-
     Match: "<version>"` the delete applies only when the row still has that version.

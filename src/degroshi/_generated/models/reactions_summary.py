@@ -22,7 +22,7 @@ class ReactionsSummary:
     """
     Attributes:
         comments (int): How many comments it has.
-        open_question (bool): OpenQuestion: the latest question glyph has no comment from another member after it.
+        open_question (bool): The latest question glyph has no comment from another member after it.
         glyph (None | ReactionsSummaryGlyphType0 | Unset): The latest reaction by anyone; omitted without one.
     """
 

@@ -29,27 +29,26 @@ class Category:
         id (str):
         is_default (bool):
         name (str): The display name in the request language (Accept-Language, else the user's saved language, else uk).
-            A built-in category that still has its seed name is translated ("Продукти" / "Groceries"); custom and renamed
+            A built-in category that still has its seed name is translated ("Groceries" in English); custom and renamed
             categories are returned as stored.
         space_id (str):
         type_ (CategoryType):
         updated_at (datetime.datetime):
-        business_space_id (None | str | Unset): Marks the subcategory of a business under «Дохід» in its owner's
-            personal space: the owner's money from that business lands here. Renaming or moving it keeps the link.
+        business_space_id (None | str | Unset): `business_space_id` marks the subcategory of a business under “Income”
+            in its owner's personal space: the owner's money from that business lands here. Renaming or moving it keeps the
+            link.
         children (list[Category] | None | Unset):
         color (None | str | Unset):
         depth (int | None | Unset):
         emoji (None | str | Unset): A single emoji for the category (native clients' icon set). Default categories get
             one from the seed; custom ones may have none.
-        icon (None | str | Unset): The category's icon: a free Hugeicons slug from the brand category icon set
-            (Packages/brand/icons.json), e.g. "shopping-cart-01". Omitted when the category has none (clients draw
-            "tag-01").
+        icon (None | str | Unset): The category's icon: a free Hugeicons slug from the brand category icon set, e.g.
+            "shopping-cart-01". Omitted when the category has none (clients draw "tag-01").
         parent_id (None | str | Unset):
-        spending_kind (CategorySpendingKindType0 | None | Unset): Subscription («Підписки») or mandatory
-            («Обов’язкові»); omitted for any other category. The calendar's filter chips and the yearly subscriptions sum
-            read it.
-        system_key (None | str | Unset): Identifies a built-in (seeded) category, e.g. "food.groceries"; stable across
-            languages and renames. Omitted for custom categories.
+        spending_kind (CategorySpendingKindType0 | None | Unset): Subscription or mandatory; omitted for any other
+            category. The calendar's filter chips and the yearly subscriptions sum read it.
+        system_key (None | str | Unset): `system_key` identifies a built-in (seeded) category, e.g. "food.groceries";
+            stable across languages and renames. Omitted for custom categories.
         version (int | None | Unset): The row version (also the ETag): send it as If-Match on PATCH / DELETE to detect
             concurrent edits (412).
     """

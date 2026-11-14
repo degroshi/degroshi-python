@@ -1,8 +1,9 @@
 from typing import Literal
 
-OccurrenceStatus = Literal["missing", "paid", "paused", "planned", "skipped"]
+OccurrenceStatus = Literal["awaiting_confirmation", "missing", "paid", "paused", "planned", "skipped"]
 
 OCCURRENCE_STATUS_VALUES: set[OccurrenceStatus] = {
+    "awaiting_confirmation",
     "missing",
     "paid",
     "paused",

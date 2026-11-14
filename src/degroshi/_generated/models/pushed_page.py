@@ -23,7 +23,7 @@ class PushedPage:
     """
     Attributes:
         items (list[PushedRow] | None | Unset):
-        next_cursor (None | str | Unset): Fetches the next (older) page; absent on the last one.
+        next_cursor (None | str | Unset): `next_cursor` fetches the next (older) page; absent on the last one.
     """
 
     items: list[PushedRow] | None | Unset = UNSET

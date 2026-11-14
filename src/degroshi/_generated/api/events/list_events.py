@@ -83,6 +83,11 @@ def _parse_response(
 
         return response_403
 
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
+
     if client.raise_on_unexpected_status:
         raise errors.UnexpectedStatus(response.status_code, response.content)
     else:
@@ -111,13 +116,14 @@ def sync_detailed(
 ) -> Response[ErrorResponse | EventListPageEnvelope]:
     """List events
 
-     The space's events of the last 30 days, newest first, as webhook endpoints receive them. Events
-    exist only in spaces with a webhook endpoint, from the first one's creation. Any read scope opens
-    this route, and each event type needs the scope that reads its object: `transactions:read` for
-    `transaction.*`, `transactions.bulk_updated` and `import.completed`, `accounts:read` for
-    `account.balance.updated` and `connection.status_changed`, `budgets:read` and `recurring:read` for
-    their events. Filter with `type` and `created_gte`; `meta.has_more` says older events follow, so
-    pass the last `id` as `starting_after`.
+     The space's events of the last 30 days, newest first, as webhook endpoints receive them. A space
+    records events from its first personal access token or webhook endpoint: every type while an active
+    token is bound to it, otherwise the types its endpoints take. Any read scope opens this route, and
+    each event type needs the scope that reads its object: `transactions:read` for `transaction.*`,
+    `transactions.bulk_updated` and `import.completed`, `accounts:read` for `account.balance.updated`
+    and `connection.status_changed`, `budgets:read` and `recurring:read` for their events. Filter with
+    `type` and `created_gte`; `meta.has_more` says older events follow, so pass the last `id` as
+    `starting_after`.
 
     Args:
         type_ (list[str] | Unset):
@@ -160,13 +166,14 @@ def sync(
 ) -> ErrorResponse | EventListPageEnvelope | None:
     """List events
 
-     The space's events of the last 30 days, newest first, as webhook endpoints receive them. Events
-    exist only in spaces with a webhook endpoint, from the first one's creation. Any read scope opens
-    this route, and each event type needs the scope that reads its object: `transactions:read` for
-    `transaction.*`, `transactions.bulk_updated` and `import.completed`, `accounts:read` for
-    `account.balance.updated` and `connection.status_changed`, `budgets:read` and `recurring:read` for
-    their events. Filter with `type` and `created_gte`; `meta.has_more` says older events follow, so
-    pass the last `id` as `starting_after`.
+     The space's events of the last 30 days, newest first, as webhook endpoints receive them. A space
+    records events from its first personal access token or webhook endpoint: every type while an active
+    token is bound to it, otherwise the types its endpoints take. Any read scope opens this route, and
+    each event type needs the scope that reads its object: `transactions:read` for `transaction.*`,
+    `transactions.bulk_updated` and `import.completed`, `accounts:read` for `account.balance.updated`
+    and `connection.status_changed`, `budgets:read` and `recurring:read` for their events. Filter with
+    `type` and `created_gte`; `meta.has_more` says older events follow, so pass the last `id` as
+    `starting_after`.
 
     Args:
         type_ (list[str] | Unset):
@@ -204,13 +211,14 @@ async def asyncio_detailed(
 ) -> Response[ErrorResponse | EventListPageEnvelope]:
     """List events
 
-     The space's events of the last 30 days, newest first, as webhook endpoints receive them. Events
-    exist only in spaces with a webhook endpoint, from the first one's creation. Any read scope opens
-    this route, and each event type needs the scope that reads its object: `transactions:read` for
-    `transaction.*`, `transactions.bulk_updated` and `import.completed`, `accounts:read` for
-    `account.balance.updated` and `connection.status_changed`, `budgets:read` and `recurring:read` for
-    their events. Filter with `type` and `created_gte`; `meta.has_more` says older events follow, so
-    pass the last `id` as `starting_after`.
+     The space's events of the last 30 days, newest first, as webhook endpoints receive them. A space
+    records events from its first personal access token or webhook endpoint: every type while an active
+    token is bound to it, otherwise the types its endpoints take. Any read scope opens this route, and
+    each event type needs the scope that reads its object: `transactions:read` for `transaction.*`,
+    `transactions.bulk_updated` and `import.completed`, `accounts:read` for `account.balance.updated`
+    and `connection.status_changed`, `budgets:read` and `recurring:read` for their events. Filter with
+    `type` and `created_gte`; `meta.has_more` says older events follow, so pass the last `id` as
+    `starting_after`.
 
     Args:
         type_ (list[str] | Unset):
@@ -251,13 +259,14 @@ async def asyncio(
 ) -> ErrorResponse | EventListPageEnvelope | None:
     """List events
 
-     The space's events of the last 30 days, newest first, as webhook endpoints receive them. Events
-    exist only in spaces with a webhook endpoint, from the first one's creation. Any read scope opens
-    this route, and each event type needs the scope that reads its object: `transactions:read` for
-    `transaction.*`, `transactions.bulk_updated` and `import.completed`, `accounts:read` for
-    `account.balance.updated` and `connection.status_changed`, `budgets:read` and `recurring:read` for
-    their events. Filter with `type` and `created_gte`; `meta.has_more` says older events follow, so
-    pass the last `id` as `starting_after`.
+     The space's events of the last 30 days, newest first, as webhook endpoints receive them. A space
+    records events from its first personal access token or webhook endpoint: every type while an active
+    token is bound to it, otherwise the types its endpoints take. Any read scope opens this route, and
+    each event type needs the scope that reads its object: `transactions:read` for `transaction.*`,
+    `transactions.bulk_updated` and `import.completed`, `accounts:read` for `account.balance.updated`
+    and `connection.status_changed`, `budgets:read` and `recurring:read` for their events. Filter with
+    `type` and `created_gte`; `meta.has_more` says older events follow, so pass the last `id` as
+    `starting_after`.
 
     Args:
         type_ (list[str] | Unset):

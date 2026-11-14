@@ -10,6 +10,8 @@ from ..types import UNSET, Unset
 
 from ..models.transaction_response_kind_type_0 import check_transaction_response_kind_type_0
 from ..models.transaction_response_kind_type_0 import TransactionResponseKindType0
+from ..models.transaction_response_place_source_type_0 import check_transaction_response_place_source_type_0
+from ..models.transaction_response_place_source_type_0 import TransactionResponsePlaceSourceType0
 from ..models.transaction_response_uah_status_type_0 import check_transaction_response_uah_status_type_0
 from ..models.transaction_response_uah_status_type_0 import TransactionResponseUahStatusType0
 from ..models.transaction_status import check_transaction_status
@@ -26,10 +28,12 @@ import datetime
 if TYPE_CHECKING:
     from ..models.brand_response import BrandResponse
     from ..models.category_review import CategoryReview
+    from ..models.linked_activity_response import LinkedActivityResponse
     from ..models.reactions_summary import ReactionsSummary
     from ..models.transaction_external_data_response import TransactionExternalDataResponse
     from ..models.transaction_financials_response import TransactionFinancialsResponse
     from ..models.transaction_metadata_response import TransactionMetadataResponse
+    from ..models.transaction_place import TransactionPlace
     from ..models.transaction_relationships_response import TransactionRelationshipsResponse
     from ..models.transaction_response import TransactionResponse
     from ..models.transaction_tag import TransactionTag
@@ -68,68 +72,78 @@ class TransactionUpdatedEventDataObject:
         category_emoji (None | str | Unset): The category's emoji (native clients' icon set).
         category_icon (None | str | Unset): The category's icon, a slug from the category icon set.
         category_id (None | str | Unset):
-        category_is_transfer (bool | None | Unset): CategoryIsTransfer: the category is a transfer category («Перекази»
-            and its children, or a custom one of type transfer), so the row counts as neither income nor spending, linked or
-            not (pkg/moneyflow). Absent when false.
+        category_is_transfer (bool | None | Unset): The category is a transfer category (“Transfers” and its children,
+            or a custom one of type transfer), so the row counts as neither income nor spending, linked or not. Absent when
+            false.
         category_name (None | str | Unset): The category's display name in the request language: built-in categories
-            that keep their seed name are translated ("Продукти" / "Groceries"), custom and renamed ones are as stored.
+            that keep their seed name are translated ("Groceries" in English), custom and renamed ones are as stored.
         category_review (CategoryReview | None | Unset): How the background categorizer chose the row's category, when
             it did. Its needs_review is deprecated and always false.
-        counterpart_account_id (None | str | Unset): And CounterpartAccountName are the account of the other leg of a
-            transfer ("Wise → PrivatBank"); omitted otherwise.
+        counterpart_account_id (None | str | Unset): `counterpart_account_id` and `counterpart_account_name` are the
+            account of the other leg of a transfer ("Wise → PrivatBank"); omitted otherwise.
         counterpart_account_name (None | str | Unset):
-        counterpart_hidden (bool | None | Unset): Marks a transfer leg whose other side is on an account the caller
-            can't see: clients show "Other account", and linked_transfer_id, counterpart_account_* and fee_transaction_id
-            (when the fee is on that account) are omitted. direction stays transfer_in/transfer_out. Also true on a leg of a
-            cross-space transfer: its other leg lives in another space (counterpart_space).
-        counterpart_space (None | str | Unset): Names the other leg's space of a cross-space transfer: its name, or
-            "Інший простір" / "Other space" when the caller is not a member of it or can't see its account
-            (counterpart_space_hidden). counterpart_space_id, counterpart_account_* and counterpart_transaction_id are set
-            only when the caller can see it.
+        counterpart_hidden (bool | None | Unset): `counterpart_hidden` marks a transfer leg whose other side is on an
+            account the caller can't see: clients show "Other account", and linked_transfer_id, counterpart_account_* and
+            fee_transaction_id (when the fee is on that account) are omitted. direction stays transfer_in/transfer_out. Also
+            true on a leg of a cross-space transfer: its other leg lives in another space (counterpart_space).
+        counterpart_space (None | str | Unset): `counterpart_space` names the other leg's space of a cross-space
+            transfer: its name, or "Other space" (in the request language) when the caller is not a member of it or can't
+            see its account (counterpart_space_hidden). counterpart_space_id, counterpart_account_* and
+            counterpart_transaction_id are set only when the caller can see it.
         counterpart_space_hidden (bool | None | Unset):
         counterpart_space_id (None | str | Unset):
         counterpart_transaction_id (None | str | Unset): The other leg of a cross-space transfer, in
             counterpart_space_id: switch to that space (X-Space-ID) to open it. Set only when the caller is a member there
             and can see its account.
         counterparty_id (None | str | Unset): The business counterparty the row is linked to; omitted when it has none.
-        counts_as_income (bool | None | Unset): Marks the personal leg of a cross-space transfer between a business and
-            its owner's personal space: still a transfer, with the business's subcategory under «Дохід», and counted in this
-            space's income: an incoming leg adds its amount, an outgoing one (a top-up of the business) subtracts it; never
-            in spending.
+        counts_as_income (bool | None | Unset): `counts_as_income` marks the personal leg of a cross-space transfer
+            between a business and its owner's personal space: still a transfer, with the business's subcategory under
+            “Income”, and counted in this space's income: an incoming leg adds its amount, an outgoing one (a top-up of the
+            business) subtracts it; never in spending.
         created_by (None | str | Unset): The user id of the space member who added the row: a manual entry, transfer,
             split part, statement import, Suricate action or recurring posting. Omitted for bank, wallet and exchange
             imports and for rows whose author was never recorded.
         created_by_name (None | str | Unset): The author's first name (else the local part of their email), also for
             members who have left the space; omitted with created_by.
-        cross_space_transfer_id (None | str | Unset): Marks a leg of a cross-space transfer (money moved between two
-            linked spaces of the same owner, e.g. a personal card and a ФОП account): both legs carry it.
+        cross_space_transfer_id (None | str | Unset): `cross_space_transfer_id` marks a leg of a cross-space transfer
+            (money moved between two linked spaces of the same owner, e.g. a personal card and a sole proprietor's account):
+            both legs carry it.
         exchange_rate (None | str | Unset): Decimal number encoded as a string (for example "1234.5600"); never a JSON
             number.
-        fee_for_transfer_id (None | str | Unset): Marks a transfer fee: the id of the transfer's outgoing leg (the
-            transfer's id). Omitted for other transactions.
+        fee_for_transfer_id (None | str | Unset): `fee_for_transfer_id` marks a transfer fee: the id of the transfer's
+            outgoing leg (the transfer's id). Omitted for other transactions.
         fee_transaction_id (None | str | Unset): The fee expense booked with this transfer (on the source account), on
             both legs; omitted when the transfer has no fee.
         kind (None | TransactionResponseKindType0 | Unset): "portfolio_transfer" for a transfer between two of the
-            space's portfolio accounts (include_portfolio_transfers): its other fields are a list row's, PortfolioTransfer
-            carries the transfer, and it is read-only. Absent on a transaction.
+            space's portfolio accounts (include_portfolio_transfers): its other fields are a list row's,
+            `portfolio_transfer` carries the transfer, and it is read-only. Absent on a transaction.
+        linked_activity (LinkedActivityResponse | None | Unset): The wallet or exchange activity it was recorded from:
+            network, hash with its explorer link, what moved and the fee. Omitted when it wasn't recorded from one the
+            caller can see.
         linked_transfer_id (None | str | Unset):
         merchant (None | str | Unset):
         merchant_brand (BrandResponse | None | Unset):
-        not_income (bool | None | Unset): Marks money coming in that is the person's own: left out of income, budgets
-            and recaps, still in the account's balance. Omitted when false.
+        not_income (bool | None | Unset): `not_income` marks money coming in that is the person's own: left out of
+            income, budgets and recaps, still in the account's balance. Omitted when false.
         note (None | str | Unset):
         original_amount (None | str | Unset): Decimal number encoded as a string (for example "1234.5600"); never a JSON
             number.
         original_currency (None | str | Unset):
         parent_id (None | str | Unset):
+        place (None | TransactionPlace | Unset):
+        place_id (None | str | Unset): `place_id`, `place_source` and Place are where the row happened: the place in the
+            requester's language, as they may see it (another member's pin is its city); is_approximate for a place derived
+            from a bank or CSV row. Omitted when none.
+        place_source (None | TransactionResponsePlaceSourceType0 | Unset):
         portfolio_transfer (None | TransferResponse | Unset): The transfer of a row of kind "portfolio_transfer".
         project_id (None | str | Unset): The business project of the row or split part; omitted when it has none.
         reactions (None | ReactionsSummary | Unset): The badge of its reactions and comments in a shared space; omitted
             when it has neither.
-        read_only (bool | None | Unset): Marks a row nothing may edit, delete or record (a portfolio transfer).
+        read_only (bool | None | Unset): `read_only` marks a row nothing may edit, delete or record (a portfolio
+            transfer).
         recurring_rule_id (None | str | Unset): The recurring rule whose occurrence this row settles; omitted when none.
-        service_period_from (datetime.date | None | Unset): And ServicePeriodTo are the period a business operation pays
-            for: the accrual P&L spreads it over these days.
+        service_period_from (datetime.date | None | Unset): `service_period_from` and `service_period_to` are the period
+            a business operation pays for: the accrual P&L spreads it over these days.
         service_period_to (datetime.date | None | Unset):
         splits (list[TransactionResponse] | None | Unset):
         tags (list[TransactionTag] | None | Unset): The transaction's tags, by name; omitted when it has none.
@@ -194,6 +208,7 @@ class TransactionUpdatedEventDataObject:
     fee_for_transfer_id: None | str | Unset = UNSET
     fee_transaction_id: None | str | Unset = UNSET
     kind: None | TransactionResponseKindType0 | Unset = UNSET
+    linked_activity: LinkedActivityResponse | None | Unset = UNSET
     linked_transfer_id: None | str | Unset = UNSET
     merchant: None | str | Unset = UNSET
     merchant_brand: BrandResponse | None | Unset = UNSET
@@ -202,6 +217,9 @@ class TransactionUpdatedEventDataObject:
     original_amount: None | str | Unset = UNSET
     original_currency: None | str | Unset = UNSET
     parent_id: None | str | Unset = UNSET
+    place: None | TransactionPlace | Unset = UNSET
+    place_id: None | str | Unset = UNSET
+    place_source: None | TransactionResponsePlaceSourceType0 | Unset = UNSET
     portfolio_transfer: None | TransferResponse | Unset = UNSET
     project_id: None | str | Unset = UNSET
     reactions: None | ReactionsSummary | Unset = UNSET
@@ -223,10 +241,12 @@ class TransactionUpdatedEventDataObject:
     def to_dict(self) -> dict[str, Any]:
         from ..models.brand_response import BrandResponse  # noqa: PLC0415
         from ..models.category_review import CategoryReview  # noqa: PLC0415
+        from ..models.linked_activity_response import LinkedActivityResponse  # noqa: PLC0415
         from ..models.reactions_summary import ReactionsSummary  # noqa: PLC0415
         from ..models.transaction_external_data_response import TransactionExternalDataResponse  # noqa: PLC0415
         from ..models.transaction_financials_response import TransactionFinancialsResponse  # noqa: PLC0415
         from ..models.transaction_metadata_response import TransactionMetadataResponse  # noqa: PLC0415
+        from ..models.transaction_place import TransactionPlace  # noqa: PLC0415
         from ..models.transaction_relationships_response import TransactionRelationshipsResponse  # noqa: PLC0415
         from ..models.transaction_response import TransactionResponse  # noqa: PLC0415
         from ..models.transaction_tag import TransactionTag  # noqa: PLC0415
@@ -414,6 +434,14 @@ class TransactionUpdatedEventDataObject:
         else:
             kind = self.kind
 
+        linked_activity: dict[str, Any] | None | Unset
+        if isinstance(self.linked_activity, Unset):
+            linked_activity = UNSET
+        elif isinstance(self.linked_activity, LinkedActivityResponse):
+            linked_activity = self.linked_activity.to_dict()
+        else:
+            linked_activity = self.linked_activity
+
         linked_transfer_id: None | str | Unset
         if isinstance(self.linked_transfer_id, Unset):
             linked_transfer_id = UNSET
@@ -463,6 +491,28 @@ class TransactionUpdatedEventDataObject:
             parent_id = UNSET
         else:
             parent_id = self.parent_id
+
+        place: dict[str, Any] | None | Unset
+        if isinstance(self.place, Unset):
+            place = UNSET
+        elif isinstance(self.place, TransactionPlace):
+            place = self.place.to_dict()
+        else:
+            place = self.place
+
+        place_id: None | str | Unset
+        if isinstance(self.place_id, Unset):
+            place_id = UNSET
+        else:
+            place_id = self.place_id
+
+        place_source: None | str | Unset
+        if isinstance(self.place_source, Unset):
+            place_source = UNSET
+        elif isinstance(self.place_source, str):
+            place_source = self.place_source
+        else:
+            place_source = self.place_source
 
         portfolio_transfer: dict[str, Any] | None | Unset
         if isinstance(self.portfolio_transfer, Unset):
@@ -653,6 +703,8 @@ class TransactionUpdatedEventDataObject:
             field_dict["fee_transaction_id"] = fee_transaction_id
         if kind is not UNSET:
             field_dict["kind"] = kind
+        if linked_activity is not UNSET:
+            field_dict["linked_activity"] = linked_activity
         if linked_transfer_id is not UNSET:
             field_dict["linked_transfer_id"] = linked_transfer_id
         if merchant is not UNSET:
@@ -669,6 +721,12 @@ class TransactionUpdatedEventDataObject:
             field_dict["original_currency"] = original_currency
         if parent_id is not UNSET:
             field_dict["parent_id"] = parent_id
+        if place is not UNSET:
+            field_dict["place"] = place
+        if place_id is not UNSET:
+            field_dict["place_id"] = place_id
+        if place_source is not UNSET:
+            field_dict["place_source"] = place_source
         if portfolio_transfer is not UNSET:
             field_dict["portfolio_transfer"] = portfolio_transfer
         if project_id is not UNSET:
@@ -708,10 +766,12 @@ class TransactionUpdatedEventDataObject:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.brand_response import BrandResponse  # noqa: PLC0415
         from ..models.category_review import CategoryReview  # noqa: PLC0415
+        from ..models.linked_activity_response import LinkedActivityResponse  # noqa: PLC0415
         from ..models.reactions_summary import ReactionsSummary  # noqa: PLC0415
         from ..models.transaction_external_data_response import TransactionExternalDataResponse  # noqa: PLC0415
         from ..models.transaction_financials_response import TransactionFinancialsResponse  # noqa: PLC0415
         from ..models.transaction_metadata_response import TransactionMetadataResponse  # noqa: PLC0415
+        from ..models.transaction_place import TransactionPlace  # noqa: PLC0415
         from ..models.transaction_relationships_response import TransactionRelationshipsResponse  # noqa: PLC0415
         from ..models.transaction_response import TransactionResponse  # noqa: PLC0415
         from ..models.transaction_tag import TransactionTag  # noqa: PLC0415
@@ -981,6 +1041,23 @@ class TransactionUpdatedEventDataObject:
 
         kind = _parse_kind(d.pop("kind", UNSET))
 
+        def _parse_linked_activity(data: object) -> LinkedActivityResponse | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                linked_activity_type_0 = LinkedActivityResponse.from_dict(data)
+
+                return linked_activity_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(LinkedActivityResponse | None | Unset, data)
+
+        linked_activity = _parse_linked_activity(d.pop("linked_activity", UNSET))
+
         def _parse_linked_transfer_id(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -1060,6 +1137,49 @@ class TransactionUpdatedEventDataObject:
             return cast(None | str | Unset, data)
 
         parent_id = _parse_parent_id(d.pop("parent_id", UNSET))
+
+        def _parse_place(data: object) -> None | TransactionPlace | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                place_type_0 = TransactionPlace.from_dict(data)
+
+                return place_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | TransactionPlace | Unset, data)
+
+        place = _parse_place(d.pop("place", UNSET))
+
+        def _parse_place_id(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        place_id = _parse_place_id(d.pop("place_id", UNSET))
+
+        def _parse_place_source(data: object) -> None | TransactionResponsePlaceSourceType0 | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                place_source_type_0 = check_transaction_response_place_source_type_0(data)
+
+                return place_source_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | TransactionResponsePlaceSourceType0 | Unset, data)
+
+        place_source = _parse_place_source(d.pop("place_source", UNSET))
 
         def _parse_portfolio_transfer(data: object) -> None | TransferResponse | Unset:
             if data is None:
@@ -1325,6 +1445,7 @@ class TransactionUpdatedEventDataObject:
             fee_for_transfer_id=fee_for_transfer_id,
             fee_transaction_id=fee_transaction_id,
             kind=kind,
+            linked_activity=linked_activity,
             linked_transfer_id=linked_transfer_id,
             merchant=merchant,
             merchant_brand=merchant_brand,
@@ -1333,6 +1454,9 @@ class TransactionUpdatedEventDataObject:
             original_amount=original_amount,
             original_currency=original_currency,
             parent_id=parent_id,
+            place=place,
+            place_id=place_id,
+            place_source=place_source,
             portfolio_transfer=portfolio_transfer,
             project_id=project_id,
             reactions=reactions,

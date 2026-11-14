@@ -33,12 +33,12 @@ class SpendingResponse:
         total_expenses (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         uncategorized (UncategorizedSpending):
         categories (list[CategorySummary] | None | Unset):
-        missing_rates (list[str] | None | Unset): Lists currencies whose amounts could not be converted into the
-            response currency (no exchange rate available). Those amounts are excluded from the totals above; empty/omitted
-            when everything converted.
-        pending_valuation (int | None | Unset): Counts the business-space transactions of the period that have no UAH
-            value yet (the NBU rate of their legal date is not published, or the valuation has not run): they are left out
-            of the totals above until valued. Omitted when 0 and in personal spaces.
+        missing_rates (list[str] | None | Unset): `missing_rates` lists currencies whose amounts could not be converted
+            into the response currency (no exchange rate available). Those amounts are excluded from the totals above;
+            empty/omitted when everything converted.
+        pending_valuation (int | None | Unset): `pending_valuation` counts the business-space transactions of the period
+            that have no UAH value yet (the NBU rate of their legal date is not published, or the valuation has not run):
+            they are left out of the totals above until valued. Omitted when 0 and in personal spaces.
     """
 
     currency_info: AnalyticsCurrencyInfo

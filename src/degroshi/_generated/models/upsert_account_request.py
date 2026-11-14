@@ -23,7 +23,7 @@ class UpsertAccountRequest:
     Attributes:
         currency (str): An ISO 4217 code; it can't change after the account is created (409 SRC_004).
         name (str): The account's name in the app, 1 to 100 characters.
-        is_liability (bool | None | Unset): Marks money owed (a loan, a credit line); default false.
+        is_liability (bool | None | Unset): `is_liability` marks money owed (a loan, a credit line); default false.
         type_ (None | Unset | UpsertAccountRequestTypeType0): The account's type; without it the source's kind picks one
             (bank: checking, card: debit_card, broker: investment, crypto: ewallet, else account).
     """

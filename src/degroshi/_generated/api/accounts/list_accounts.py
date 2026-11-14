@@ -23,10 +23,14 @@ def _get_kwargs(
     status: ListAccountsStatus | Unset = "open",
     updated_since: datetime.datetime | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     if not isinstance(x_space_id, Unset):
         headers["X-Space-ID"] = x_space_id
+
+    if not isinstance(x_display_currency, Unset):
+        headers["X-Display-Currency"] = x_display_currency
 
     params: dict[str, Any] = {}
 
@@ -78,6 +82,11 @@ def _parse_response(
 
         return response_403
 
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
+
     if response.status_code == 500:
         response_500 = ErrorResponse.from_dict(response.json())
 
@@ -107,6 +116,7 @@ def sync_detailed(
     status: ListAccountsStatus | Unset = "open",
     updated_since: datetime.datetime | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> Response[AccountListResponseListEnvelope | ErrorResponse]:
     """List accounts
 
@@ -121,6 +131,7 @@ def sync_detailed(
         status (ListAccountsStatus | Unset):  Default: 'open'.
         updated_since (datetime.datetime | Unset):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -135,6 +146,7 @@ def sync_detailed(
         status=status,
         updated_since=updated_since,
         x_space_id=x_space_id,
+        x_display_currency=x_display_currency,
     )
 
     response = client.get_httpx_client().request(
@@ -151,6 +163,7 @@ def sync(
     status: ListAccountsStatus | Unset = "open",
     updated_since: datetime.datetime | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> AccountListResponseListEnvelope | ErrorResponse | None:
     """List accounts
 
@@ -165,6 +178,7 @@ def sync(
         status (ListAccountsStatus | Unset):  Default: 'open'.
         updated_since (datetime.datetime | Unset):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -180,6 +194,7 @@ def sync(
         status=status,
         updated_since=updated_since,
         x_space_id=x_space_id,
+        x_display_currency=x_display_currency,
     ).parsed
 
 
@@ -190,6 +205,7 @@ async def asyncio_detailed(
     status: ListAccountsStatus | Unset = "open",
     updated_since: datetime.datetime | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> Response[AccountListResponseListEnvelope | ErrorResponse]:
     """List accounts
 
@@ -204,6 +220,7 @@ async def asyncio_detailed(
         status (ListAccountsStatus | Unset):  Default: 'open'.
         updated_since (datetime.datetime | Unset):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -218,6 +235,7 @@ async def asyncio_detailed(
         status=status,
         updated_since=updated_since,
         x_space_id=x_space_id,
+        x_display_currency=x_display_currency,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -232,6 +250,7 @@ async def asyncio(
     status: ListAccountsStatus | Unset = "open",
     updated_since: datetime.datetime | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> AccountListResponseListEnvelope | ErrorResponse | None:
     """List accounts
 
@@ -246,6 +265,7 @@ async def asyncio(
         status (ListAccountsStatus | Unset):  Default: 'open'.
         updated_since (datetime.datetime | Unset):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -262,5 +282,6 @@ async def asyncio(
             status=status,
             updated_since=updated_since,
             x_space_id=x_space_id,
+            x_display_currency=x_display_currency,
         )
     ).parsed

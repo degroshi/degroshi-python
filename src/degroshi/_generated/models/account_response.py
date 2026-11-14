@@ -55,7 +55,7 @@ class AccountResponse:
         type_ (AccountType):
         updated_at (datetime.datetime):
         user_id (str):
-        annual_rate (None | Decimal | Unset): The interest rate in percent a year (14.5 = 14,5% річних), at most 2 decimals,
+        annual_rate (None | Decimal | Unset): The interest rate in percent a year (14.5 = 14.5% a year), at most 2 decimals,
             0–100: a deposit's or savings account's, a credit card's after its grace period, a credit line's, loan's or
             mortgage's.
         available_balance (None | Decimal | Unset): Decimal number encoded as a string (for example "1234.5600"); never a
@@ -71,8 +71,8 @@ class AccountResponse:
             number.
         goal_amount (None | Decimal | Unset): A savings goal in the account's currency (above 0).
         goal_date (datetime.date | None | Unset): The day the goal should be reached by.
-        grace_period_days (int | None | Unset): The longest interest-free period the bank states (1–200): «до 62 днів».
-            Descriptive: the due day sets the date.
+        grace_period_days (int | None | Unset): The longest interest-free period the bank states (1–200). Descriptive:
+            the due day sets the date.
         gradient_direction (int | None | Unset):
         gradient_type (GradientType | None | Unset):
         grant (GrantInfo | None | Unset): Reserved; not returned yet.
@@ -80,25 +80,25 @@ class AccountResponse:
         interest_payout (InterestPayout | None | Unset): When a deposit pays its interest: monthly, quarterly,
             at_maturity (with the deposit) or capitalized (added to it).
         metadata (AccountResponseMetadataType0 | None | Unset):
-        minimum_payment_amount (None | Decimal | Unset): The least the minimum payment can be, in the account's currency
-            («але не менше 100 ₴»). The minimum due is the larger of the percent of the debt and this, at most the debt.
+        minimum_payment_amount (None | Decimal | Unset): The least the minimum payment can be, in the account's currency.
+            The minimum due is the larger of the percent of the debt and this, at most the debt.
         minimum_payment_percent (None | Decimal | Unset): A credit card's or line's minimum payment in percent of the debt
             (0–100, at most 2 decimals): «5%».
         overdraft_limit (None | Decimal | Unset): Decimal number encoded as a string (for example "1234.5600"); never a JSON
             number.
         payment_due_day (int | None | Unset): The day of the month by which the minimum payment is due and the grace
-            period ends (1–31; in a shorter month, its last day): «до 25 числа».
-        share_amount (None | Decimal | Unset): Reserved; not returned yet. Account sharing, «Моя частка»
-            (docs/roadmaps/account-sharing.md §5.6): the part of current_balance that counts in this space's totals, in the
-            same currency: the requester's capital on an account pooled with them, the balance less the grantees' capital on
-            an account this space pools with others. Absent where the whole balance counts. Totals count
-            include_in_net_worth ? (share_amount ?? current_balance) : 0, with the usual sign rules.
+            period ends (1–31; in a shorter month, its last day).
+        share_amount (None | Decimal | Unset): Reserved; not returned yet. Account sharing, “My part”: the part of
+            current_balance that counts in this space's totals, in the same currency: the requester's capital on an account
+            pooled with them, the balance less the grantees' capital on an account this space pools with others. Absent
+            where the whole balance counts. Totals count include_in_net_worth ? (share_amount ?? current_balance) : 0, with
+            the usual sign rules.
         shared_with (list[SharedWith] | None | Unset): Reserved; not returned yet.
         source (AccountSource | None | Unset): Set for an account a custom source pushes through the API; absent for
             others.
-        term_end_date (datetime.date | None | Unset): The day the deposit, loan or credit line ends («до 12 травня
-            2027»). Kept as entered: it isn't derived from term_months.
-        term_months (int | None | Unset): The term in months (1–600): «депозит на 12 місяців».
+        term_end_date (datetime.date | None | Unset): The day the deposit, loan or credit line ends. Kept as entered: it
+            isn't derived from term_months.
+        term_months (int | None | Unset): The term in months (1–600).
         version (int | None | Unset): The account row version (also the ETag): send it as If-Match on PATCH / DELETE to
             detect concurrent edits (412).
     """

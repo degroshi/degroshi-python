@@ -24,9 +24,9 @@ class NetWorthTimeSeriesResponse:
     """
     Attributes:
         currency_info (AnalyticsCurrencyInfo):
-        missing_rates (list[str] | None | Unset): Lists currencies whose amounts could not be converted into the
-            response currency (no exchange rate available). Those amounts are excluded from the totals above; empty/omitted
-            when everything converted.
+        missing_rates (list[str] | None | Unset): `missing_rates` lists currencies whose amounts could not be converted
+            into the response currency (no exchange rate available). Those amounts are excluded from the totals above;
+            empty/omitted when everything converted.
         points (list[NetWorthPoint] | None | Unset):
     """
 

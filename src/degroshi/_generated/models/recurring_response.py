@@ -43,12 +43,13 @@ class RecurringResponse:
         frequency (Frequency):
         id (str):
         is_active (bool):
-        is_variable (bool): IsVariable: those amounts differ by more than 2% (show the average as approximate).
+        is_variable (bool): The rule's amounts differ by more than 2% (show the average as approximate).
         mode (Mode):
         next_run_at (datetime.datetime):
         paid_count_3m (int):
         reminder_days_before (int):
-        reminder_enabled (bool): And ReminderDaysBefore are the rule's reminder (0 = on the day, at 9:00).
+        reminder_enabled (bool): `reminder_enabled` and `reminder_days_before` are the rule's reminder (0 = on the day,
+            at 9:00).
         space_id (str):
         start_date (datetime.datetime):
         type_ (TransactionsTransactionType):
@@ -68,9 +69,9 @@ class RecurringResponse:
         note (None | str | Unset):
         paid_average_3m (None | Decimal | Unset): The mean of the linked rows' amounts dated in the last 3 months; null
             without any.
-        paused_at (datetime.datetime | None | Unset): When the rule was paused («На паузі з 10 жовтня»): set whenever
-            is_active turns false (by a person, the processor or the account's archiving), omitted while active and for
-            rules paused before 2026-11 (the day wasn't recorded).
+        paused_at (datetime.datetime | None | Unset): When the rule was paused: set whenever is_active turns false (by a
+            person, the processor or the account's archiving), omitted while active and for rules paused before 2026-11 (the
+            day wasn't recorded).
         project_id (None | str | Unset): The business project the rule's operations get.
         to_account_id (None | str | Unset): The loan a loan_payment pays.
         version (int | None | Unset): The row version (also the ETag): send it as If-Match on PATCH / DELETE / resume /

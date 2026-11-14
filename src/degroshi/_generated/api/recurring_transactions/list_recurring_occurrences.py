@@ -21,10 +21,14 @@ def _get_kwargs(
     to: datetime.date | Unset = UNSET,
     with_past: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> dict[str, Any]:
     headers: dict[str, Any] = {}
     if not isinstance(x_space_id, Unset):
         headers["X-Space-ID"] = x_space_id
+
+    if not isinstance(x_display_currency, Unset):
+        headers["X-Display-Currency"] = x_display_currency
 
     params: dict[str, Any] = {}
 
@@ -75,6 +79,11 @@ def _parse_response(
 
         return response_403
 
+    if response.status_code == 429:
+        response_429 = ErrorResponse.from_dict(response.json())
+
+        return response_429
+
     if response.status_code == 500:
         response_500 = ErrorResponse.from_dict(response.json())
 
@@ -104,6 +113,7 @@ def sync_detailed(
     to: datetime.date | Unset = UNSET,
     with_past: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> Response[ErrorResponse | OccurrencesResponseEnvelope]:
     """List upcoming occurrences
 
@@ -116,6 +126,7 @@ def sync_detailed(
         to (datetime.date | Unset):
         with_past (bool | Unset):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -130,6 +141,7 @@ def sync_detailed(
         to=to,
         with_past=with_past,
         x_space_id=x_space_id,
+        x_display_currency=x_display_currency,
     )
 
     response = client.get_httpx_client().request(
@@ -146,6 +158,7 @@ def sync(
     to: datetime.date | Unset = UNSET,
     with_past: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> ErrorResponse | OccurrencesResponseEnvelope | None:
     """List upcoming occurrences
 
@@ -158,6 +171,7 @@ def sync(
         to (datetime.date | Unset):
         with_past (bool | Unset):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -173,6 +187,7 @@ def sync(
         to=to,
         with_past=with_past,
         x_space_id=x_space_id,
+        x_display_currency=x_display_currency,
     ).parsed
 
 
@@ -183,6 +198,7 @@ async def asyncio_detailed(
     to: datetime.date | Unset = UNSET,
     with_past: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> Response[ErrorResponse | OccurrencesResponseEnvelope]:
     """List upcoming occurrences
 
@@ -195,6 +211,7 @@ async def asyncio_detailed(
         to (datetime.date | Unset):
         with_past (bool | Unset):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -209,6 +226,7 @@ async def asyncio_detailed(
         to=to,
         with_past=with_past,
         x_space_id=x_space_id,
+        x_display_currency=x_display_currency,
     )
 
     response = await client.get_async_httpx_client().request(**kwargs)
@@ -223,6 +241,7 @@ async def asyncio(
     to: datetime.date | Unset = UNSET,
     with_past: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
+    x_display_currency: str | Unset = UNSET,
 ) -> ErrorResponse | OccurrencesResponseEnvelope | None:
     """List upcoming occurrences
 
@@ -235,6 +254,7 @@ async def asyncio(
         to (datetime.date | Unset):
         with_past (bool | Unset):
         x_space_id (str | Unset):
+        x_display_currency (str | Unset):  Example: EUR.
 
     Raises:
         errors.UnexpectedStatus: If the server returns an undocumented status code and Client.raise_on_unexpected_status is True.
@@ -251,5 +271,6 @@ async def asyncio(
             to=to,
             with_past=with_past,
             x_space_id=x_space_id,
+            x_display_currency=x_display_currency,
         )
     ).parsed
