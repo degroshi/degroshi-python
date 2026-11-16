@@ -3,6 +3,14 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b5 (2026-11-17)
+
+### API
+
+- `GET /v1/transactions` and `GET /v1/transactions/day-totals` take `merchant_key`: one merchant's rows, by the key
+  analytics gives a merchant (`p:<brand id>`, or `n:<text>` for an unbranded one: the merchant text, lower-cased with
+  single spaces).
+
 ## 1.0.0b4 (2026-11-16)
 
 ### API

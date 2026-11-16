@@ -1,6 +1,6 @@
 [project]
 name = "degroshi"
-version = "1.0.0b4"
+version = "1.0.0b5"
 description = "The official Python SDK for the Degroshi API"
 readme = "README.md"
 license = "Apache-2.0"

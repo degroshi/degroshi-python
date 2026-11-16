@@ -22,6 +22,7 @@ def _get_kwargs(
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
+    merchant_key: str | Unset = UNSET,
     category_ids: list[str] | Unset = UNSET,
     include_subcategories: bool | Unset = UNSET,
     uncategorized: bool | Unset = UNSET,
@@ -72,6 +73,8 @@ def _get_kwargs(
     params["account_ids"] = json_account_ids
 
     params["category_id"] = category_id
+
+    params["merchant_key"] = merchant_key
 
     json_category_ids: list[str] | Unset = UNSET
     if not isinstance(category_ids, Unset):
@@ -229,6 +232,7 @@ def sync_detailed(
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
+    merchant_key: str | Unset = UNSET,
     category_ids: list[str] | Unset = UNSET,
     include_subcategories: bool | Unset = UNSET,
     uncategorized: bool | Unset = UNSET,
@@ -273,6 +277,7 @@ def sync_detailed(
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
+        merchant_key (str | Unset):
         category_ids (list[str] | Unset):
         include_subcategories (bool | Unset):
         uncategorized (bool | Unset):
@@ -317,6 +322,7 @@ def sync_detailed(
         account_id=account_id,
         account_ids=account_ids,
         category_id=category_id,
+        merchant_key=merchant_key,
         category_ids=category_ids,
         include_subcategories=include_subcategories,
         uncategorized=uncategorized,
@@ -363,6 +369,7 @@ def sync(
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
+    merchant_key: str | Unset = UNSET,
     category_ids: list[str] | Unset = UNSET,
     include_subcategories: bool | Unset = UNSET,
     uncategorized: bool | Unset = UNSET,
@@ -407,6 +414,7 @@ def sync(
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
+        merchant_key (str | Unset):
         category_ids (list[str] | Unset):
         include_subcategories (bool | Unset):
         uncategorized (bool | Unset):
@@ -452,6 +460,7 @@ def sync(
         account_id=account_id,
         account_ids=account_ids,
         category_id=category_id,
+        merchant_key=merchant_key,
         category_ids=category_ids,
         include_subcategories=include_subcategories,
         uncategorized=uncategorized,
@@ -492,6 +501,7 @@ async def asyncio_detailed(
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
+    merchant_key: str | Unset = UNSET,
     category_ids: list[str] | Unset = UNSET,
     include_subcategories: bool | Unset = UNSET,
     uncategorized: bool | Unset = UNSET,
@@ -536,6 +546,7 @@ async def asyncio_detailed(
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
+        merchant_key (str | Unset):
         category_ids (list[str] | Unset):
         include_subcategories (bool | Unset):
         uncategorized (bool | Unset):
@@ -580,6 +591,7 @@ async def asyncio_detailed(
         account_id=account_id,
         account_ids=account_ids,
         category_id=category_id,
+        merchant_key=merchant_key,
         category_ids=category_ids,
         include_subcategories=include_subcategories,
         uncategorized=uncategorized,
@@ -624,6 +636,7 @@ async def asyncio(
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
+    merchant_key: str | Unset = UNSET,
     category_ids: list[str] | Unset = UNSET,
     include_subcategories: bool | Unset = UNSET,
     uncategorized: bool | Unset = UNSET,
@@ -668,6 +681,7 @@ async def asyncio(
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
+        merchant_key (str | Unset):
         category_ids (list[str] | Unset):
         include_subcategories (bool | Unset):
         uncategorized (bool | Unset):
@@ -714,6 +728,7 @@ async def asyncio(
             account_id=account_id,
             account_ids=account_ids,
             category_id=category_id,
+            merchant_key=merchant_key,
             category_ids=category_ids,
             include_subcategories=include_subcategories,
             uncategorized=uncategorized,
