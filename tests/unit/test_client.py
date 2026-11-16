@@ -228,3 +228,72 @@ def test_change_feed_stays_at_the_start_of_an_unfinished_page() -> None:
 
     # Assert: reading again from c8 repeats a1 and a2 at most, never skips a2.
     assert feed.cursor == "c8"
+
+
+ENDPOINT = {
+    "id": "8c1b6a7e-3d0f-4a52-9b1e-1f2a3b4c5d6e",
+    "url": "https://hooks.example.com/degroshi",
+    "description": "",
+    "events": ["account.balance.updated"],
+    "space_ids": ["0b8f5e2a-6c1d-4e7f-8a9b-0c1d2e3f4a5b"],
+    "api_version": "2026-11-01",
+    "state": "active",
+    "health": {"sent_24h": 0, "succeeded_24h": 0, "sent_7d": 0, "succeeded_7d": 0, "days": []},
+    "created_at": "2026-11-16T09:00:00Z",
+    "updated_at": "2026-11-16T09:00:00Z",
+}
+
+
+def delivery(delivery_id: str) -> dict:
+    return {
+        "id": delivery_id,
+        "event_id": "5a4b3c2d-1e0f-4a9b-8c7d-6e5f4a3b2c1d",
+        "type": "account.balance.updated",
+        "test": False,
+        "status": "succeeded",
+        "attempts": 1,
+        "created_at": "2026-11-16T09:00:00Z",
+    }
+
+
+def test_a_webhook_is_created_without_an_idempotency_key_and_carries_its_secret() -> None:
+    # Arrange
+    degroshi, seen = client(
+        lambda _: httpx2.Response(201, json={"success": True, "data": {"endpoint": ENDPOINT, "secret": "dg_whsec_x"}})
+    )
+
+    # Act
+    created = degroshi.webhooks.create(
+        {"url": "https://hooks.example.com/degroshi", "events": ["account.balance.updated"]}
+    )
+
+    # Assert
+    assert isinstance(created, models.CreatedEndpointResponse)
+    assert created.secret == "dg_whsec_x"
+    assert seen[0].url.path == "/v1/webhooks"
+    assert "Idempotency-Key" not in seen[0].headers
+    assert json.loads(seen[0].content) == {
+        "url": "https://hooks.example.com/degroshi",
+        "events": ["account.balance.updated"],
+    }
+
+
+def test_iterates_a_webhooks_deliveries_by_next_cursor() -> None:
+    # Arrange
+    def handler(request: httpx2.Request) -> httpx2.Response:
+        if request.url.params.get("cursor"):
+            return httpx2.Response(200, json={"success": True, "data": [delivery("d1")], "meta": {"has_more": False}})
+        return httpx2.Response(
+            200,
+            json={"success": True, "data": [delivery("d2")], "meta": {"has_more": True, "next_cursor": "c2"}},
+        )
+
+    degroshi, seen = client(handler)
+
+    # Act
+    actual = [row.id for row in degroshi.webhooks.iterate_deliveries("w1")]
+
+    # Assert
+    assert actual == ["d2", "d1"]
+    assert seen[1].url.params["cursor"] == "c2"
+    assert seen[0].url.path == "/v1/webhooks/w1/deliveries"

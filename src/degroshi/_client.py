@@ -55,6 +55,23 @@ from ._generated.api.transactions import (
     list_transactions,
     update_transaction,
 )
+from ._generated.api.webhooks import (
+    create_webhook,
+    delete_webhook,
+    get_webhook,
+    get_webhook_delivery,
+    get_webhook_stats,
+    list_webhook_deliveries,
+    list_webhook_event_types,
+    list_webhooks,
+    pause_webhook,
+    resend_webhook_deliveries,
+    resend_webhook_delivery,
+    resume_webhook,
+    rotate_webhook_secret,
+    send_webhook_test,
+    update_webhook,
+)
 from ._generated.client import AuthenticatedClient
 from ._generated.models import (
     AccountListResponse,
@@ -64,13 +81,20 @@ from ._generated.models import (
     BudgetListItem,
     BudgetResponse,
     CashFlowResponse,
+    CatalogEntry,
     Category,
     CategoryAnalyticsResponse,
     Change,
     ChangesResponse,
+    CreatedEndpointResponse,
+    CreateEndpointRequest,
     CreateSourceRequest,
     CreateTransactionRequest,
     DayTotalsResponse,
+    DeliveryDetail,
+    DeliveryPageEnvelope,
+    DeliverySummary,
+    EndpointResponse,
     Event,
     EventListPageEnvelope,
     MerchantAnalyticsResponse,
@@ -84,11 +108,18 @@ from ._generated.models import (
     PushedPage,
     PushedRow,
     RecurringResponse,
+    ResendRangeRequest,
+    ResendRangeResponse,
+    RotateSecretRequest,
+    SecretResponse,
     SourceResponse,
     SpendingResponse,
+    StatsResponse,
     SummaryResponse,
+    TestEventRequest,
     TransactionResponse,
     TrendsResponse,
+    UpdateEndpointRequest,
     UpdateSourceRequest,
     UpdateTransactionRequest,
     UpsertAccountRequest,
@@ -177,6 +208,15 @@ class _SyncMode:
                 return
             query["cursor"] = cursor
 
+    def webhook_deliveries(self, endpoint_id: str, **query: Any) -> Iterator[Any]:
+        while True:
+            envelope = self.envelope(list_webhook_deliveries, endpoint_id, **query)
+            yield from _data(envelope) or []
+            cursor = getattr(getattr(envelope, "meta", None), "next_cursor", None)
+            if not isinstance(cursor, str) or not cursor:
+                return
+            query["cursor"] = cursor
+
     def change_feed(self, cursor: str | None, query: dict[str, Any]) -> ChangeFeed:
         return ChangeFeed(self, cursor, query)
 
@@ -229,6 +269,16 @@ class _AsyncMode:
             for row in getattr(page, "items", None) or []:
                 yield row
             cursor = getattr(page, "next_cursor", None)
+            if not isinstance(cursor, str) or not cursor:
+                return
+            query["cursor"] = cursor
+
+    async def webhook_deliveries(self, endpoint_id: str, **query: Any) -> AsyncIterator[Any]:
+        while True:
+            envelope = await self.envelope(list_webhook_deliveries, endpoint_id, **query)
+            for row in _data(envelope) or []:
+                yield row
+            cursor = getattr(getattr(envelope, "meta", None), "next_cursor", None)
             if not isinstance(cursor, str) or not cursor:
                 return
             query["cursor"] = cursor
@@ -506,10 +556,67 @@ class Events(_Resource):
         return self._m.one(get_event, event_id)
 
 
-class Webhooks:
-    """``client.webhooks.verify(raw_body, headers["Degroshi-Signature"], secret)``."""
+class Webhooks(_Resource):
+    """The space's webhook endpoints (a token with ``webhooks:manage``, for event types its scopes read), and
+    signatures: ``client.webhooks.verify(raw_body, headers["Degroshi-Signature"], secret)``."""
 
     verify = staticmethod(webhooks.verify)
+
+    def event_types(self) -> builtins.list[CatalogEntry]:
+        """The event types an endpoint can take, with a made-up sample of each."""
+        return self._m.one(list_webhook_event_types)
+
+    def list(self) -> builtins.list[EndpointResponse]:
+        return self._m.one(list_webhooks)
+
+    def get(self, endpoint_id: str) -> EndpointResponse:
+        return self._m.one(get_webhook, endpoint_id)
+
+    def create(self, body: CreateEndpointRequest | Mapping[str, Any]) -> CreatedEndpointResponse:
+        """A new endpoint in the space; the answer carries its signing secret, which a token can't read back. Not
+        retried: a second try could make a second endpoint."""
+        return self._m.one(create_webhook, body=_body(CreateEndpointRequest, body))
+
+    def update(self, endpoint_id: str, body: UpdateEndpointRequest | Mapping[str, Any]) -> EndpointResponse:
+        return self._m.one(update_webhook, endpoint_id, body=_body(UpdateEndpointRequest, body))
+
+    def delete(self, endpoint_id: str) -> None:
+        return self._m.done(delete_webhook, endpoint_id)
+
+    def pause(self, endpoint_id: str) -> EndpointResponse:
+        return self._m.one(pause_webhook, endpoint_id)
+
+    def resume(self, endpoint_id: str) -> EndpointResponse:
+        return self._m.one(resume_webhook, endpoint_id)
+
+    def rotate_secret(self, endpoint_id: str, body: RotateSecretRequest | Mapping[str, Any]) -> SecretResponse:
+        """A new secret; the old one keeps signing for ``overlap_hours`` (0, 1, 24 or 72)."""
+        return self._m.one(rotate_webhook_secret, endpoint_id, body=_body(RotateSecretRequest, body))
+
+    def send_test(self, endpoint_id: str, body: TestEventRequest | Mapping[str, Any] | None = None) -> DeliverySummary:
+        """A made-up event (``webhook.test`` without a type), marked ``test: true``."""
+        return self._m.one(send_webhook_test, endpoint_id, body=_body(TestEventRequest, body or {}))
+
+    def stats(self, endpoint_id: str, **query: Any) -> StatsResponse:
+        return self._m.one(get_webhook_stats, endpoint_id, **query)
+
+    def deliveries(self, endpoint_id: str, **query: Any) -> DeliveryPageEnvelope:
+        """One page of the endpoint's log, newest first: ``data`` and ``meta.next_cursor``."""
+        return self._m.envelope(list_webhook_deliveries, endpoint_id, **query)
+
+    def iterate_deliveries(self, endpoint_id: str, **query: Any) -> Iterator[DeliverySummary]:
+        """Every delivery of the log, following ``meta.next_cursor``."""
+        return self._m.webhook_deliveries(endpoint_id, **query)
+
+    def delivery(self, endpoint_id: str, delivery_id: str) -> DeliveryDetail:
+        return self._m.one(get_webhook_delivery, endpoint_id, delivery_id)
+
+    def resend_delivery(self, endpoint_id: str, delivery_id: str) -> DeliverySummary:
+        return self._m.one(resend_webhook_delivery, endpoint_id, delivery_id)
+
+    def resend(self, endpoint_id: str, body: ResendRangeRequest | Mapping[str, Any]) -> ResendRangeResponse:
+        """The failed and skipped deliveries between ``from`` and ``to``, again (at most 30 days)."""
+        return self._m.one(resend_webhook_deliveries, endpoint_id, body=_body(ResendRangeRequest, body))
 
 
 if TYPE_CHECKING:
@@ -593,10 +700,38 @@ if TYPE_CHECKING:
         def iterate(self, **query: Any) -> AsyncIterator[Event]: ...
         async def get(self, event_id: str) -> Event: ...
 
+    class AsyncWebhooks(_Resource):
+        verify = staticmethod(webhooks.verify)
+
+        async def event_types(self) -> builtins.list[CatalogEntry]: ...
+        async def list(self) -> builtins.list[EndpointResponse]: ...
+        async def get(self, endpoint_id: str) -> EndpointResponse: ...
+        async def create(self, body: CreateEndpointRequest | Mapping[str, Any]) -> CreatedEndpointResponse: ...
+        async def update(
+            self, endpoint_id: str, body: UpdateEndpointRequest | Mapping[str, Any]
+        ) -> EndpointResponse: ...
+        async def delete(self, endpoint_id: str) -> None: ...
+        async def pause(self, endpoint_id: str) -> EndpointResponse: ...
+        async def resume(self, endpoint_id: str) -> EndpointResponse: ...
+        async def rotate_secret(
+            self, endpoint_id: str, body: RotateSecretRequest | Mapping[str, Any]
+        ) -> SecretResponse: ...
+        async def send_test(
+            self, endpoint_id: str, body: TestEventRequest | Mapping[str, Any] | None = None
+        ) -> DeliverySummary: ...
+        async def stats(self, endpoint_id: str, **query: Any) -> StatsResponse: ...
+        async def deliveries(self, endpoint_id: str, **query: Any) -> DeliveryPageEnvelope: ...
+        def iterate_deliveries(self, endpoint_id: str, **query: Any) -> AsyncIterator[DeliverySummary]: ...
+        async def delivery(self, endpoint_id: str, delivery_id: str) -> DeliveryDetail: ...
+        async def resend_delivery(self, endpoint_id: str, delivery_id: str) -> DeliverySummary: ...
+        async def resend(
+            self, endpoint_id: str, body: ResendRangeRequest | Mapping[str, Any]
+        ) -> ResendRangeResponse: ...
+
 else:
     AsyncSpaces, AsyncAccounts, AsyncTransactions = Spaces, Accounts, Transactions
     AsyncCategories, AsyncBudgets, AsyncRecurring, AsyncAnalytics = Categories, Budgets, Recurring, Analytics
-    AsyncSources, AsyncChanges, AsyncEvents = Sources, Changes, Events
+    AsyncSources, AsyncChanges, AsyncEvents, AsyncWebhooks = Sources, Changes, Events, Webhooks
 
 
 def _client(
@@ -656,7 +791,7 @@ class Degroshi:
         self.sources = Sources(mode)
         self.changes = Changes(mode)
         self.events = Events(mode)
-        self.webhooks = Webhooks()
+        self.webhooks = Webhooks(mode)
 
     def close(self) -> None:
         self.client.get_httpx_client().close()
@@ -694,7 +829,7 @@ class AsyncDegroshi:
         self.sources = AsyncSources(mode)
         self.changes = AsyncChanges(mode)
         self.events = AsyncEvents(mode)
-        self.webhooks = Webhooks()
+        self.webhooks = AsyncWebhooks(mode)
 
     async def aclose(self) -> None:
         await self.client.get_async_httpx_client().aclose()

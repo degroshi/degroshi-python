@@ -9,6 +9,8 @@ from ...types import Response, UNSET
 from ... import errors
 
 from ...models.error_response import ErrorResponse
+from ...models.get_analytics_net_worth_share import check_get_analytics_net_worth_share
+from ...models.get_analytics_net_worth_share import GetAnalyticsNetWorthShare
 from ...models.net_worth_time_series_response_envelope import NetWorthTimeSeriesResponseEnvelope
 from ...types import UNSET, Unset
 from typing import cast
@@ -22,6 +24,7 @@ def _get_kwargs(
     account_ids: list[str] | Unset = UNSET,
     granularity: str | Unset = UNSET,
     currency: str | Unset = UNSET,
+    share: GetAnalyticsNetWorthShare | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     x_display_currency: str | Unset = UNSET,
 ) -> dict[str, Any]:
@@ -49,6 +52,12 @@ def _get_kwargs(
     params["granularity"] = granularity
 
     params["currency"] = currency
+
+    json_share: str | Unset = UNSET
+    if not isinstance(share, Unset):
+        json_share = share
+
+    params["share"] = json_share
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -105,6 +114,7 @@ def sync_detailed(
     account_ids: list[str] | Unset = UNSET,
     granularity: str | Unset = UNSET,
     currency: str | Unset = UNSET,
+    share: GetAnalyticsNetWorthShare | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     x_display_currency: str | Unset = UNSET,
 ) -> Response[ErrorResponse | NetWorthTimeSeriesResponseEnvelope]:
@@ -119,6 +129,7 @@ def sync_detailed(
         account_ids (list[str] | Unset):
         granularity (str | Unset):
         currency (str | Unset):
+        share (GetAnalyticsNetWorthShare | Unset):
         x_space_id (str | Unset):
         x_display_currency (str | Unset):  Example: EUR.
 
@@ -136,6 +147,7 @@ def sync_detailed(
         account_ids=account_ids,
         granularity=granularity,
         currency=currency,
+        share=share,
         x_space_id=x_space_id,
         x_display_currency=x_display_currency,
     )
@@ -155,6 +167,7 @@ def sync(
     account_ids: list[str] | Unset = UNSET,
     granularity: str | Unset = UNSET,
     currency: str | Unset = UNSET,
+    share: GetAnalyticsNetWorthShare | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     x_display_currency: str | Unset = UNSET,
 ) -> ErrorResponse | NetWorthTimeSeriesResponseEnvelope | None:
@@ -169,6 +182,7 @@ def sync(
         account_ids (list[str] | Unset):
         granularity (str | Unset):
         currency (str | Unset):
+        share (GetAnalyticsNetWorthShare | Unset):
         x_space_id (str | Unset):
         x_display_currency (str | Unset):  Example: EUR.
 
@@ -187,6 +201,7 @@ def sync(
         account_ids=account_ids,
         granularity=granularity,
         currency=currency,
+        share=share,
         x_space_id=x_space_id,
         x_display_currency=x_display_currency,
     ).parsed
@@ -200,6 +215,7 @@ async def asyncio_detailed(
     account_ids: list[str] | Unset = UNSET,
     granularity: str | Unset = UNSET,
     currency: str | Unset = UNSET,
+    share: GetAnalyticsNetWorthShare | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     x_display_currency: str | Unset = UNSET,
 ) -> Response[ErrorResponse | NetWorthTimeSeriesResponseEnvelope]:
@@ -214,6 +230,7 @@ async def asyncio_detailed(
         account_ids (list[str] | Unset):
         granularity (str | Unset):
         currency (str | Unset):
+        share (GetAnalyticsNetWorthShare | Unset):
         x_space_id (str | Unset):
         x_display_currency (str | Unset):  Example: EUR.
 
@@ -231,6 +248,7 @@ async def asyncio_detailed(
         account_ids=account_ids,
         granularity=granularity,
         currency=currency,
+        share=share,
         x_space_id=x_space_id,
         x_display_currency=x_display_currency,
     )
@@ -248,6 +266,7 @@ async def asyncio(
     account_ids: list[str] | Unset = UNSET,
     granularity: str | Unset = UNSET,
     currency: str | Unset = UNSET,
+    share: GetAnalyticsNetWorthShare | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     x_display_currency: str | Unset = UNSET,
 ) -> ErrorResponse | NetWorthTimeSeriesResponseEnvelope | None:
@@ -262,6 +281,7 @@ async def asyncio(
         account_ids (list[str] | Unset):
         granularity (str | Unset):
         currency (str | Unset):
+        share (GetAnalyticsNetWorthShare | Unset):
         x_space_id (str | Unset):
         x_display_currency (str | Unset):  Example: EUR.
 
@@ -281,6 +301,7 @@ async def asyncio(
             account_ids=account_ids,
             granularity=granularity,
             currency=currency,
+            share=share,
             x_space_id=x_space_id,
             x_display_currency=x_display_currency,
         )

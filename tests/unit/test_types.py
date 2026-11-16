@@ -22,6 +22,7 @@ RESOURCES = [
     "Sources",
     "Changes",
     "Events",
+    "Webhooks",
 ]
 
 

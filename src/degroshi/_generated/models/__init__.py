@@ -22,6 +22,8 @@ from .accounts_currency_info import AccountsCurrencyInfo
 from .allocation_display import AllocationDisplay
 from .amount_change_response import AmountChangeResponse
 from .analytics_currency_info import AnalyticsCurrencyInfo
+from .attempt_response import AttemptResponse
+from .attempt_response_response_headers_type_0 import AttemptResponseResponseHeadersType0
 from .balance_batch_request import BalanceBatchRequest
 from .balance_batch_response import BalanceBatchResponse
 from .balance_batch_response_envelope import BalanceBatchResponseEnvelope
@@ -42,6 +44,9 @@ from .budget_threshold_reached_event_data_object import BudgetThresholdReachedEv
 from .cash_flow_point import CashFlowPoint
 from .cash_flow_response import CashFlowResponse
 from .cash_flow_response_envelope import CashFlowResponseEnvelope
+from .catalog_entry import CatalogEntry
+from .catalog_entry_list_envelope import CatalogEntryListEnvelope
+from .catalog_entry_sample_type_0 import CatalogEntrySampleType0
 from .category import Category
 from .category_analytics_item import CategoryAnalyticsItem
 from .category_analytics_response import CategoryAnalyticsResponse
@@ -62,17 +67,37 @@ from .connection_status_changed_event import ConnectionStatusChangedEvent
 from .connection_status_changed_event_data import ConnectionStatusChangedEventData
 from .connection_status_changed_event_data_object import ConnectionStatusChangedEventDataObject
 from .connection_status_changed_event_data_previous_attributes import ConnectionStatusChangedEventDataPreviousAttributes
+from .create_endpoint_request import CreateEndpointRequest
 from .create_place_request import CreatePlaceRequest
 from .create_source_request import CreateSourceRequest
 from .create_transaction_request import CreateTransactionRequest
 from .create_transaction_request_place_source import CreateTransactionRequestPlaceSource
 from .create_transaction_request_provider_data import CreateTransactionRequestProviderData
+from .created_endpoint_response import CreatedEndpointResponse
+from .created_endpoint_response_envelope import CreatedEndpointResponseEnvelope
 from .date_range import DateRange
 from .day_total import DayTotal
 from .day_totals_response import DayTotalsResponse
 from .day_totals_response_envelope import DayTotalsResponseEnvelope
 from .delete_data import DeleteData
 from .delete_data_envelope import DeleteDataEnvelope
+from .delivery_cursor_meta import DeliveryCursorMeta
+from .delivery_detail import DeliveryDetail
+from .delivery_detail_envelope import DeliveryDetailEnvelope
+from .delivery_page import DeliveryPage
+from .delivery_page_envelope import DeliveryPageEnvelope
+from .delivery_request import DeliveryRequest
+from .delivery_request_body_type_0 import DeliveryRequestBodyType0
+from .delivery_request_headers_type_0 import DeliveryRequestHeadersType0
+from .delivery_summary import DeliverySummary
+from .delivery_summary_envelope import DeliverySummaryEnvelope
+from .delivery_summary_status import DeliverySummaryStatus
+from .endpoint_health import EndpointHealth
+from .endpoint_response import EndpointResponse
+from .endpoint_response_disabled_reason_type_0 import EndpointResponseDisabledReasonType0
+from .endpoint_response_envelope import EndpointResponseEnvelope
+from .endpoint_response_list_envelope import EndpointResponseListEnvelope
+from .endpoint_response_state import EndpointResponseState
 from .error_body import ErrorBody
 from .error_body_details_type_0 import ErrorBodyDetailsType0
 from .error_response import ErrorResponse
@@ -87,6 +112,7 @@ from .get_analytics_cash_flow_share import GetAnalyticsCashFlowShare
 from .get_analytics_categories_share import GetAnalyticsCategoriesShare
 from .get_analytics_merchants_share import GetAnalyticsMerchantsShare
 from .get_analytics_merchants_side import GetAnalyticsMerchantsSide
+from .get_analytics_net_worth_share import GetAnalyticsNetWorthShare
 from .get_analytics_spending_share import GetAnalyticsSpendingShare
 from .get_analytics_summary_share import GetAnalyticsSummaryShare
 from .get_analytics_trends_share import GetAnalyticsTrendsShare
@@ -95,6 +121,9 @@ from .gradient_type import GradientType
 from .grant_info import GrantInfo
 from .grant_info_purpose import GrantInfoPurpose
 from .grant_info_role import GrantInfoRole
+from .grant_person import GrantPerson
+from .grant_person_role import GrantPersonRole
+from .health_day import HealthDay
 from .import_completed_event import ImportCompletedEvent
 from .import_completed_event_data import ImportCompletedEventData
 from .import_completed_event_data_object import ImportCompletedEventDataObject
@@ -106,6 +135,7 @@ from .linked_activity_response import LinkedActivityResponse
 from .linked_activity_response_status import LinkedActivityResponseStatus
 from .list_accounts_status import ListAccountsStatus
 from .list_transactions_sort import ListTransactionsSort
+from .list_webhook_deliveries_status import ListWebhookDeliveriesStatus
 from .merchant_activity import MerchantActivity
 from .merchant_analytics_response import MerchantAnalyticsResponse
 from .merchant_analytics_response_envelope import MerchantAnalyticsResponseEnvelope
@@ -159,6 +189,13 @@ from .recurring_response import RecurringResponse
 from .recurring_response_envelope import RecurringResponseEnvelope
 from .recurring_response_list_envelope import RecurringResponseListEnvelope
 from .recurring_transactions_kind import RecurringTransactionsKind
+from .resend_range_request import ResendRangeRequest
+from .resend_range_response import ResendRangeResponse
+from .resend_range_response_envelope import ResendRangeResponseEnvelope
+from .rotate_secret_request import RotateSecretRequest
+from .rotate_secret_request_overlap_hours import RotateSecretRequestOverlapHours
+from .secret_response import SecretResponse
+from .secret_response_envelope import SecretResponseEnvelope
 from .shared_with import SharedWith
 from .shared_with_purpose import SharedWithPurpose
 from .shared_with_role import SharedWithRole
@@ -169,9 +206,15 @@ from .source_response_list_envelope import SourceResponseListEnvelope
 from .sources_kind import SourcesKind
 from .spending_response import SpendingResponse
 from .spending_response_envelope import SpendingResponseEnvelope
+from .stats_day import StatsDay
+from .stats_figures import StatsFigures
+from .stats_response import StatsResponse
+from .stats_response_envelope import StatsResponseEnvelope
 from .status import Status
 from .summary_response import SummaryResponse
 from .summary_response_envelope import SummaryResponseEnvelope
+from .test_event_request import TestEventRequest
+from .test_event_request_payload import TestEventRequestPayload
 from .transaction_amount_info import TransactionAmountInfo
 from .transaction_amounts_response import TransactionAmountsResponse
 from .transaction_created_event import TransactionCreatedEvent
@@ -214,6 +257,7 @@ from .trends_response import TrendsResponse
 from .trends_response_envelope import TrendsResponseEnvelope
 from .uncategorized_activity import UncategorizedActivity
 from .uncategorized_spending import UncategorizedSpending
+from .update_endpoint_request import UpdateEndpointRequest
 from .update_source_request import UpdateSourceRequest
 from .update_transaction_request import UpdateTransactionRequest
 from .update_transaction_request_place_source_type_0 import UpdateTransactionRequestPlaceSourceType0
@@ -248,6 +292,8 @@ __all__ = (
     "AllocationDisplay",
     "AmountChangeResponse",
     "AnalyticsCurrencyInfo",
+    "AttemptResponse",
+    "AttemptResponseResponseHeadersType0",
     "BalanceBatchRequest",
     "BalanceBatchResponse",
     "BalanceBatchResponseEnvelope",
@@ -268,6 +314,9 @@ __all__ = (
     "CashFlowPoint",
     "CashFlowResponse",
     "CashFlowResponseEnvelope",
+    "CatalogEntry",
+    "CatalogEntryListEnvelope",
+    "CatalogEntrySampleType0",
     "Category",
     "CategoryAnalyticsItem",
     "CategoryAnalyticsResponse",
@@ -288,6 +337,9 @@ __all__ = (
     "ConnectionStatusChangedEventData",
     "ConnectionStatusChangedEventDataObject",
     "ConnectionStatusChangedEventDataPreviousAttributes",
+    "CreatedEndpointResponse",
+    "CreatedEndpointResponseEnvelope",
+    "CreateEndpointRequest",
     "CreatePlaceRequest",
     "CreateSourceRequest",
     "CreateTransactionRequest",
@@ -299,6 +351,23 @@ __all__ = (
     "DayTotalsResponseEnvelope",
     "DeleteData",
     "DeleteDataEnvelope",
+    "DeliveryCursorMeta",
+    "DeliveryDetail",
+    "DeliveryDetailEnvelope",
+    "DeliveryPage",
+    "DeliveryPageEnvelope",
+    "DeliveryRequest",
+    "DeliveryRequestBodyType0",
+    "DeliveryRequestHeadersType0",
+    "DeliverySummary",
+    "DeliverySummaryEnvelope",
+    "DeliverySummaryStatus",
+    "EndpointHealth",
+    "EndpointResponse",
+    "EndpointResponseDisabledReasonType0",
+    "EndpointResponseEnvelope",
+    "EndpointResponseListEnvelope",
+    "EndpointResponseState",
     "ErrorBody",
     "ErrorBodyDetailsType0",
     "ErrorResponse",
@@ -313,6 +382,7 @@ __all__ = (
     "GetAnalyticsCategoriesShare",
     "GetAnalyticsMerchantsShare",
     "GetAnalyticsMerchantsSide",
+    "GetAnalyticsNetWorthShare",
     "GetAnalyticsSpendingShare",
     "GetAnalyticsSummaryShare",
     "GetAnalyticsTrendsShare",
@@ -321,6 +391,9 @@ __all__ = (
     "GrantInfo",
     "GrantInfoPurpose",
     "GrantInfoRole",
+    "GrantPerson",
+    "GrantPersonRole",
+    "HealthDay",
     "ImportCompletedEvent",
     "ImportCompletedEventData",
     "ImportCompletedEventDataObject",
@@ -332,6 +405,7 @@ __all__ = (
     "LinkedActivityResponseStatus",
     "ListAccountsStatus",
     "ListTransactionsSort",
+    "ListWebhookDeliveriesStatus",
     "MerchantActivity",
     "MerchantAnalyticsResponse",
     "MerchantAnalyticsResponseEnvelope",
@@ -385,6 +459,13 @@ __all__ = (
     "RecurringResponseEnvelope",
     "RecurringResponseListEnvelope",
     "RecurringTransactionsKind",
+    "ResendRangeRequest",
+    "ResendRangeResponse",
+    "ResendRangeResponseEnvelope",
+    "RotateSecretRequest",
+    "RotateSecretRequestOverlapHours",
+    "SecretResponse",
+    "SecretResponseEnvelope",
     "SharedWith",
     "SharedWithPurpose",
     "SharedWithRole",
@@ -395,9 +476,15 @@ __all__ = (
     "SourcesKind",
     "SpendingResponse",
     "SpendingResponseEnvelope",
+    "StatsDay",
+    "StatsFigures",
+    "StatsResponse",
+    "StatsResponseEnvelope",
     "Status",
     "SummaryResponse",
     "SummaryResponseEnvelope",
+    "TestEventRequest",
+    "TestEventRequestPayload",
     "TransactionAmountInfo",
     "TransactionAmountsResponse",
     "TransactionCreatedEvent",
@@ -440,6 +527,7 @@ __all__ = (
     "TrendsResponseEnvelope",
     "UncategorizedActivity",
     "UncategorizedSpending",
+    "UpdateEndpointRequest",
     "UpdateSourceRequest",
     "UpdateTransactionRequest",
     "UpdateTransactionRequestPlaceSourceType0",

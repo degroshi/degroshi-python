@@ -19,12 +19,15 @@ T = TypeVar("T", bound="AccountBrand")
 class AccountBrand:
     """
     Attributes:
+        color (None | str | Unset): Our swatch for a curated domain (a palette.account hex, as the suggestions give it):
+            a provider's folder on the accounts page falls back to it as its tint. Absent for other domains.
         domain (None | str | Unset):
         icon_url (None | str | Unset):
         icon_url_dark (None | str | Unset):
         name (None | str | Unset):
     """
 
+    color: None | str | Unset = UNSET
     domain: None | str | Unset = UNSET
     icon_url: None | str | Unset = UNSET
     icon_url_dark: None | str | Unset = UNSET
@@ -32,6 +35,12 @@ class AccountBrand:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        color: None | str | Unset
+        if isinstance(self.color, Unset):
+            color = UNSET
+        else:
+            color = self.color
+
         domain: None | str | Unset
         if isinstance(self.domain, Unset):
             domain = UNSET
@@ -59,6 +68,8 @@ class AccountBrand:
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
+        if color is not UNSET:
+            field_dict["color"] = color
         if domain is not UNSET:
             field_dict["domain"] = domain
         if icon_url is not UNSET:
@@ -73,6 +84,15 @@ class AccountBrand:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+
+        def _parse_color(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        color = _parse_color(d.pop("color", UNSET))
 
         def _parse_domain(data: object) -> None | str | Unset:
             if data is None:
@@ -111,6 +131,7 @@ class AccountBrand:
         name = _parse_name(d.pop("name", UNSET))
 
         account_brand = cls(
+            color=color,
             domain=domain,
             icon_url=icon_url,
             icon_url_dark=icon_url_dark,

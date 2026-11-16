@@ -38,6 +38,19 @@ def _get_kwargs(
     tag_id: list[str] | Unset = UNSET,
     currency_code: str | Unset = UNSET,
     share: GetTransactionDayTotalsShare | Unset = UNSET,
+    counterparty_id: str | Unset = UNSET,
+    project_id: str | Unset = UNSET,
+    recurring_rule_id: str | Unset = UNSET,
+    import_id: str | Unset = UNSET,
+    place_id: str | Unset = UNSET,
+    city: str | Unset = UNSET,
+    country: str | Unset = UNSET,
+    online: bool | Unset = UNSET,
+    needs_review: bool | Unset = UNSET,
+    treatment_class: str | Unset = UNSET,
+    treatment_classes: list[str] | Unset = UNSET,
+    include_portfolio_transfers: bool | Unset = UNSET,
+    one_row_per_transfer: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     x_display_currency: str | Unset = UNSET,
 ) -> dict[str, Any]:
@@ -117,6 +130,36 @@ def _get_kwargs(
         json_share = share
 
     params["share"] = json_share
+
+    params["counterparty_id"] = counterparty_id
+
+    params["project_id"] = project_id
+
+    params["recurring_rule_id"] = recurring_rule_id
+
+    params["import_id"] = import_id
+
+    params["place_id"] = place_id
+
+    params["city"] = city
+
+    params["country"] = country
+
+    params["online"] = online
+
+    params["needs_review"] = needs_review
+
+    params["treatment_class"] = treatment_class
+
+    json_treatment_classes: list[str] | Unset = UNSET
+    if not isinstance(treatment_classes, Unset):
+        json_treatment_classes = treatment_classes
+
+    params["treatment_classes"] = json_treatment_classes
+
+    params["include_portfolio_transfers"] = include_portfolio_transfers
+
+    params["one_row_per_transfer"] = one_row_per_transfer
 
     params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
 
@@ -202,6 +245,19 @@ def sync_detailed(
     tag_id: list[str] | Unset = UNSET,
     currency_code: str | Unset = UNSET,
     share: GetTransactionDayTotalsShare | Unset = UNSET,
+    counterparty_id: str | Unset = UNSET,
+    project_id: str | Unset = UNSET,
+    recurring_rule_id: str | Unset = UNSET,
+    import_id: str | Unset = UNSET,
+    place_id: str | Unset = UNSET,
+    city: str | Unset = UNSET,
+    country: str | Unset = UNSET,
+    online: bool | Unset = UNSET,
+    needs_review: bool | Unset = UNSET,
+    treatment_class: str | Unset = UNSET,
+    treatment_classes: list[str] | Unset = UNSET,
+    include_portfolio_transfers: bool | Unset = UNSET,
+    one_row_per_transfer: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     x_display_currency: str | Unset = UNSET,
 ) -> Response[DayTotalsResponseEnvelope | ErrorResponse]:
@@ -233,6 +289,19 @@ def sync_detailed(
         tag_id (list[str] | Unset):
         currency_code (str | Unset):
         share (GetTransactionDayTotalsShare | Unset):
+        counterparty_id (str | Unset):
+        project_id (str | Unset):
+        recurring_rule_id (str | Unset):
+        import_id (str | Unset):
+        place_id (str | Unset):
+        city (str | Unset):
+        country (str | Unset):
+        online (bool | Unset):
+        needs_review (bool | Unset):
+        treatment_class (str | Unset):
+        treatment_classes (list[str] | Unset):
+        include_portfolio_transfers (bool | Unset):
+        one_row_per_transfer (bool | Unset):
         x_space_id (str | Unset):
         x_display_currency (str | Unset):  Example: EUR.
 
@@ -264,6 +333,19 @@ def sync_detailed(
         tag_id=tag_id,
         currency_code=currency_code,
         share=share,
+        counterparty_id=counterparty_id,
+        project_id=project_id,
+        recurring_rule_id=recurring_rule_id,
+        import_id=import_id,
+        place_id=place_id,
+        city=city,
+        country=country,
+        online=online,
+        needs_review=needs_review,
+        treatment_class=treatment_class,
+        treatment_classes=treatment_classes,
+        include_portfolio_transfers=include_portfolio_transfers,
+        one_row_per_transfer=one_row_per_transfer,
         x_space_id=x_space_id,
         x_display_currency=x_display_currency,
     )
@@ -297,6 +379,19 @@ def sync(
     tag_id: list[str] | Unset = UNSET,
     currency_code: str | Unset = UNSET,
     share: GetTransactionDayTotalsShare | Unset = UNSET,
+    counterparty_id: str | Unset = UNSET,
+    project_id: str | Unset = UNSET,
+    recurring_rule_id: str | Unset = UNSET,
+    import_id: str | Unset = UNSET,
+    place_id: str | Unset = UNSET,
+    city: str | Unset = UNSET,
+    country: str | Unset = UNSET,
+    online: bool | Unset = UNSET,
+    needs_review: bool | Unset = UNSET,
+    treatment_class: str | Unset = UNSET,
+    treatment_classes: list[str] | Unset = UNSET,
+    include_portfolio_transfers: bool | Unset = UNSET,
+    one_row_per_transfer: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     x_display_currency: str | Unset = UNSET,
 ) -> DayTotalsResponseEnvelope | ErrorResponse | None:
@@ -328,6 +423,19 @@ def sync(
         tag_id (list[str] | Unset):
         currency_code (str | Unset):
         share (GetTransactionDayTotalsShare | Unset):
+        counterparty_id (str | Unset):
+        project_id (str | Unset):
+        recurring_rule_id (str | Unset):
+        import_id (str | Unset):
+        place_id (str | Unset):
+        city (str | Unset):
+        country (str | Unset):
+        online (bool | Unset):
+        needs_review (bool | Unset):
+        treatment_class (str | Unset):
+        treatment_classes (list[str] | Unset):
+        include_portfolio_transfers (bool | Unset):
+        one_row_per_transfer (bool | Unset):
         x_space_id (str | Unset):
         x_display_currency (str | Unset):  Example: EUR.
 
@@ -360,6 +468,19 @@ def sync(
         tag_id=tag_id,
         currency_code=currency_code,
         share=share,
+        counterparty_id=counterparty_id,
+        project_id=project_id,
+        recurring_rule_id=recurring_rule_id,
+        import_id=import_id,
+        place_id=place_id,
+        city=city,
+        country=country,
+        online=online,
+        needs_review=needs_review,
+        treatment_class=treatment_class,
+        treatment_classes=treatment_classes,
+        include_portfolio_transfers=include_portfolio_transfers,
+        one_row_per_transfer=one_row_per_transfer,
         x_space_id=x_space_id,
         x_display_currency=x_display_currency,
     ).parsed
@@ -387,6 +508,19 @@ async def asyncio_detailed(
     tag_id: list[str] | Unset = UNSET,
     currency_code: str | Unset = UNSET,
     share: GetTransactionDayTotalsShare | Unset = UNSET,
+    counterparty_id: str | Unset = UNSET,
+    project_id: str | Unset = UNSET,
+    recurring_rule_id: str | Unset = UNSET,
+    import_id: str | Unset = UNSET,
+    place_id: str | Unset = UNSET,
+    city: str | Unset = UNSET,
+    country: str | Unset = UNSET,
+    online: bool | Unset = UNSET,
+    needs_review: bool | Unset = UNSET,
+    treatment_class: str | Unset = UNSET,
+    treatment_classes: list[str] | Unset = UNSET,
+    include_portfolio_transfers: bool | Unset = UNSET,
+    one_row_per_transfer: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     x_display_currency: str | Unset = UNSET,
 ) -> Response[DayTotalsResponseEnvelope | ErrorResponse]:
@@ -418,6 +552,19 @@ async def asyncio_detailed(
         tag_id (list[str] | Unset):
         currency_code (str | Unset):
         share (GetTransactionDayTotalsShare | Unset):
+        counterparty_id (str | Unset):
+        project_id (str | Unset):
+        recurring_rule_id (str | Unset):
+        import_id (str | Unset):
+        place_id (str | Unset):
+        city (str | Unset):
+        country (str | Unset):
+        online (bool | Unset):
+        needs_review (bool | Unset):
+        treatment_class (str | Unset):
+        treatment_classes (list[str] | Unset):
+        include_portfolio_transfers (bool | Unset):
+        one_row_per_transfer (bool | Unset):
         x_space_id (str | Unset):
         x_display_currency (str | Unset):  Example: EUR.
 
@@ -449,6 +596,19 @@ async def asyncio_detailed(
         tag_id=tag_id,
         currency_code=currency_code,
         share=share,
+        counterparty_id=counterparty_id,
+        project_id=project_id,
+        recurring_rule_id=recurring_rule_id,
+        import_id=import_id,
+        place_id=place_id,
+        city=city,
+        country=country,
+        online=online,
+        needs_review=needs_review,
+        treatment_class=treatment_class,
+        treatment_classes=treatment_classes,
+        include_portfolio_transfers=include_portfolio_transfers,
+        one_row_per_transfer=one_row_per_transfer,
         x_space_id=x_space_id,
         x_display_currency=x_display_currency,
     )
@@ -480,6 +640,19 @@ async def asyncio(
     tag_id: list[str] | Unset = UNSET,
     currency_code: str | Unset = UNSET,
     share: GetTransactionDayTotalsShare | Unset = UNSET,
+    counterparty_id: str | Unset = UNSET,
+    project_id: str | Unset = UNSET,
+    recurring_rule_id: str | Unset = UNSET,
+    import_id: str | Unset = UNSET,
+    place_id: str | Unset = UNSET,
+    city: str | Unset = UNSET,
+    country: str | Unset = UNSET,
+    online: bool | Unset = UNSET,
+    needs_review: bool | Unset = UNSET,
+    treatment_class: str | Unset = UNSET,
+    treatment_classes: list[str] | Unset = UNSET,
+    include_portfolio_transfers: bool | Unset = UNSET,
+    one_row_per_transfer: bool | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     x_display_currency: str | Unset = UNSET,
 ) -> DayTotalsResponseEnvelope | ErrorResponse | None:
@@ -511,6 +684,19 @@ async def asyncio(
         tag_id (list[str] | Unset):
         currency_code (str | Unset):
         share (GetTransactionDayTotalsShare | Unset):
+        counterparty_id (str | Unset):
+        project_id (str | Unset):
+        recurring_rule_id (str | Unset):
+        import_id (str | Unset):
+        place_id (str | Unset):
+        city (str | Unset):
+        country (str | Unset):
+        online (bool | Unset):
+        needs_review (bool | Unset):
+        treatment_class (str | Unset):
+        treatment_classes (list[str] | Unset):
+        include_portfolio_transfers (bool | Unset):
+        one_row_per_transfer (bool | Unset):
         x_space_id (str | Unset):
         x_display_currency (str | Unset):  Example: EUR.
 
@@ -544,6 +730,19 @@ async def asyncio(
             tag_id=tag_id,
             currency_code=currency_code,
             share=share,
+            counterparty_id=counterparty_id,
+            project_id=project_id,
+            recurring_rule_id=recurring_rule_id,
+            import_id=import_id,
+            place_id=place_id,
+            city=city,
+            country=country,
+            online=online,
+            needs_review=needs_review,
+            treatment_class=treatment_class,
+            treatment_classes=treatment_classes,
+            include_portfolio_transfers=include_portfolio_transfers,
+            one_row_per_transfer=one_row_per_transfer,
             x_space_id=x_space_id,
             x_display_currency=x_display_currency,
         )

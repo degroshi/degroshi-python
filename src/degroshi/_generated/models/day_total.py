@@ -23,6 +23,8 @@ T = TypeVar("T", bound="DayTotal")
 class DayTotal:
     """
     Attributes:
+        count (int): How many rows the list shows that day for the same filters (transfers and cancelled rows included,
+            as the table shows them).
         day (datetime.date):
         earned (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         spent (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
@@ -30,6 +32,7 @@ class DayTotal:
             rate: that row counts at the display rate, so the day's sum may change.
     """
 
+    count: int
     day: datetime.date
     earned: Decimal
     spent: Decimal
@@ -37,6 +40,8 @@ class DayTotal:
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
+        count = self.count
+
         day = self.day.isoformat()
 
         earned = decimal_out(self.earned)
@@ -53,6 +58,7 @@ class DayTotal:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "count": count,
                 "day": day,
                 "earned": earned,
                 "spent": spent,
@@ -66,6 +72,8 @@ class DayTotal:
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         d = dict(src_dict)
+        count = d.pop("count")
+
         day = datetime.date.fromisoformat(d.pop("day"))
 
         earned = decimal_in(d.pop("earned"))
@@ -82,6 +90,7 @@ class DayTotal:
         rate_pending = _parse_rate_pending(d.pop("rate_pending", UNSET))
 
         day_total = cls(
+            count=count,
             day=day,
             earned=earned,
             spent=spent,

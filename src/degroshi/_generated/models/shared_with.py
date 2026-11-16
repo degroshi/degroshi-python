@@ -29,18 +29,22 @@ class SharedWith:
         purpose (SharedWithPurpose):
         role (SharedWithRole):
         status (SharedWithStatus):
+        avatar_url (None | str | Unset):
         email (None | str | Unset):
         first_name (None | str | Unset):
         name (None | str | Unset):
+        user_id (None | str | Unset): `user_id` and `avatar_url` are the person's once they accepted.
     """
 
     grant_id: str
     purpose: SharedWithPurpose
     role: SharedWithRole
     status: SharedWithStatus
+    avatar_url: None | str | Unset = UNSET
     email: None | str | Unset = UNSET
     first_name: None | str | Unset = UNSET
     name: None | str | Unset = UNSET
+    user_id: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -51,6 +55,12 @@ class SharedWith:
         role: str = self.role
 
         status: str = self.status
+
+        avatar_url: None | str | Unset
+        if isinstance(self.avatar_url, Unset):
+            avatar_url = UNSET
+        else:
+            avatar_url = self.avatar_url
 
         email: None | str | Unset
         if isinstance(self.email, Unset):
@@ -70,6 +80,12 @@ class SharedWith:
         else:
             name = self.name
 
+        user_id: None | str | Unset
+        if isinstance(self.user_id, Unset):
+            user_id = UNSET
+        else:
+            user_id = self.user_id
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -80,12 +96,16 @@ class SharedWith:
                 "status": status,
             }
         )
+        if avatar_url is not UNSET:
+            field_dict["avatar_url"] = avatar_url
         if email is not UNSET:
             field_dict["email"] = email
         if first_name is not UNSET:
             field_dict["first_name"] = first_name
         if name is not UNSET:
             field_dict["name"] = name
+        if user_id is not UNSET:
+            field_dict["user_id"] = user_id
 
         return field_dict
 
@@ -99,6 +119,15 @@ class SharedWith:
         role = check_shared_with_role(d.pop("role"))
 
         status = check_shared_with_status(d.pop("status"))
+
+        def _parse_avatar_url(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        avatar_url = _parse_avatar_url(d.pop("avatar_url", UNSET))
 
         def _parse_email(data: object) -> None | str | Unset:
             if data is None:
@@ -127,14 +156,25 @@ class SharedWith:
 
         name = _parse_name(d.pop("name", UNSET))
 
+        def _parse_user_id(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        user_id = _parse_user_id(d.pop("user_id", UNSET))
+
         shared_with = cls(
             grant_id=grant_id,
             purpose=purpose,
             role=role,
             status=status,
+            avatar_url=avatar_url,
             email=email,
             first_name=first_name,
             name=name,
+            user_id=user_id,
         )
 
         shared_with.additional_properties = d

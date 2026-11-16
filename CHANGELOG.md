@@ -3,6 +3,45 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b3 (2026-11-16)
+
+### API
+
+- Webhook endpoints can be managed with a token that holds `webhooks:manage` (the `full` preset has it):
+  `GET`/`POST /v1/webhooks`, `GET`/`PATCH`/`DELETE /v1/webhooks/{id}`, `pause`, `resume`, `rotate-secret`, `test`,
+  `resend`, `stats`, `deliveries` and a delivery's `resend`, plus `GET /v1/webhooks/event-types`. A token manages the
+  endpoints of the request's space alone whose every event type its scopes read; `space_ids` may be left out on
+  create (it can name only that space, else 403 `WHK_009`), and an event type the token can't read answers 403
+  `AUTH_007` with `details.required_scope`. The answers to creating and rotating carry the secret; a token can't
+  read it back. `CreateEndpointRequest.space_ids` is no longer required.
+- `GET /v1/transactions/day-totals`: every day and the response carry `count`, how many rows the list shows for the
+  same filters (transfers and cancelled rows included). A day with rows but no money (transfers alone) now appears
+  with `spent` and `earned` at 0. Every list filter it already took is now documented on it: places, project,
+  counterparty, recurring rule, import, tax review, `include_portfolio_transfers` and `one_row_per_transfer`.
+- `GET /v1/analytics/net-worth` takes `share`. With `account_ids` (an account's own chart), `whole` shows those
+  accounts as they are: the whole balance and every operation, an account shared with you included. Without
+  `account_ids`, net worth counts your part, as before.
+- `share` on the analytics endpoints and `GET /v1/transactions/day-totals` is documented: `mine` (your part of an
+  account shared with you, the default) or `whole` (the whole account). It used to read "Reserved".
+- `AccountBrand.color`: our swatch (a hex colour) for a curated bank or exchange domain, which a provider's folder
+  uses as its tint; absent for other domains.
+- A refused key gets a code that says why: `AUTH_041` (not a whole key), `AUTH_042` (no such key), `AUTH_043`
+  (expired, `details.expired_at`) and `AUTH_044` (revoked, `details.revoked_at`). They all used to be `AUTH_048`,
+  which now covers only the remaining cases; all of them are still 401. A key is also accepted as
+  `Authorization: Bearer dg_pat_…`.
+- New webhook signing secrets start with `dg_whsec_`; secrets starting with `whsec_` keep working.
+- A shared account says who has access: `grant.people` (on an account shared with you) lists the owner first, then
+  everyone with access, with `user_id`, `name` (the owner's full name, everyone else's first name), `first_name`,
+  `avatar_url`, `role` (`owner`, `balance`, `view` or `write`) and `is_owner`; `shared_with` (on your own account)
+  gains `user_id` and `avatar_url` once a person accepts. The account sharing fields are no longer marked reserved.
+
+### SDK
+
+- `client.webhooks` manages endpoints: `event_types`, `list`, `get`, `create`, `update`, `delete`, `pause`, `resume`,
+  `rotate_secret`, `send_test`, `stats`, `deliveries`, `iterate_deliveries` (follows `meta.next_cursor`), `delivery`,
+  `resend_delivery` and `resend`, beside `verify`, on `Degroshi` and `AsyncDegroshi`. `create` isn't retried: a
+  second try could make a second endpoint.
+
 ## 1.0.0b2 (2026-11-14)
 
 ### API

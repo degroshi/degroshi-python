@@ -25,14 +25,17 @@ T = TypeVar("T", bound="DayTotalsResponse")
 class DayTotalsResponse:
     """
     Attributes:
+        count (int): How many rows the list shows for the same filters: the sum of the days' counts.
         currency (str): The display currency the amounts are in.
         earned (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         spent (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
-        days (list[DayTotal] | None | Unset): The days with any money, newest first.
+        days (list[DayTotal] | None | Unset): The days with any money or any row, newest first: a day of transfers alone
+            has 0 and 0 and its count.
         unconverted (list[str] | None | Unset): Unconverted names the account currencies left out of the sums for want
             of a rate to the display currency (empty when everything counted).
     """
 
+    count: int
     currency: str
     earned: Decimal
     spent: Decimal
@@ -42,6 +45,8 @@ class DayTotalsResponse:
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.day_total import DayTotal  # noqa: PLC0415
+
+        count = self.count
 
         currency = self.currency
 
@@ -74,6 +79,7 @@ class DayTotalsResponse:
         field_dict.update(self.additional_properties)
         field_dict.update(
             {
+                "count": count,
                 "currency": currency,
                 "earned": earned,
                 "spent": spent,
@@ -91,6 +97,8 @@ class DayTotalsResponse:
         from ..models.day_total import DayTotal  # noqa: PLC0415
 
         d = dict(src_dict)
+        count = d.pop("count")
+
         currency = d.pop("currency")
 
         earned = decimal_in(d.pop("earned"))
@@ -137,6 +145,7 @@ class DayTotalsResponse:
         unconverted = _parse_unconverted(d.pop("unconverted", UNSET))
 
         day_totals_response = cls(
+            count=count,
             currency=currency,
             earned=earned,
             spent=spent,

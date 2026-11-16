@@ -64,8 +64,8 @@ class AccountListResponse:
             never a JSON number.
         account_overdraft_limit (None | Decimal | Unset): Decimal number encoded as a string (for example "1234.5600");
             never a JSON number.
-        account_share_amount (None | Decimal | Unset): Reserved; not returned yet. share_amount in the account's own
-            currency, next to account_current_balance.
+        account_share_amount (None | Decimal | Unset): The share_amount in the account's own currency, next to
+            account_current_balance.
         annual_rate (None | Decimal | Unset): The interest rate in percent a year (14.5 = 14.5% a year), at most 2 decimals,
             0–100: a deposit's or savings account's, a credit card's after its grace period, a credit line's, loan's or
             mortgage's.
@@ -73,6 +73,8 @@ class AccountListResponse:
             JSON number.
         balance_version (int | None | Unset): The version of the account's balance.
         brand (AccountBrand | None | Unset):
+        brand_color (None | str | Unset): The colour sampled from the brand's logo (#RRGGBB), for the mark's first
+            paint; omitted until a client samples it.
         brand_domain (None | str | Unset): The bank's or service's site; Brand is its logo for the account mark, omitted
             without a domain.
         changed_at (datetime.datetime | None | Unset): Sent only with updated_since: the later of the account's and its
@@ -88,7 +90,7 @@ class AccountListResponse:
             the due day sets the date.
         gradient_direction (int | None | Unset):
         gradient_type (GradientType | None | Unset):
-        grant (GrantInfo | None | Unset): Reserved; not returned yet.
+        grant (GrantInfo | None | Unset): Set on an account another person shared with the requester.
         icon (None | str | Unset):
         interest_payout (InterestPayout | None | Unset): When a deposit pays its interest: monthly, quarterly,
             at_maturity (with the deposit) or capitalized (added to it).
@@ -101,12 +103,12 @@ class AccountListResponse:
             number.
         payment_due_day (int | None | Unset): The day of the month by which the minimum payment is due and the grace
             period ends (1–31; in a shorter month, its last day).
-        share_amount (None | Decimal | Unset): Reserved; not returned yet. Account sharing, “My part”: the part of
-            current_balance that counts in this space's totals, in the same currency: the requester's capital on an account
-            pooled with them, the balance less the grantees' capital on an account this space pools with others. Absent
-            where the whole balance counts. Totals count include_in_net_worth ? (share_amount ?? current_balance) : 0, with
-            the usual sign rules.
-        shared_with (list[SharedWith] | None | Unset): Reserved; not returned yet.
+        share_amount (None | Decimal | Unset): Account sharing, “My part”: the part of current_balance that counts in this
+            space's totals, in the same currency: the requester's capital on an account pooled with them, the balance less
+            the grantees' capital on an account this space pools with others. Absent where the whole balance counts. Totals
+            count include_in_net_worth ? (share_amount ?? current_balance) : 0, with the usual sign rules.
+        shared_with (list[SharedWith] | None | Unset): `shared_with` lists the people an account of this space is shared
+            with.
         source (AccountSource | None | Unset): Set for an account a custom source pushes through the API; absent for
             others.
         term_end_date (datetime.date | None | Unset): The day the deposit, loan or credit line ends. Kept as entered: it
@@ -142,6 +144,7 @@ class AccountListResponse:
     available_balance: None | Decimal | Unset = UNSET
     balance_version: int | None | Unset = UNSET
     brand: AccountBrand | None | Unset = UNSET
+    brand_color: None | str | Unset = UNSET
     brand_domain: None | str | Unset = UNSET
     changed_at: datetime.datetime | None | Unset = UNSET
     color: None | str | Unset = UNSET
@@ -262,6 +265,12 @@ class AccountListResponse:
             brand = self.brand.to_dict()
         else:
             brand = self.brand
+
+        brand_color: None | str | Unset
+        if isinstance(self.brand_color, Unset):
+            brand_color = UNSET
+        else:
+            brand_color = self.brand_color
 
         brand_domain: None | str | Unset
         if isinstance(self.brand_domain, Unset):
@@ -471,6 +480,8 @@ class AccountListResponse:
             field_dict["balance_version"] = balance_version
         if brand is not UNSET:
             field_dict["brand"] = brand
+        if brand_color is not UNSET:
+            field_dict["brand_color"] = brand_color
         if brand_domain is not UNSET:
             field_dict["brand_domain"] = brand_domain
         if changed_at is not UNSET:
@@ -648,6 +659,15 @@ class AccountListResponse:
             return cast(AccountBrand | None | Unset, data)
 
         brand = _parse_brand(d.pop("brand", UNSET))
+
+        def _parse_brand_color(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        brand_color = _parse_brand_color(d.pop("brand_color", UNSET))
 
         def _parse_brand_domain(data: object) -> None | str | Unset:
             if data is None:
@@ -977,6 +997,7 @@ class AccountListResponse:
             available_balance=available_balance,
             balance_version=balance_version,
             brand=brand,
+            brand_color=brand_color,
             brand_domain=brand_domain,
             changed_at=changed_at,
             color=color,
