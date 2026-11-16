@@ -3,6 +3,23 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b4 (2026-11-16)
+
+### API
+
+- The developer sandbox: a sandbox key starts with `dg_test_` and reaches only its owner's «Пісочниця», a space of
+  invented demo data. `POST /v1/sandbox/reset` puts it back to that data (sandbox keys only, else 403 `SBX_004`; 20 a
+  day, 429 `SBX_003`); change-feed cursors then get 410. `GET /v1/me/spaces` gains `is_sandbox`. New codes `SBX_001`
+  to `SBX_009`.
+- `RecurringResponse.day_changes`: the days a monthly rule's occurrences moved to, oldest first (`day`, and `from`,
+  the first date on the new day). Omitted while the rule keeps its start date's day.
+- `AccountResponse.instalment_plan_id`: a loan account's instalment plan, the active one else the latest; null for an
+  account that never had one.
+
+### SDK
+
+- `client.sandbox.reset()` resets the sandbox with a sandbox key (`dg_test_`), on `Degroshi` and `AsyncDegroshi`.
+
 ## 1.0.0b3 (2026-11-16)
 
 ### API

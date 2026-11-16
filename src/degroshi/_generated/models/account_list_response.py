@@ -92,6 +92,8 @@ class AccountListResponse:
         gradient_type (GradientType | None | Unset):
         grant (GrantInfo | None | Unset): Set on an account another person shared with the requester.
         icon (None | str | Unset):
+        instalment_plan_id (None | str | Unset): The loan's instalment plan: its active plan, else its latest; null for
+            an account that never had one. Clients tell an instalment plan's loan apart by it.
         interest_payout (InterestPayout | None | Unset): When a deposit pays its interest: monthly, quarterly,
             at_maturity (with the deposit) or capitalized (added to it).
         metadata (AccountListResponseMetadataType0 | None | Unset):
@@ -157,6 +159,7 @@ class AccountListResponse:
     gradient_type: GradientType | None | Unset = UNSET
     grant: GrantInfo | None | Unset = UNSET
     icon: None | str | Unset = UNSET
+    instalment_plan_id: None | str | Unset = UNSET
     interest_payout: InterestPayout | None | Unset = UNSET
     metadata: AccountListResponseMetadataType0 | None | Unset = UNSET
     minimum_payment_amount: None | Decimal | Unset = UNSET
@@ -354,6 +357,12 @@ class AccountListResponse:
         else:
             icon = self.icon
 
+        instalment_plan_id: None | str | Unset
+        if isinstance(self.instalment_plan_id, Unset):
+            instalment_plan_id = UNSET
+        else:
+            instalment_plan_id = self.instalment_plan_id
+
         interest_payout: None | str | Unset
         if isinstance(self.interest_payout, Unset):
             interest_payout = UNSET
@@ -506,6 +515,8 @@ class AccountListResponse:
             field_dict["grant"] = grant
         if icon is not UNSET:
             field_dict["icon"] = icon
+        if instalment_plan_id is not UNSET:
+            field_dict["instalment_plan_id"] = instalment_plan_id
         if interest_payout is not UNSET:
             field_dict["interest_payout"] = interest_payout
         if metadata is not UNSET:
@@ -817,6 +828,15 @@ class AccountListResponse:
 
         icon = _parse_icon(d.pop("icon", UNSET))
 
+        def _parse_instalment_plan_id(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        instalment_plan_id = _parse_instalment_plan_id(d.pop("instalment_plan_id", UNSET))
+
         def _parse_interest_payout(data: object) -> InterestPayout | None | Unset:
             if data is None:
                 return data
@@ -1010,6 +1030,7 @@ class AccountListResponse:
             gradient_type=gradient_type,
             grant=grant,
             icon=icon,
+            instalment_plan_id=instalment_plan_id,
             interest_payout=interest_payout,
             metadata=metadata,
             minimum_payment_amount=minimum_payment_amount,

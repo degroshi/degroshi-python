@@ -35,6 +35,7 @@ from ._generated.api.recurring_transactions import (
     list_recurring_occurrences,
     list_recurring_transactions,
 )
+from ._generated.api.sandbox import reset_sandbox
 from ._generated.api.sources import (
     create_source,
     delete_source,
@@ -111,6 +112,7 @@ from ._generated.models import (
     ResendRangeRequest,
     ResendRangeResponse,
     RotateSecretRequest,
+    SandboxResponse,
     SecretResponse,
     SourceResponse,
     SpendingResponse,
@@ -542,6 +544,14 @@ class Changes(_Resource):
         return self._m.change_feed(cursor, query)
 
 
+class Sandbox(_Resource):
+    """The developer sandbox, with a sandbox key (``dg_test_``)."""
+
+    def reset(self) -> SandboxResponse:
+        """Puts the sandbox back to its demo data, so a test run starts clean (20 a day)."""
+        return self._m.one(reset_sandbox)
+
+
 class Events(_Resource):
     """The space's events of the last 30 days, as webhook endpoints receive them."""
 
@@ -695,6 +705,9 @@ if TYPE_CHECKING:
         async def list(self, **query: Any) -> ChangesResponse: ...
         def iterate(self, *, cursor: str | None = None, **query: Any) -> AsyncChangeFeed: ...
 
+    class AsyncSandbox(_Resource):
+        async def reset(self) -> SandboxResponse: ...
+
     class AsyncEvents(_Resource):
         async def list(self, **query: Any) -> EventListPageEnvelope: ...
         def iterate(self, **query: Any) -> AsyncIterator[Event]: ...
@@ -731,7 +744,7 @@ if TYPE_CHECKING:
 else:
     AsyncSpaces, AsyncAccounts, AsyncTransactions = Spaces, Accounts, Transactions
     AsyncCategories, AsyncBudgets, AsyncRecurring, AsyncAnalytics = Categories, Budgets, Recurring, Analytics
-    AsyncSources, AsyncChanges, AsyncEvents, AsyncWebhooks = Sources, Changes, Events, Webhooks
+    AsyncSources, AsyncChanges, AsyncEvents, AsyncWebhooks, AsyncSandbox = Sources, Changes, Events, Webhooks, Sandbox
 
 
 def _client(
@@ -791,6 +804,7 @@ class Degroshi:
         self.sources = Sources(mode)
         self.changes = Changes(mode)
         self.events = Events(mode)
+        self.sandbox = Sandbox(mode)
         self.webhooks = Webhooks(mode)
 
     def close(self) -> None:
@@ -829,6 +843,7 @@ class AsyncDegroshi:
         self.sources = AsyncSources(mode)
         self.changes = AsyncChanges(mode)
         self.events = AsyncEvents(mode)
+        self.sandbox = AsyncSandbox(mode)
         self.webhooks = AsyncWebhooks(mode)
 
     async def aclose(self) -> None:

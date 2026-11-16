@@ -24,6 +24,7 @@ class MySpaceResponse:
     Attributes:
         id (str):
         is_default (bool):
+        is_sandbox (bool): `is_sandbox` marks the developer sandbox, the space a dg_test_ key reaches.
         kind (MySpaceResponseKind):
         name (str):
         role (MySpaceResponseRole):
@@ -31,6 +32,7 @@ class MySpaceResponse:
 
     id: str
     is_default: bool
+    is_sandbox: bool
     kind: MySpaceResponseKind
     name: str
     role: MySpaceResponseRole
@@ -40,6 +42,8 @@ class MySpaceResponse:
         id = self.id
 
         is_default = self.is_default
+
+        is_sandbox = self.is_sandbox
 
         kind: str = self.kind
 
@@ -53,6 +57,7 @@ class MySpaceResponse:
             {
                 "id": id,
                 "is_default": is_default,
+                "is_sandbox": is_sandbox,
                 "kind": kind,
                 "name": name,
                 "role": role,
@@ -68,6 +73,8 @@ class MySpaceResponse:
 
         is_default = d.pop("is_default")
 
+        is_sandbox = d.pop("is_sandbox")
+
         kind = check_my_space_response_kind(d.pop("kind"))
 
         name = d.pop("name")
@@ -77,6 +84,7 @@ class MySpaceResponse:
         my_space_response = cls(
             id=id,
             is_default=is_default,
+            is_sandbox=is_sandbox,
             kind=kind,
             name=name,
             role=role,

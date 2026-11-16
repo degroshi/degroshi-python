@@ -26,6 +26,7 @@ import datetime
 if TYPE_CHECKING:
     from ..models.amount_change_response import AmountChangeResponse
     from ..models.brand_response import BrandResponse
+    from ..models.day_change_response import DayChangeResponse
     from ..models.last_paid_response import LastPaidResponse
 
 
@@ -61,6 +62,9 @@ class RecurringResponse:
             their account was deleted.
         created_by_name (None | str | Unset): The creator's first name (else the local part of their email), also for
             members who have left the space; omitted with created_by.
+        day_changes (list[DayChangeResponse] | None | Unset): The days a monthly rule's occurrences moved to, oldest
+            first. From each change's `from` on, occurrences fall on its `day`, a short month taking its last day; before
+            it, on the day they had. Omitted while the rule keeps its start date's day.
         end_date (datetime.datetime | None | Unset):
         kind (None | RecurringTransactionsKind | Unset): standard, or loan_payment for a loan's repayment.
         last_paid (LastPaidResponse | None | Unset):
@@ -99,6 +103,7 @@ class RecurringResponse:
     category_id: None | str | Unset = UNSET
     created_by: None | str | Unset = UNSET
     created_by_name: None | str | Unset = UNSET
+    day_changes: list[DayChangeResponse] | None | Unset = UNSET
     end_date: datetime.datetime | None | Unset = UNSET
     kind: None | RecurringTransactionsKind | Unset = UNSET
     last_paid: LastPaidResponse | None | Unset = UNSET
@@ -115,6 +120,7 @@ class RecurringResponse:
     def to_dict(self) -> dict[str, Any]:
         from ..models.amount_change_response import AmountChangeResponse  # noqa: PLC0415
         from ..models.brand_response import BrandResponse  # noqa: PLC0415
+        from ..models.day_change_response import DayChangeResponse  # noqa: PLC0415
         from ..models.last_paid_response import LastPaidResponse  # noqa: PLC0415
 
         account_id = self.account_id
@@ -180,6 +186,18 @@ class RecurringResponse:
             created_by_name = UNSET
         else:
             created_by_name = self.created_by_name
+
+        day_changes: list[dict[str, Any]] | None | Unset
+        if isinstance(self.day_changes, Unset):
+            day_changes = UNSET
+        elif isinstance(self.day_changes, list):
+            day_changes = []
+            for day_changes_type_0_item_data in self.day_changes:
+                day_changes_type_0_item = day_changes_type_0_item_data.to_dict()
+                day_changes.append(day_changes_type_0_item)
+
+        else:
+            day_changes = self.day_changes
 
         end_date: None | str | Unset
         if isinstance(self.end_date, Unset):
@@ -288,6 +306,8 @@ class RecurringResponse:
             field_dict["created_by"] = created_by
         if created_by_name is not UNSET:
             field_dict["created_by_name"] = created_by_name
+        if day_changes is not UNSET:
+            field_dict["day_changes"] = day_changes
         if end_date is not UNSET:
             field_dict["end_date"] = end_date
         if kind is not UNSET:
@@ -317,6 +337,7 @@ class RecurringResponse:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.amount_change_response import AmountChangeResponse  # noqa: PLC0415
         from ..models.brand_response import BrandResponse  # noqa: PLC0415
+        from ..models.day_change_response import DayChangeResponse  # noqa: PLC0415
         from ..models.last_paid_response import LastPaidResponse  # noqa: PLC0415
 
         d = dict(src_dict)
@@ -402,6 +423,28 @@ class RecurringResponse:
             return cast(None | str | Unset, data)
 
         created_by_name = _parse_created_by_name(d.pop("created_by_name", UNSET))
+
+        def _parse_day_changes(data: object) -> list[DayChangeResponse] | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, list):
+                    raise TypeError()
+                day_changes_type_0 = []
+                _day_changes_type_0 = data
+                for day_changes_type_0_item_data in _day_changes_type_0:
+                    day_changes_type_0_item = DayChangeResponse.from_dict(day_changes_type_0_item_data)
+
+                    day_changes_type_0.append(day_changes_type_0_item)
+
+                return day_changes_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(list[DayChangeResponse] | None | Unset, data)
+
+        day_changes = _parse_day_changes(d.pop("day_changes", UNSET))
 
         def _parse_end_date(data: object) -> datetime.datetime | None | Unset:
             if data is None:
@@ -564,6 +607,7 @@ class RecurringResponse:
             category_id=category_id,
             created_by=created_by,
             created_by_name=created_by_name,
+            day_changes=day_changes,
             end_date=end_date,
             kind=kind,
             last_paid=last_paid,

@@ -23,6 +23,7 @@ RESOURCES = [
     "Changes",
     "Events",
     "Webhooks",
+    "Sandbox",
 ]
 
 
