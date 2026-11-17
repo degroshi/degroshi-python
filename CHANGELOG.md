@@ -3,6 +3,16 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b6 (2026-11-17)
+
+### API
+
+- Webhook event `sandbox.reset`: the developer sandbox went back to its demo data (`origin` `api` or `app`, the new
+  `seeded_at` and `seed_version`). Only the sandbox sends it; it needs `transactions:read`.
+- `fx_basis` on transactions (reference, card or bank): how `amount` was found from `original_amount`. Send `bank`
+  when `amount` is what the account was charged: the account learns its own rate from it, and payments the server
+  converts for it (an edit of the original, the assistant's drafts) use our rate times that correction.
+
 ## 1.0.0b5 (2026-11-17)
 
 ### API

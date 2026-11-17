@@ -8,6 +8,8 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
+from ..models.transaction_response_fx_basis_type_0 import check_transaction_response_fx_basis_type_0
+from ..models.transaction_response_fx_basis_type_0 import TransactionResponseFxBasisType0
 from ..models.transaction_response_kind_type_0 import check_transaction_response_kind_type_0
 from ..models.transaction_response_kind_type_0 import TransactionResponseKindType0
 from ..models.transaction_response_place_source_type_0 import check_transaction_response_place_source_type_0
@@ -114,6 +116,9 @@ class TransactionUpdatedEventDataObject:
             outgoing leg (the transfer's id). Omitted for other transactions.
         fee_transaction_id (None | str | Unset): The fee expense booked with this transfer (on the source account), on
             both legs; omitted when the transfer has no fee.
+        fx_basis (None | TransactionResponseFxBasisType0 | Unset): How amount was found from the original: reference
+            (our rate), card (with the account's own rate, learned from the bank's figures) or bank (the bank's figure);
+            absent without an original or before it was recorded.
         kind (None | TransactionResponseKindType0 | Unset): "portfolio_transfer" for a transfer between two of the
             space's portfolio accounts (include_portfolio_transfers): its other fields are a list row's,
             `portfolio_transfer` carries the transfer, and it is read-only. Absent on a transaction.
@@ -207,6 +212,7 @@ class TransactionUpdatedEventDataObject:
     exchange_rate: None | str | Unset = UNSET
     fee_for_transfer_id: None | str | Unset = UNSET
     fee_transaction_id: None | str | Unset = UNSET
+    fx_basis: None | TransactionResponseFxBasisType0 | Unset = UNSET
     kind: None | TransactionResponseKindType0 | Unset = UNSET
     linked_activity: LinkedActivityResponse | None | Unset = UNSET
     linked_transfer_id: None | str | Unset = UNSET
@@ -425,6 +431,14 @@ class TransactionUpdatedEventDataObject:
             fee_transaction_id = UNSET
         else:
             fee_transaction_id = self.fee_transaction_id
+
+        fx_basis: None | str | Unset
+        if isinstance(self.fx_basis, Unset):
+            fx_basis = UNSET
+        elif isinstance(self.fx_basis, str):
+            fx_basis = self.fx_basis
+        else:
+            fx_basis = self.fx_basis
 
         kind: None | str | Unset
         if isinstance(self.kind, Unset):
@@ -701,6 +715,8 @@ class TransactionUpdatedEventDataObject:
             field_dict["fee_for_transfer_id"] = fee_for_transfer_id
         if fee_transaction_id is not UNSET:
             field_dict["fee_transaction_id"] = fee_transaction_id
+        if fx_basis is not UNSET:
+            field_dict["fx_basis"] = fx_basis
         if kind is not UNSET:
             field_dict["kind"] = kind
         if linked_activity is not UNSET:
@@ -1023,6 +1039,23 @@ class TransactionUpdatedEventDataObject:
             return cast(None | str | Unset, data)
 
         fee_transaction_id = _parse_fee_transaction_id(d.pop("fee_transaction_id", UNSET))
+
+        def _parse_fx_basis(data: object) -> None | TransactionResponseFxBasisType0 | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                fx_basis_type_0 = check_transaction_response_fx_basis_type_0(data)
+
+                return fx_basis_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | TransactionResponseFxBasisType0 | Unset, data)
+
+        fx_basis = _parse_fx_basis(d.pop("fx_basis", UNSET))
 
         def _parse_kind(data: object) -> None | TransactionResponseKindType0 | Unset:
             if data is None:
@@ -1444,6 +1477,7 @@ class TransactionUpdatedEventDataObject:
             exchange_rate=exchange_rate,
             fee_for_transfer_id=fee_for_transfer_id,
             fee_transaction_id=fee_transaction_id,
+            fx_basis=fx_basis,
             kind=kind,
             linked_activity=linked_activity,
             linked_transfer_id=linked_transfer_id,

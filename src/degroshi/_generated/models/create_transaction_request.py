@@ -11,6 +11,8 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
+from ..models.create_transaction_request_fx_basis import check_create_transaction_request_fx_basis
+from ..models.create_transaction_request_fx_basis import CreateTransactionRequestFxBasis
 from ..models.create_transaction_request_place_source import check_create_transaction_request_place_source
 from ..models.create_transaction_request_place_source import CreateTransactionRequestPlaceSource
 from ..models.transaction_status import check_transaction_status
@@ -42,6 +44,8 @@ class CreateTransactionRequest:
         description (str | Unset):
         exchange_rate (Decimal | Unset): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         external_source (str | Unset):
+        fx_basis (CreateTransactionRequestFxBasis | Unset): how amount was found from the original: reference (our
+            rate), card (fx-quote's basis) or bank (the account's charge; it teaches the account its rate)
         id (str | Unset): An optional id you make up (any UUID), so a retried request doesn't create the row twice: the
             same id answers 200 with the stored row and the header Idempotent-Replayed: true.
         merchant (str | Unset):
@@ -74,6 +78,7 @@ class CreateTransactionRequest:
     description: str | Unset = UNSET
     exchange_rate: Decimal | Unset = UNSET
     external_source: str | Unset = UNSET
+    fx_basis: CreateTransactionRequestFxBasis | Unset = UNSET
     id: str | Unset = UNSET
     merchant: str | Unset = UNSET
     merchant_brand_id: str | Unset = UNSET
@@ -114,6 +119,10 @@ class CreateTransactionRequest:
         exchange_rate = decimal_out(self.exchange_rate)
 
         external_source = self.external_source
+
+        fx_basis: str | Unset = UNSET
+        if not isinstance(self.fx_basis, Unset):
+            fx_basis = self.fx_basis
 
         id = self.id
 
@@ -183,6 +192,8 @@ class CreateTransactionRequest:
             field_dict["exchange_rate"] = exchange_rate
         if external_source is not UNSET:
             field_dict["external_source"] = external_source
+        if fx_basis is not UNSET:
+            field_dict["fx_basis"] = fx_basis
         if id is not UNSET:
             field_dict["id"] = id
         if merchant is not UNSET:
@@ -244,6 +255,13 @@ class CreateTransactionRequest:
         exchange_rate = decimal_in(d.pop("exchange_rate", UNSET))
 
         external_source = d.pop("external_source", UNSET)
+
+        _fx_basis = d.pop("fx_basis", UNSET)
+        fx_basis: CreateTransactionRequestFxBasis | Unset
+        if isinstance(_fx_basis, Unset):
+            fx_basis = UNSET
+        else:
+            fx_basis = check_create_transaction_request_fx_basis(_fx_basis)
 
         id = d.pop("id", UNSET)
 
@@ -320,6 +338,7 @@ class CreateTransactionRequest:
             description=description,
             exchange_rate=exchange_rate,
             external_source=external_source,
+            fx_basis=fx_basis,
             id=id,
             merchant=merchant,
             merchant_brand_id=merchant_brand_id,
