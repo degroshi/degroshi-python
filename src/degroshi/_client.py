@@ -145,6 +145,15 @@ class Page(Generic[Row]):
     meta: Meta
 
 
+def _next_page(meta: Any, page: int, query: dict[str, Any]) -> int:
+    """The way to the page after ``page``: its ``next_cursor`` as ``after`` where the list gives one (the API then
+    ignores the page number, and rows added or removed meanwhile don't repeat or skip a row), else the next number."""
+    cursor = getattr(meta, "next_cursor", None)
+    if isinstance(cursor, str) and cursor:
+        query["after"] = cursor
+    return page + 1
+
+
 def _envelope(response: Any) -> Any:
     if 200 <= int(response.status_code) < 300:
         return response.parsed
@@ -189,7 +198,7 @@ class _SyncMode:
             yield from result.data
             if not result.data or not getattr(result.meta, "has_next", False):
                 return
-            page += 1
+            page = _next_page(result.meta, page, query)
 
     def events(self, **query: Any) -> Iterator[Any]:
         while True:
@@ -252,7 +261,7 @@ class _AsyncMode:
                 yield row
             if not result.data or not getattr(result.meta, "has_next", False):
                 return
-            page += 1
+            page = _next_page(result.meta, page, query)
 
     async def events(self, **query: Any) -> AsyncIterator[Any]:
         while True:
@@ -388,7 +397,8 @@ class Accounts(_Resource):
 
 class Transactions(_Resource):
     def list(self, **query: Any) -> Page[TransactionResponse]:
-        """One page; ``meta.has_next`` says whether another follows."""
+        """One page; ``meta.has_next`` says whether another follows, and ``meta.next_cursor`` (unset on the last page)
+        is what to send as ``after`` for it."""
         return self._m.page(list_transactions, **query)
 
     def iterate(self, *, per_page: int = 100, **query: Any) -> Iterator[TransactionResponse]:

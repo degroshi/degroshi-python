@@ -181,6 +181,29 @@ def test_iterates_transactions_until_has_next_is_false() -> None:
     assert len(seen) == 2
 
 
+def test_iterates_transactions_by_next_cursor_once_the_api_gives_one() -> None:
+    # Arrange: three rows a page apart; each page names the next by its cursor.
+    def handler(request: httpx2.Request) -> httpx2.Response:
+        after = request.url.params.get("after")
+        at = int(after[1:]) if after else 1
+        row = {**TRANSACTION, "id": f"t{at}"}
+        meta: dict[str, object] = {
+            "page": 1, "per_page": 1, "total": 3, "total_pages": 3, "has_next": at < 3, "has_prev": at > 1,
+        }
+        if at < 3:
+            meta["next_cursor"] = f"c{at + 1}"
+        return httpx2.Response(200, json={"success": True, "data": [row], "meta": meta})
+
+    degroshi, seen = client(handler)
+
+    # Act
+    actual = [t.id for t in degroshi.transactions.iterate(per_page=1)]
+
+    # Assert
+    assert actual == ["t1", "t2", "t3"]
+    assert [request.url.params.get("after") for request in seen] == [None, "c2", "c3"]
+
+
 def test_needs_a_key(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.delenv("DEGROSHI_API_KEY", raising=False)
     with pytest.raises(ValueError, match="api_key"):

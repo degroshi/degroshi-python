@@ -3,6 +3,21 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b7 (2026-11-17)
+
+### API
+
+- `GET /v1/transactions` pages by cursor: `meta.next_cursor` (absent on the last page) is the place after the page's
+  last row, and `after` starts the next page right after it, with the same filters and `sort` (another sort is a 400).
+  Rows added or removed meanwhile don't repeat or skip a row the way `page` numbers do; `page` works as before. The
+  amount sorts compare at the latest rates, so a rate change between pages can move a row across the cursor: dedupe
+  by id, or walk a date sort.
+
+### SDK
+
+- `transactions.iterate()` walks by `next_cursor` once the API gives one, so a list that changes while it reads no
+  longer repeats or skips a row; with an older API it still pages by number.
+
 ## 1.0.0b6 (2026-11-17)
 
 ### API

@@ -8,6 +8,9 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
+from ..types import UNSET, Unset
+from typing import cast
+
 
 T = TypeVar("T", bound="Meta")
 
@@ -22,6 +25,9 @@ class Meta:
         per_page (int):
         total (int):
         total_pages (int):
+        next_cursor (None | str | Unset): The place after the page's last row on a list that pages by cursor (GET
+            /v1/transactions): send it back as after for the next page. Absent on the last page and on lists that page by
+            number only.
     """
 
     has_next: bool
@@ -30,6 +36,7 @@ class Meta:
     per_page: int
     total: int
     total_pages: int
+    next_cursor: None | str | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
@@ -45,6 +52,12 @@ class Meta:
 
         total_pages = self.total_pages
 
+        next_cursor: None | str | Unset
+        if isinstance(self.next_cursor, Unset):
+            next_cursor = UNSET
+        else:
+            next_cursor = self.next_cursor
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update(
@@ -57,6 +70,8 @@ class Meta:
                 "total_pages": total_pages,
             }
         )
+        if next_cursor is not UNSET:
+            field_dict["next_cursor"] = next_cursor
 
         return field_dict
 
@@ -75,6 +90,15 @@ class Meta:
 
         total_pages = d.pop("total_pages")
 
+        def _parse_next_cursor(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        next_cursor = _parse_next_cursor(d.pop("next_cursor", UNSET))
+
         meta = cls(
             has_next=has_next,
             has_prev=has_prev,
@@ -82,6 +106,7 @@ class Meta:
             per_page=per_page,
             total=total,
             total_pages=total_pages,
+            next_cursor=next_cursor,
         )
 
         meta.additional_properties = d

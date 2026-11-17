@@ -21,6 +21,7 @@ def _get_kwargs(
     *,
     page: int | Unset = UNSET,
     per_page: int | Unset = UNSET,
+    after: str | Unset = UNSET,
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
@@ -70,6 +71,8 @@ def _get_kwargs(
     params["page"] = page
 
     params["per_page"] = per_page
+
+    params["after"] = after
 
     params["account_id"] = account_id
 
@@ -243,6 +246,7 @@ def sync_detailed(
     client: AuthenticatedClient,
     page: int | Unset = UNSET,
     per_page: int | Unset = UNSET,
+    after: str | Unset = UNSET,
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
@@ -293,6 +297,7 @@ def sync_detailed(
     Args:
         page (int | Unset):
         per_page (int | Unset):
+        after (str | Unset):
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
@@ -341,6 +346,7 @@ def sync_detailed(
     kwargs = _get_kwargs(
         page=page,
         per_page=per_page,
+        after=after,
         account_id=account_id,
         account_ids=account_ids,
         category_id=category_id,
@@ -391,6 +397,7 @@ def sync(
     client: AuthenticatedClient,
     page: int | Unset = UNSET,
     per_page: int | Unset = UNSET,
+    after: str | Unset = UNSET,
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
@@ -441,6 +448,7 @@ def sync(
     Args:
         page (int | Unset):
         per_page (int | Unset):
+        after (str | Unset):
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
@@ -490,6 +498,7 @@ def sync(
         client=client,
         page=page,
         per_page=per_page,
+        after=after,
         account_id=account_id,
         account_ids=account_ids,
         category_id=category_id,
@@ -534,6 +543,7 @@ async def asyncio_detailed(
     client: AuthenticatedClient,
     page: int | Unset = UNSET,
     per_page: int | Unset = UNSET,
+    after: str | Unset = UNSET,
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
@@ -584,6 +594,7 @@ async def asyncio_detailed(
     Args:
         page (int | Unset):
         per_page (int | Unset):
+        after (str | Unset):
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
@@ -632,6 +643,7 @@ async def asyncio_detailed(
     kwargs = _get_kwargs(
         page=page,
         per_page=per_page,
+        after=after,
         account_id=account_id,
         account_ids=account_ids,
         category_id=category_id,
@@ -680,6 +692,7 @@ async def asyncio(
     client: AuthenticatedClient,
     page: int | Unset = UNSET,
     per_page: int | Unset = UNSET,
+    after: str | Unset = UNSET,
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
@@ -730,6 +743,7 @@ async def asyncio(
     Args:
         page (int | Unset):
         per_page (int | Unset):
+        after (str | Unset):
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
@@ -780,6 +794,7 @@ async def asyncio(
             client=client,
             page=page,
             per_page=per_page,
+            after=after,
             account_id=account_id,
             account_ids=account_ids,
             category_id=category_id,
