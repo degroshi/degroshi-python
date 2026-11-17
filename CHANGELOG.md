@@ -3,6 +3,16 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b8 (2026-11-18)
+
+### API
+
+- `GET /v1/accounts/net-worth` adds `change_24h`: the net worth now against 24 hours earlier (`since`), with
+  `previous_net_worth`, `amount` (`net_worth` minus `previous_net_worth`) and `percent` of the earlier net worth
+  (absent when that was zero). The earlier net worth replays every counted balance back to `since`, a wallet,
+  exchange or broker account at its value of that day, at that day's exchange rates, so market moves count. The field
+  is absent when a rate of that day is missing.
+
 ## 1.0.0b7 (2026-11-17)
 
 ### API

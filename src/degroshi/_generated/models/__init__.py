@@ -150,6 +150,7 @@ from .my_space_response import MySpaceResponse
 from .my_space_response_kind import MySpaceResponseKind
 from .my_space_response_list_envelope import MySpaceResponseListEnvelope
 from .my_space_response_role import MySpaceResponseRole
+from .net_worth_change import NetWorthChange
 from .net_worth_point import NetWorthPoint
 from .net_worth_response import NetWorthResponse
 from .net_worth_response_envelope import NetWorthResponseEnvelope
@@ -428,6 +429,7 @@ __all__ = (
     "MySpaceResponseKind",
     "MySpaceResponseListEnvelope",
     "MySpaceResponseRole",
+    "NetWorthChange",
     "NetWorthPoint",
     "NetWorthResponse",
     "NetWorthResponseEnvelope",

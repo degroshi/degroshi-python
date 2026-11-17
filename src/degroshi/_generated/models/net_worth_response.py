@@ -18,6 +18,7 @@ import datetime
 if TYPE_CHECKING:
     from ..models.account_with_converted_balance import AccountWithConvertedBalance
     from ..models.accounts_currency_info import AccountsCurrencyInfo
+    from ..models.net_worth_change import NetWorthChange
 
 
 T = TypeVar("T", bound="NetWorthResponse")
@@ -34,6 +35,8 @@ class NetWorthResponse:
         total_assets (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         total_liabilities (Decimal): Decimal number encoded as a string (for example "1234.5600"); never a JSON number.
         by_account (list[AccountWithConvertedBalance] | None | Unset):
+        change_24h (NetWorthChange | None | Unset): Net_worth against 24 hours ago; absent when it can't be told (a rate
+            of then or now is missing, or the history couldn't be read).
         missing_rates (list[str] | None | Unset): `missing_rates` lists account currencies without an exchange rate into
             base_currency; those accounts are excluded from the totals.
     """
@@ -45,12 +48,14 @@ class NetWorthResponse:
     total_assets: Decimal
     total_liabilities: Decimal
     by_account: list[AccountWithConvertedBalance] | None | Unset = UNSET
+    change_24h: NetWorthChange | None | Unset = UNSET
     missing_rates: list[str] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.account_with_converted_balance import AccountWithConvertedBalance  # noqa: PLC0415
         from ..models.accounts_currency_info import AccountsCurrencyInfo  # noqa: PLC0415
+        from ..models.net_worth_change import NetWorthChange  # noqa: PLC0415
 
         base_currency = self.base_currency
 
@@ -76,6 +81,14 @@ class NetWorthResponse:
         else:
             by_account = self.by_account
 
+        change_24h: dict[str, Any] | None | Unset
+        if isinstance(self.change_24h, Unset):
+            change_24h = UNSET
+        elif isinstance(self.change_24h, NetWorthChange):
+            change_24h = self.change_24h.to_dict()
+        else:
+            change_24h = self.change_24h
+
         missing_rates: list[str] | None | Unset
         if isinstance(self.missing_rates, Unset):
             missing_rates = UNSET
@@ -99,6 +112,8 @@ class NetWorthResponse:
         )
         if by_account is not UNSET:
             field_dict["by_account"] = by_account
+        if change_24h is not UNSET:
+            field_dict["change_24h"] = change_24h
         if missing_rates is not UNSET:
             field_dict["missing_rates"] = missing_rates
 
@@ -108,6 +123,7 @@ class NetWorthResponse:
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.account_with_converted_balance import AccountWithConvertedBalance  # noqa: PLC0415
         from ..models.accounts_currency_info import AccountsCurrencyInfo  # noqa: PLC0415
+        from ..models.net_worth_change import NetWorthChange  # noqa: PLC0415
 
         d = dict(src_dict)
         base_currency = d.pop("base_currency")
@@ -144,6 +160,23 @@ class NetWorthResponse:
 
         by_account = _parse_by_account(d.pop("by_account", UNSET))
 
+        def _parse_change_24h(data: object) -> NetWorthChange | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, dict):
+                    raise TypeError()
+                change_24h_type_0 = NetWorthChange.from_dict(data)
+
+                return change_24h_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(NetWorthChange | None | Unset, data)
+
+        change_24h = _parse_change_24h(d.pop("change_24h", UNSET))
+
         def _parse_missing_rates(data: object) -> list[str] | None | Unset:
             if data is None:
                 return data
@@ -169,6 +202,7 @@ class NetWorthResponse:
             total_assets=total_assets,
             total_liabilities=total_liabilities,
             by_account=by_account,
+            change_24h=change_24h,
             missing_rates=missing_rates,
         )
 
