@@ -3,6 +3,19 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b9 (2026-11-19)
+
+### API
+
+- A transaction's inline `place` (create and update) takes `{"ref": "online"}`: the space's one place for purchases
+  online, found or made the first time (kind `online`, no name), the same place bank rows bought online get.
+- `GET /v1/analytics/merchants` takes `group_by=category` with `limit_per_category` (1 to 20, default 3): one row
+  per merchant and category (the one the operation was booked to), the largest of each category, and the new `others`
+  (always present, empty without `group_by`) with what each category's rows leave, so a category's rows plus its
+  `others` make its spending in `GET /v1/analytics/categories`.
+- `GET /v1/analytics/merchants` takes `exclude_recurring=true`: the operations a recurring rule created or matched
+  (a split part with its parent's) are left out.
+
 ## 1.0.0b8 (2026-11-18)
 
 ### API

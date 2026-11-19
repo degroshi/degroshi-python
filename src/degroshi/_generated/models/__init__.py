@@ -112,6 +112,7 @@ from .event_list_page_envelope import EventListPageEnvelope
 from .frequency import Frequency
 from .get_analytics_cash_flow_share import GetAnalyticsCashFlowShare
 from .get_analytics_categories_share import GetAnalyticsCategoriesShare
+from .get_analytics_merchants_group_by import GetAnalyticsMerchantsGroupBy
 from .get_analytics_merchants_share import GetAnalyticsMerchantsShare
 from .get_analytics_merchants_side import GetAnalyticsMerchantsSide
 from .get_analytics_net_worth_share import GetAnalyticsNetWorthShare
@@ -144,6 +145,7 @@ from .merchant_analytics_response_envelope import MerchantAnalyticsResponseEnvel
 from .merchant_analytics_response_side import MerchantAnalyticsResponseSide
 from .merchant_category import MerchantCategory
 from .merchant_figures import MerchantFigures
+from .merchant_others import MerchantOthers
 from .meta import Meta
 from .mode import Mode
 from .my_space_response import MySpaceResponse
@@ -391,6 +393,7 @@ __all__ = (
     "Frequency",
     "GetAnalyticsCashFlowShare",
     "GetAnalyticsCategoriesShare",
+    "GetAnalyticsMerchantsGroupBy",
     "GetAnalyticsMerchantsShare",
     "GetAnalyticsMerchantsSide",
     "GetAnalyticsNetWorthShare",
@@ -423,6 +426,7 @@ __all__ = (
     "MerchantAnalyticsResponseSide",
     "MerchantCategory",
     "MerchantFigures",
+    "MerchantOthers",
     "Meta",
     "Mode",
     "MySpaceResponse",

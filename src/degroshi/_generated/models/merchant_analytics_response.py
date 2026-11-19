@@ -18,6 +18,7 @@ if TYPE_CHECKING:
     from ..models.analytics_currency_info import AnalyticsCurrencyInfo
     from ..models.merchant_activity import MerchantActivity
     from ..models.merchant_figures import MerchantFigures
+    from ..models.merchant_others import MerchantOthers
 
 
 T = TypeVar("T", bound="MerchantAnalyticsResponse")
@@ -30,7 +31,10 @@ class MerchantAnalyticsResponse:
         currency_info (AnalyticsCurrencyInfo):
         from_ (datetime.date):
         merchants (list[MerchantActivity]): The merchants with operations in the period, the largest amount first, at
-            most `limit`.
+            most `limit`. With group_by=category, one row per merchant and category (the operation's own), at most
+            `limit_per_category` per category, the categories largest first.
+        others (list[MerchantOthers]): Others, with group_by=category, are per category what its listed rows leave (a
+            category whose rows hold everything has none); empty without.
         previous_from (datetime.date):
         previous_to (datetime.date):
         side (MerchantAnalyticsResponseSide): The side the amounts are of: expense or income.
@@ -46,6 +50,7 @@ class MerchantAnalyticsResponse:
     currency_info: AnalyticsCurrencyInfo
     from_: datetime.date
     merchants: list[MerchantActivity]
+    others: list[MerchantOthers]
     previous_from: datetime.date
     previous_to: datetime.date
     side: MerchantAnalyticsResponseSide
@@ -60,6 +65,7 @@ class MerchantAnalyticsResponse:
         from ..models.analytics_currency_info import AnalyticsCurrencyInfo  # noqa: PLC0415
         from ..models.merchant_activity import MerchantActivity  # noqa: PLC0415
         from ..models.merchant_figures import MerchantFigures  # noqa: PLC0415
+        from ..models.merchant_others import MerchantOthers  # noqa: PLC0415
 
         currency_info = self.currency_info.to_dict()
 
@@ -69,6 +75,11 @@ class MerchantAnalyticsResponse:
         for merchants_item_data in self.merchants:
             merchants_item = merchants_item_data.to_dict()
             merchants.append(merchants_item)
+
+        others = []
+        for others_item_data in self.others:
+            others_item = others_item_data.to_dict()
+            others.append(others_item)
 
         previous_from = self.previous_from.isoformat()
 
@@ -104,6 +115,7 @@ class MerchantAnalyticsResponse:
                 "currencyInfo": currency_info,
                 "from": from_,
                 "merchants": merchants,
+                "others": others,
                 "previous_from": previous_from,
                 "previous_to": previous_to,
                 "side": side,
@@ -124,6 +136,7 @@ class MerchantAnalyticsResponse:
         from ..models.analytics_currency_info import AnalyticsCurrencyInfo  # noqa: PLC0415
         from ..models.merchant_activity import MerchantActivity  # noqa: PLC0415
         from ..models.merchant_figures import MerchantFigures  # noqa: PLC0415
+        from ..models.merchant_others import MerchantOthers  # noqa: PLC0415
 
         d = dict(src_dict)
         currency_info = AnalyticsCurrencyInfo.from_dict(d.pop("currencyInfo"))
@@ -136,6 +149,13 @@ class MerchantAnalyticsResponse:
             merchants_item = MerchantActivity.from_dict(merchants_item_data)
 
             merchants.append(merchants_item)
+
+        others = []
+        _others = d.pop("others")
+        for others_item_data in _others:
+            others_item = MerchantOthers.from_dict(others_item_data)
+
+            others.append(others_item)
 
         previous_from = datetime.date.fromisoformat(d.pop("previous_from"))
 
@@ -179,6 +199,7 @@ class MerchantAnalyticsResponse:
             currency_info=currency_info,
             from_=from_,
             merchants=merchants,
+            others=others,
             previous_from=previous_from,
             previous_to=previous_to,
             side=side,

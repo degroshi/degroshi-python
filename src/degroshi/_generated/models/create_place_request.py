@@ -28,7 +28,9 @@ class CreatePlaceRequest:
         name (None | str | Unset):
         pin (PointName | Unset):
         provider_ref (None | str | Unset):
-        ref (None | str | Unset): Ref stores a result of ours: "gers:…" or "city:…".
+        ref (None | str | Unset): Ref stores a result of ours: "gers:…" or "city:…", names one of the space's places
+            ("space:…"), or is "online": the space's one place for purchases online, found or made the first time (kind
+            online, no name).
     """
 
     city_ref: None | str | Unset = UNSET

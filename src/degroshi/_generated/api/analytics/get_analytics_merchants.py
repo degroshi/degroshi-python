@@ -9,6 +9,8 @@ from ...types import Response, UNSET
 from ... import errors
 
 from ...models.error_response import ErrorResponse
+from ...models.get_analytics_merchants_group_by import check_get_analytics_merchants_group_by
+from ...models.get_analytics_merchants_group_by import GetAnalyticsMerchantsGroupBy
 from ...models.get_analytics_merchants_share import check_get_analytics_merchants_share
 from ...models.get_analytics_merchants_share import GetAnalyticsMerchantsShare
 from ...models.get_analytics_merchants_side import check_get_analytics_merchants_side
@@ -27,6 +29,9 @@ def _get_kwargs(
     side: GetAnalyticsMerchantsSide | Unset = UNSET,
     category_id: UUID | Unset = UNSET,
     limit: int | Unset = UNSET,
+    group_by: GetAnalyticsMerchantsGroupBy | Unset = UNSET,
+    limit_per_category: int | Unset = UNSET,
+    exclude_recurring: bool | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     share: GetAnalyticsMerchantsShare | Unset = UNSET,
     currency: str | Unset = UNSET,
@@ -60,6 +65,16 @@ def _get_kwargs(
     params["category_id"] = json_category_id
 
     params["limit"] = limit
+
+    json_group_by: str | Unset = UNSET
+    if not isinstance(group_by, Unset):
+        json_group_by = group_by
+
+    params["group_by"] = json_group_by
+
+    params["limit_per_category"] = limit_per_category
+
+    params["exclude_recurring"] = exclude_recurring
 
     json_account_ids: list[str] | Unset = UNSET
     if not isinstance(account_ids, Unset):
@@ -140,6 +155,9 @@ def sync_detailed(
     side: GetAnalyticsMerchantsSide | Unset = UNSET,
     category_id: UUID | Unset = UNSET,
     limit: int | Unset = UNSET,
+    group_by: GetAnalyticsMerchantsGroupBy | Unset = UNSET,
+    limit_per_category: int | Unset = UNSET,
+    exclude_recurring: bool | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     share: GetAnalyticsMerchantsShare | Unset = UNSET,
     currency: str | Unset = UNSET,
@@ -158,6 +176,9 @@ def sync_detailed(
         side (GetAnalyticsMerchantsSide | Unset):
         category_id (UUID | Unset):
         limit (int | Unset):
+        group_by (GetAnalyticsMerchantsGroupBy | Unset):
+        limit_per_category (int | Unset):
+        exclude_recurring (bool | Unset):
         account_ids (list[str] | Unset):
         share (GetAnalyticsMerchantsShare | Unset):
         currency (str | Unset):
@@ -178,6 +199,9 @@ def sync_detailed(
         side=side,
         category_id=category_id,
         limit=limit,
+        group_by=group_by,
+        limit_per_category=limit_per_category,
+        exclude_recurring=exclude_recurring,
         account_ids=account_ids,
         share=share,
         currency=currency,
@@ -200,6 +224,9 @@ def sync(
     side: GetAnalyticsMerchantsSide | Unset = UNSET,
     category_id: UUID | Unset = UNSET,
     limit: int | Unset = UNSET,
+    group_by: GetAnalyticsMerchantsGroupBy | Unset = UNSET,
+    limit_per_category: int | Unset = UNSET,
+    exclude_recurring: bool | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     share: GetAnalyticsMerchantsShare | Unset = UNSET,
     currency: str | Unset = UNSET,
@@ -218,6 +245,9 @@ def sync(
         side (GetAnalyticsMerchantsSide | Unset):
         category_id (UUID | Unset):
         limit (int | Unset):
+        group_by (GetAnalyticsMerchantsGroupBy | Unset):
+        limit_per_category (int | Unset):
+        exclude_recurring (bool | Unset):
         account_ids (list[str] | Unset):
         share (GetAnalyticsMerchantsShare | Unset):
         currency (str | Unset):
@@ -239,6 +269,9 @@ def sync(
         side=side,
         category_id=category_id,
         limit=limit,
+        group_by=group_by,
+        limit_per_category=limit_per_category,
+        exclude_recurring=exclude_recurring,
         account_ids=account_ids,
         share=share,
         currency=currency,
@@ -255,6 +288,9 @@ async def asyncio_detailed(
     side: GetAnalyticsMerchantsSide | Unset = UNSET,
     category_id: UUID | Unset = UNSET,
     limit: int | Unset = UNSET,
+    group_by: GetAnalyticsMerchantsGroupBy | Unset = UNSET,
+    limit_per_category: int | Unset = UNSET,
+    exclude_recurring: bool | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     share: GetAnalyticsMerchantsShare | Unset = UNSET,
     currency: str | Unset = UNSET,
@@ -273,6 +309,9 @@ async def asyncio_detailed(
         side (GetAnalyticsMerchantsSide | Unset):
         category_id (UUID | Unset):
         limit (int | Unset):
+        group_by (GetAnalyticsMerchantsGroupBy | Unset):
+        limit_per_category (int | Unset):
+        exclude_recurring (bool | Unset):
         account_ids (list[str] | Unset):
         share (GetAnalyticsMerchantsShare | Unset):
         currency (str | Unset):
@@ -293,6 +332,9 @@ async def asyncio_detailed(
         side=side,
         category_id=category_id,
         limit=limit,
+        group_by=group_by,
+        limit_per_category=limit_per_category,
+        exclude_recurring=exclude_recurring,
         account_ids=account_ids,
         share=share,
         currency=currency,
@@ -313,6 +355,9 @@ async def asyncio(
     side: GetAnalyticsMerchantsSide | Unset = UNSET,
     category_id: UUID | Unset = UNSET,
     limit: int | Unset = UNSET,
+    group_by: GetAnalyticsMerchantsGroupBy | Unset = UNSET,
+    limit_per_category: int | Unset = UNSET,
+    exclude_recurring: bool | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     share: GetAnalyticsMerchantsShare | Unset = UNSET,
     currency: str | Unset = UNSET,
@@ -331,6 +376,9 @@ async def asyncio(
         side (GetAnalyticsMerchantsSide | Unset):
         category_id (UUID | Unset):
         limit (int | Unset):
+        group_by (GetAnalyticsMerchantsGroupBy | Unset):
+        limit_per_category (int | Unset):
+        exclude_recurring (bool | Unset):
         account_ids (list[str] | Unset):
         share (GetAnalyticsMerchantsShare | Unset):
         currency (str | Unset):
@@ -353,6 +401,9 @@ async def asyncio(
             side=side,
             category_id=category_id,
             limit=limit,
+            group_by=group_by,
+            limit_per_category=limit_per_category,
+            exclude_recurring=exclude_recurring,
             account_ids=account_ids,
             share=share,
             currency=currency,
