@@ -22,6 +22,7 @@ def _get_kwargs(
     page: int | Unset = UNSET,
     per_page: int | Unset = UNSET,
     after: str | Unset = UNSET,
+    count: bool | Unset = True,
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
@@ -73,6 +74,8 @@ def _get_kwargs(
     params["per_page"] = per_page
 
     params["after"] = after
+
+    params["count"] = count
 
     params["account_id"] = account_id
 
@@ -247,6 +250,7 @@ def sync_detailed(
     page: int | Unset = UNSET,
     per_page: int | Unset = UNSET,
     after: str | Unset = UNSET,
+    count: bool | Unset = True,
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
@@ -298,6 +302,7 @@ def sync_detailed(
         page (int | Unset):
         per_page (int | Unset):
         after (str | Unset):
+        count (bool | Unset):  Default: True.
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
@@ -347,6 +352,7 @@ def sync_detailed(
         page=page,
         per_page=per_page,
         after=after,
+        count=count,
         account_id=account_id,
         account_ids=account_ids,
         category_id=category_id,
@@ -398,6 +404,7 @@ def sync(
     page: int | Unset = UNSET,
     per_page: int | Unset = UNSET,
     after: str | Unset = UNSET,
+    count: bool | Unset = True,
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
@@ -449,6 +456,7 @@ def sync(
         page (int | Unset):
         per_page (int | Unset):
         after (str | Unset):
+        count (bool | Unset):  Default: True.
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
@@ -499,6 +507,7 @@ def sync(
         page=page,
         per_page=per_page,
         after=after,
+        count=count,
         account_id=account_id,
         account_ids=account_ids,
         category_id=category_id,
@@ -544,6 +553,7 @@ async def asyncio_detailed(
     page: int | Unset = UNSET,
     per_page: int | Unset = UNSET,
     after: str | Unset = UNSET,
+    count: bool | Unset = True,
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
@@ -595,6 +605,7 @@ async def asyncio_detailed(
         page (int | Unset):
         per_page (int | Unset):
         after (str | Unset):
+        count (bool | Unset):  Default: True.
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
@@ -644,6 +655,7 @@ async def asyncio_detailed(
         page=page,
         per_page=per_page,
         after=after,
+        count=count,
         account_id=account_id,
         account_ids=account_ids,
         category_id=category_id,
@@ -693,6 +705,7 @@ async def asyncio(
     page: int | Unset = UNSET,
     per_page: int | Unset = UNSET,
     after: str | Unset = UNSET,
+    count: bool | Unset = True,
     account_id: str | Unset = UNSET,
     account_ids: list[str] | Unset = UNSET,
     category_id: str | Unset = UNSET,
@@ -744,6 +757,7 @@ async def asyncio(
         page (int | Unset):
         per_page (int | Unset):
         after (str | Unset):
+        count (bool | Unset):  Default: True.
         account_id (str | Unset):
         account_ids (list[str] | Unset):
         category_id (str | Unset):
@@ -795,6 +809,7 @@ async def asyncio(
             page=page,
             per_page=per_page,
             after=after,
+            count=count,
             account_id=account_id,
             account_ids=account_ids,
             category_id=category_id,

@@ -3,6 +3,15 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b10 (2026-11-19)
+
+### API
+
+- `GET /v1/transactions` takes `count=false` together with a cursor (`after`): the page skips counting every
+  matching row, so `meta.total` and `total_pages` are 0, while `has_next` and `next_cursor` work as before. Without
+  `after` the parameter is ignored and the page counts as it always did. Read the total from the first page and pass
+  `count=false` on the pages after it when scrolling a long list.
+
 ## 1.0.0b9 (2026-11-19)
 
 ### API
