@@ -3,6 +3,14 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b11 (2026-11-20)
+
+### API
+
+- `GET /v1/accounts`, `GET /v1/accounts/{id}` and `GET /v1/accounts/net-worth` (`by_account.items`) carry
+  `archived_at`, the moment an archived account was closed. It is present only on archived accounts, so a client can
+  show when an account was closed. Nothing else changed.
+
 ## 1.0.0b10 (2026-11-19)
 
 ### API

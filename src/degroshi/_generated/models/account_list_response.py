@@ -69,6 +69,9 @@ class AccountListResponse:
         annual_rate (None | Decimal | Unset): The interest rate in percent a year (14.5 = 14.5% a year), at most 2 decimals,
             0–100: a deposit's or savings account's, a credit card's after its grace period, a credit line's, loan's or
             mortgage's.
+        archived_at (datetime.datetime | None | Unset): When the account was archived: set when it closes, cleared when
+            it reopens; absent while it is open. A closed account's "Closed" stamp shows this day (an instalment plan's own
+            closed_at wins).
         available_balance (None | Decimal | Unset): Decimal number encoded as a string (for example "1234.5600"); never a
             JSON number.
         balance_version (int | None | Unset): The version of the account's balance.
@@ -143,6 +146,7 @@ class AccountListResponse:
     account_overdraft_limit: None | Decimal | Unset = UNSET
     account_share_amount: None | Decimal | Unset = UNSET
     annual_rate: None | Decimal | Unset = UNSET
+    archived_at: datetime.datetime | None | Unset = UNSET
     available_balance: None | Decimal | Unset = UNSET
     balance_version: int | None | Unset = UNSET
     brand: AccountBrand | None | Unset = UNSET
@@ -248,6 +252,14 @@ class AccountListResponse:
             annual_rate = UNSET
         else:
             annual_rate = decimal_out(self.annual_rate)
+
+        archived_at: None | str | Unset
+        if isinstance(self.archived_at, Unset):
+            archived_at = UNSET
+        elif isinstance(self.archived_at, datetime.datetime):
+            archived_at = self.archived_at.isoformat()
+        else:
+            archived_at = self.archived_at
 
         available_balance: None | Decimal | Unset
         if isinstance(self.available_balance, Unset):
@@ -483,6 +495,8 @@ class AccountListResponse:
             field_dict["account_share_amount"] = account_share_amount
         if annual_rate is not UNSET:
             field_dict["annual_rate"] = annual_rate
+        if archived_at is not UNSET:
+            field_dict["archived_at"] = archived_at
         if available_balance is not UNSET:
             field_dict["available_balance"] = available_balance
         if balance_version is not UNSET:
@@ -635,6 +649,23 @@ class AccountListResponse:
             return cast(None | str | Unset, data)
 
         annual_rate = decimal_in(_parse_annual_rate(d.pop("annual_rate", UNSET)))
+
+        def _parse_archived_at(data: object) -> datetime.datetime | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                archived_at_type_0 = datetime.datetime.fromisoformat(data)
+
+                return archived_at_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(datetime.datetime | None | Unset, data)
+
+        archived_at = _parse_archived_at(d.pop("archived_at", UNSET))
 
         def _parse_available_balance(data: object) -> None | str | Unset:
             if data is None:
@@ -1014,6 +1045,7 @@ class AccountListResponse:
             account_overdraft_limit=account_overdraft_limit,
             account_share_amount=account_share_amount,
             annual_rate=annual_rate,
+            archived_at=archived_at,
             available_balance=available_balance,
             balance_version=balance_version,
             brand=brand,
