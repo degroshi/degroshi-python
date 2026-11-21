@@ -3,6 +3,16 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b14 (2026-11-22)
+
+### API
+
+- An account shared for writing (the «Переглядати й додавати операції» role) says which operations the person may
+  change: `grant.edit_scope` (`own` or `all`) on `GET /v1/accounts`, `GET /v1/accounts/{id}` and the account lists that
+  carry a grant.
+- Every transaction says whether the caller may change it: `editable` on `GET /v1/transactions`,
+  `GET`, `POST` and `PATCH /v1/transactions/{id}`, and in the `transaction.created` and `transaction.updated` webhooks.
+
 ## 1.0.0b13 (2026-11-21)
 
 ### API

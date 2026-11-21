@@ -122,6 +122,7 @@ from .get_analytics_trends_share import GetAnalyticsTrendsShare
 from .get_transaction_day_totals_share import GetTransactionDayTotalsShare
 from .gradient_type import GradientType
 from .grant_info import GrantInfo
+from .grant_info_edit_scope_type_0 import GrantInfoEditScopeType0
 from .grant_info_purpose import GrantInfoPurpose
 from .grant_info_role import GrantInfoRole
 from .grant_person import GrantPerson
@@ -404,6 +405,7 @@ __all__ = (
     "GetTransactionDayTotalsShare",
     "GradientType",
     "GrantInfo",
+    "GrantInfoEditScopeType0",
     "GrantInfoPurpose",
     "GrantInfoRole",
     "GrantPerson",

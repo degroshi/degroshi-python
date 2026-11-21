@@ -110,6 +110,10 @@ class TransactionUpdatedEventDataObject:
         cross_space_transfer_id (None | str | Unset): `cross_space_transfer_id` marks a leg of a cross-space transfer
             (money moved between two linked spaces of the same owner, e.g. a personal card and a sole proprietor's account):
             both legs carry it.
+        editable (bool | None | Unset): False for an operation on an account shared with the caller that their grant
+            doesn't let them change: a balance or view grant, the account_sharing_write flag off for them, or, under
+            edit_scope own, a row someone else added; and a read_only row. True for every other row; the space role and the
+            row's own locks (a bank row, a split part) still apply.
         exchange_rate (None | str | Unset): Decimal number encoded as a string (for example "1234.5600"); never a JSON
             number.
         fee_for_transfer_id (None | str | Unset): `fee_for_transfer_id` marks a transfer fee: the id of the transfer's
@@ -212,6 +216,7 @@ class TransactionUpdatedEventDataObject:
     created_by: None | str | Unset = UNSET
     created_by_name: None | str | Unset = UNSET
     cross_space_transfer_id: None | str | Unset = UNSET
+    editable: bool | None | Unset = UNSET
     exchange_rate: None | str | Unset = UNSET
     fee_for_transfer_id: None | str | Unset = UNSET
     fee_transaction_id: None | str | Unset = UNSET
@@ -418,6 +423,12 @@ class TransactionUpdatedEventDataObject:
             cross_space_transfer_id = UNSET
         else:
             cross_space_transfer_id = self.cross_space_transfer_id
+
+        editable: bool | None | Unset
+        if isinstance(self.editable, Unset):
+            editable = UNSET
+        else:
+            editable = self.editable
 
         exchange_rate: None | str | Unset
         if isinstance(self.exchange_rate, Unset):
@@ -726,6 +737,8 @@ class TransactionUpdatedEventDataObject:
             field_dict["created_by_name"] = created_by_name
         if cross_space_transfer_id is not UNSET:
             field_dict["cross_space_transfer_id"] = cross_space_transfer_id
+        if editable is not UNSET:
+            field_dict["editable"] = editable
         if exchange_rate is not UNSET:
             field_dict["exchange_rate"] = exchange_rate
         if fee_for_transfer_id is not UNSET:
@@ -1033,6 +1046,15 @@ class TransactionUpdatedEventDataObject:
             return cast(None | str | Unset, data)
 
         cross_space_transfer_id = _parse_cross_space_transfer_id(d.pop("cross_space_transfer_id", UNSET))
+
+        def _parse_editable(data: object) -> bool | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(bool | None | Unset, data)
+
+        editable = _parse_editable(d.pop("editable", UNSET))
 
         def _parse_exchange_rate(data: object) -> None | str | Unset:
             if data is None:
@@ -1513,6 +1535,7 @@ class TransactionUpdatedEventDataObject:
             created_by=created_by,
             created_by_name=created_by_name,
             cross_space_transfer_id=cross_space_transfer_id,
+            editable=editable,
             exchange_rate=exchange_rate,
             fee_for_transfer_id=fee_for_transfer_id,
             fee_transaction_id=fee_transaction_id,

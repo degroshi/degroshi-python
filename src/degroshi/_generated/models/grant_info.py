@@ -8,6 +8,8 @@ from attrs import field as _attrs_field
 
 from ..types import UNSET, Unset
 
+from ..models.grant_info_edit_scope_type_0 import check_grant_info_edit_scope_type_0
+from ..models.grant_info_edit_scope_type_0 import GrantInfoEditScopeType0
 from ..models.grant_info_purpose import check_grant_info_purpose
 from ..models.grant_info_purpose import GrantInfoPurpose
 from ..models.grant_info_role import check_grant_info_role
@@ -31,6 +33,8 @@ class GrantInfo:
         owner_name (str):
         purpose (GrantInfoPurpose):
         role (GrantInfoRole):
+        edit_scope (GrantInfoEditScopeType0 | None | Unset): Which operations a write grant lets the person change: own,
+            the ones they added; all, any. The owner can change it. Sent for every role; it only matters for write.
         owner_first_name_genitive (None | str | Unset):
         people (list[GrantPerson] | None | Unset): Everyone with access to the account, for its avatar group: the owner
             first, then every person with an active grant, the requester included, in the order they accepted. Never
@@ -42,6 +46,7 @@ class GrantInfo:
     owner_name: str
     purpose: GrantInfoPurpose
     role: GrantInfoRole
+    edit_scope: GrantInfoEditScopeType0 | None | Unset = UNSET
     owner_first_name_genitive: None | str | Unset = UNSET
     people: list[GrantPerson] | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -58,6 +63,14 @@ class GrantInfo:
         purpose: str = self.purpose
 
         role: str = self.role
+
+        edit_scope: None | str | Unset
+        if isinstance(self.edit_scope, Unset):
+            edit_scope = UNSET
+        elif isinstance(self.edit_scope, str):
+            edit_scope = self.edit_scope
+        else:
+            edit_scope = self.edit_scope
 
         owner_first_name_genitive: None | str | Unset
         if isinstance(self.owner_first_name_genitive, Unset):
@@ -88,6 +101,8 @@ class GrantInfo:
                 "role": role,
             }
         )
+        if edit_scope is not UNSET:
+            field_dict["edit_scope"] = edit_scope
         if owner_first_name_genitive is not UNSET:
             field_dict["owner_first_name_genitive"] = owner_first_name_genitive
         if people is not UNSET:
@@ -109,6 +124,23 @@ class GrantInfo:
         purpose = check_grant_info_purpose(d.pop("purpose"))
 
         role = check_grant_info_role(d.pop("role"))
+
+        def _parse_edit_scope(data: object) -> GrantInfoEditScopeType0 | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                edit_scope_type_0 = check_grant_info_edit_scope_type_0(data)
+
+                return edit_scope_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(GrantInfoEditScopeType0 | None | Unset, data)
+
+        edit_scope = _parse_edit_scope(d.pop("edit_scope", UNSET))
 
         def _parse_owner_first_name_genitive(data: object) -> None | str | Unset:
             if data is None:
@@ -147,6 +179,7 @@ class GrantInfo:
             owner_name=owner_name,
             purpose=purpose,
             role=role,
+            edit_scope=edit_scope,
             owner_first_name_genitive=owner_first_name_genitive,
             people=people,
         )
