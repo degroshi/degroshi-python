@@ -1,10 +1,11 @@
 from typing import Literal
 
-RecurringTransactionsKind = Literal["loan_payment", "standard"]
+RecurringTransactionsKind = Literal["loan_payment", "standard", "transfer"]
 
 RECURRING_TRANSACTIONS_KIND_VALUES: set[RecurringTransactionsKind] = {
     "loan_payment",
     "standard",
+    "transfer",
 }
 
 

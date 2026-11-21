@@ -17,6 +17,8 @@ from ..models.mode import check_mode
 from ..models.mode import Mode
 from ..models.occurrence_status import check_occurrence_status
 from ..models.occurrence_status import OccurrenceStatus
+from ..models.recurring_transactions_kind import check_recurring_transactions_kind
+from ..models.recurring_transactions_kind import RecurringTransactionsKind
 from ..models.transactions_transaction_direction import check_transactions_transaction_direction
 from ..models.transactions_transaction_direction import TransactionsTransactionDirection
 from ..models.transactions_transaction_type import check_transactions_transaction_type
@@ -62,10 +64,16 @@ class OccurrenceResponse:
         display (None | OccurrenceDisplay | Unset): The amount in the display currency the device sent (X-Display-
             Currency), converted at today's rate and rounded to cents; null when that is the account currency, none was sent
             or there is no rate. Clients show it first and amount as the second line.
+        kind (None | RecurringTransactionsKind | Unset): Standard, loan_payment or transfer. A transfer's occurrence has
+            type transfer and direction transfer_out, and stays out of the income and expense totals: it moves the person's
+            own money.
         merchant (None | str | Unset):
         merchant_brand (BrandResponse | None | Unset): The enriched merchant identity of the rule, when known.
         note (None | str | Unset):
         project_id (None | str | Unset): The business project the rule's operations get.
+        to_account_id (None | str | Unset): `to_account_id` and `to_account_name` are the loan a loan_payment pays, or
+            the account a transfer goes to.
+        to_account_name (None | str | Unset):
         transaction_id (None | str | Unset): The row that settled the occurrence (paid), when known.
         wait_until (datetime.date | None | Unset): The last day a track_only rule waits for the row (null for post).
     """
@@ -89,10 +97,13 @@ class OccurrenceResponse:
     category_id: None | str | Unset = UNSET
     category_name: None | str | Unset = UNSET
     display: None | OccurrenceDisplay | Unset = UNSET
+    kind: None | RecurringTransactionsKind | Unset = UNSET
     merchant: None | str | Unset = UNSET
     merchant_brand: BrandResponse | None | Unset = UNSET
     note: None | str | Unset = UNSET
     project_id: None | str | Unset = UNSET
+    to_account_id: None | str | Unset = UNSET
+    to_account_name: None | str | Unset = UNSET
     transaction_id: None | str | Unset = UNSET
     wait_until: datetime.date | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
@@ -165,6 +176,14 @@ class OccurrenceResponse:
         else:
             display = self.display
 
+        kind: None | str | Unset
+        if isinstance(self.kind, Unset):
+            kind = UNSET
+        elif isinstance(self.kind, str):
+            kind = self.kind
+        else:
+            kind = self.kind
+
         merchant: None | str | Unset
         if isinstance(self.merchant, Unset):
             merchant = UNSET
@@ -190,6 +209,18 @@ class OccurrenceResponse:
             project_id = UNSET
         else:
             project_id = self.project_id
+
+        to_account_id: None | str | Unset
+        if isinstance(self.to_account_id, Unset):
+            to_account_id = UNSET
+        else:
+            to_account_id = self.to_account_id
+
+        to_account_name: None | str | Unset
+        if isinstance(self.to_account_name, Unset):
+            to_account_name = UNSET
+        else:
+            to_account_name = self.to_account_name
 
         transaction_id: None | str | Unset
         if isinstance(self.transaction_id, Unset):
@@ -236,6 +267,8 @@ class OccurrenceResponse:
             field_dict["category_name"] = category_name
         if display is not UNSET:
             field_dict["display"] = display
+        if kind is not UNSET:
+            field_dict["kind"] = kind
         if merchant is not UNSET:
             field_dict["merchant"] = merchant
         if merchant_brand is not UNSET:
@@ -244,6 +277,10 @@ class OccurrenceResponse:
             field_dict["note"] = note
         if project_id is not UNSET:
             field_dict["project_id"] = project_id
+        if to_account_id is not UNSET:
+            field_dict["to_account_id"] = to_account_id
+        if to_account_name is not UNSET:
+            field_dict["to_account_name"] = to_account_name
         if transaction_id is not UNSET:
             field_dict["transaction_id"] = transaction_id
         if wait_until is not UNSET:
@@ -345,6 +382,23 @@ class OccurrenceResponse:
 
         display = _parse_display(d.pop("display", UNSET))
 
+        def _parse_kind(data: object) -> None | RecurringTransactionsKind | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            try:
+                if not isinstance(data, str):
+                    raise TypeError()
+                kind_type_0 = check_recurring_transactions_kind(data)
+
+                return kind_type_0
+            except (TypeError, ValueError, AttributeError, KeyError):
+                pass
+            return cast(None | RecurringTransactionsKind | Unset, data)
+
+        kind = _parse_kind(d.pop("kind", UNSET))
+
         def _parse_merchant(data: object) -> None | str | Unset:
             if data is None:
                 return data
@@ -388,6 +442,24 @@ class OccurrenceResponse:
             return cast(None | str | Unset, data)
 
         project_id = _parse_project_id(d.pop("project_id", UNSET))
+
+        def _parse_to_account_id(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        to_account_id = _parse_to_account_id(d.pop("to_account_id", UNSET))
+
+        def _parse_to_account_name(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        to_account_name = _parse_to_account_name(d.pop("to_account_name", UNSET))
 
         def _parse_transaction_id(data: object) -> None | str | Unset:
             if data is None:
@@ -435,10 +507,13 @@ class OccurrenceResponse:
             category_id=category_id,
             category_name=category_name,
             display=display,
+            kind=kind,
             merchant=merchant,
             merchant_brand=merchant_brand,
             note=note,
             project_id=project_id,
+            to_account_id=to_account_id,
+            to_account_name=to_account_name,
             transaction_id=transaction_id,
             wait_until=wait_until,
         )

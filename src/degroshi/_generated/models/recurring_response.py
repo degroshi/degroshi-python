@@ -77,7 +77,9 @@ class RecurringResponse:
             person, the processor or the account's archiving), omitted while active and for rules paused before 2026-11 (the
             day wasn't recorded).
         project_id (None | str | Unset): The business project the rule's operations get.
-        to_account_id (None | str | Unset): The loan a loan_payment pays.
+        to_account_id (None | str | Unset): The loan a loan_payment pays, or the account a transfer goes to.
+        to_amount (None | Decimal | Unset): What arrives on a transfer's account in another currency; omitted in one
+            currency.
         version (int | None | Unset): The row version (also the ETag): send it as If-Match on PATCH / DELETE / resume /
             post / skip to detect concurrent edits (412).
     """
@@ -114,6 +116,7 @@ class RecurringResponse:
     paused_at: datetime.datetime | None | Unset = UNSET
     project_id: None | str | Unset = UNSET
     to_account_id: None | str | Unset = UNSET
+    to_amount: None | Decimal | Unset = UNSET
     version: int | None | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
@@ -269,6 +272,12 @@ class RecurringResponse:
         else:
             to_account_id = self.to_account_id
 
+        to_amount: None | Decimal | Unset
+        if isinstance(self.to_amount, Unset):
+            to_amount = UNSET
+        else:
+            to_amount = decimal_out(self.to_amount)
+
         version: int | None | Unset
         if isinstance(self.version, Unset):
             version = UNSET
@@ -328,6 +337,8 @@ class RecurringResponse:
             field_dict["project_id"] = project_id
         if to_account_id is not UNSET:
             field_dict["to_account_id"] = to_account_id
+        if to_amount is not UNSET:
+            field_dict["to_amount"] = to_amount
         if version is not UNSET:
             field_dict["version"] = version
 
@@ -576,6 +587,15 @@ class RecurringResponse:
 
         to_account_id = _parse_to_account_id(d.pop("to_account_id", UNSET))
 
+        def _parse_to_amount(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        to_amount = decimal_in(_parse_to_amount(d.pop("to_amount", UNSET)))
+
         def _parse_version(data: object) -> int | None | Unset:
             if data is None:
                 return data
@@ -618,6 +638,7 @@ class RecurringResponse:
             paused_at=paused_at,
             project_id=project_id,
             to_account_id=to_account_id,
+            to_amount=to_amount,
             version=version,
         )
 

@@ -31,9 +31,10 @@ class UpdateTransactionRequest:
     """
     Attributes:
         account_id (None | str | Unset): `account_id` moves a plain income or expense to another open, manual account of
-            the space in the same currency; its balance effect moves with it (422 TXN_ACCOUNT_CURRENCY_MISMATCH for another
-            currency, TXN_ACCOUNT_CHANGE_NOT_ALLOWED for transfer legs, transfer fees and splits, TXN_ACCOUNT_NOT_MANUAL for
-            bank-synced accounts).
+            the space, in any currency; its balance effect moves with it. In another currency the row keeps what it was paid
+            and is charged in the new account's currency (amount when sent, else converted at the rate of the row's day; see
+            planCurrencyMove). TXN_ACCOUNT_CHANGE_NOT_ALLOWED for transfer legs, transfer fees and splits,
+            TXN_ACCOUNT_NOT_MANUAL for bank-synced accounts.
         amount (None | Decimal | Unset): The edited row's amount; on a transfer with to_amount or fee_amount it is the total
             that leaves the source account, fee included (see `to_amount`).
         category_id (None | str | Unset): `category_id` sets the category (a category of the space); null clears it.

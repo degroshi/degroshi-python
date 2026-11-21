@@ -3,6 +3,16 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b12 (2026-11-21)
+
+### API
+
+- A recurring rule can be a transfer. `kind` gains `transfer`, and the responses now list `standard` and
+  `loan_payment` explicitly. A transfer rule names `to_account_id`, plus `to_amount` when the target account is in
+  another currency (unset, the amount converts at the payment day's rate). `GET /v1/recurring-transactions/occurrences`
+  items carry `kind`, `to_account_id` and `to_account_name`, so a transfer's occurrence names both accounts. Transfers
+  count in no income or spending total.
+
 ## 1.0.0b11 (2026-11-20)
 
 ### API
