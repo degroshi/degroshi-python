@@ -43,6 +43,7 @@ def _get_kwargs(
     project_id: str | Unset = UNSET,
     recurring_rule_id: str | Unset = UNSET,
     import_id: str | Unset = UNSET,
+    spent_by: str | Unset = UNSET,
     place_id: str | Unset = UNSET,
     city: str | Unset = UNSET,
     country: str | Unset = UNSET,
@@ -141,6 +142,8 @@ def _get_kwargs(
     params["recurring_rule_id"] = recurring_rule_id
 
     params["import_id"] = import_id
+
+    params["spent_by"] = spent_by
 
     params["place_id"] = place_id
 
@@ -253,6 +256,7 @@ def sync_detailed(
     project_id: str | Unset = UNSET,
     recurring_rule_id: str | Unset = UNSET,
     import_id: str | Unset = UNSET,
+    spent_by: str | Unset = UNSET,
     place_id: str | Unset = UNSET,
     city: str | Unset = UNSET,
     country: str | Unset = UNSET,
@@ -298,6 +302,7 @@ def sync_detailed(
         project_id (str | Unset):
         recurring_rule_id (str | Unset):
         import_id (str | Unset):
+        spent_by (str | Unset):
         place_id (str | Unset):
         city (str | Unset):
         country (str | Unset):
@@ -343,6 +348,7 @@ def sync_detailed(
         project_id=project_id,
         recurring_rule_id=recurring_rule_id,
         import_id=import_id,
+        spent_by=spent_by,
         place_id=place_id,
         city=city,
         country=country,
@@ -390,6 +396,7 @@ def sync(
     project_id: str | Unset = UNSET,
     recurring_rule_id: str | Unset = UNSET,
     import_id: str | Unset = UNSET,
+    spent_by: str | Unset = UNSET,
     place_id: str | Unset = UNSET,
     city: str | Unset = UNSET,
     country: str | Unset = UNSET,
@@ -435,6 +442,7 @@ def sync(
         project_id (str | Unset):
         recurring_rule_id (str | Unset):
         import_id (str | Unset):
+        spent_by (str | Unset):
         place_id (str | Unset):
         city (str | Unset):
         country (str | Unset):
@@ -481,6 +489,7 @@ def sync(
         project_id=project_id,
         recurring_rule_id=recurring_rule_id,
         import_id=import_id,
+        spent_by=spent_by,
         place_id=place_id,
         city=city,
         country=country,
@@ -522,6 +531,7 @@ async def asyncio_detailed(
     project_id: str | Unset = UNSET,
     recurring_rule_id: str | Unset = UNSET,
     import_id: str | Unset = UNSET,
+    spent_by: str | Unset = UNSET,
     place_id: str | Unset = UNSET,
     city: str | Unset = UNSET,
     country: str | Unset = UNSET,
@@ -567,6 +577,7 @@ async def asyncio_detailed(
         project_id (str | Unset):
         recurring_rule_id (str | Unset):
         import_id (str | Unset):
+        spent_by (str | Unset):
         place_id (str | Unset):
         city (str | Unset):
         country (str | Unset):
@@ -612,6 +623,7 @@ async def asyncio_detailed(
         project_id=project_id,
         recurring_rule_id=recurring_rule_id,
         import_id=import_id,
+        spent_by=spent_by,
         place_id=place_id,
         city=city,
         country=country,
@@ -657,6 +669,7 @@ async def asyncio(
     project_id: str | Unset = UNSET,
     recurring_rule_id: str | Unset = UNSET,
     import_id: str | Unset = UNSET,
+    spent_by: str | Unset = UNSET,
     place_id: str | Unset = UNSET,
     city: str | Unset = UNSET,
     country: str | Unset = UNSET,
@@ -702,6 +715,7 @@ async def asyncio(
         project_id (str | Unset):
         recurring_rule_id (str | Unset):
         import_id (str | Unset):
+        spent_by (str | Unset):
         place_id (str | Unset):
         city (str | Unset):
         country (str | Unset):
@@ -749,6 +763,7 @@ async def asyncio(
             project_id=project_id,
             recurring_rule_id=recurring_rule_id,
             import_id=import_id,
+            spent_by=spent_by,
             place_id=place_id,
             city=city,
             country=country,

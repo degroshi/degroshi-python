@@ -70,6 +70,10 @@ class UpdateTransactionRequest:
             first, `place_source` says how (default picked); a null place_id clears the place (with the X-Update-Contract: 2
             header). Ignored while places are off.
         place_source (None | Unset | UpdateTransactionRequestPlaceSourceType0):
+        spent_by (None | str | Unset): `spent_by` marks a spending row of an account shared in pooled mode as one
+            participant's own: the share then takes it whole from their part instead of splitting it. A user id of someone
+            in the account's share (its owner or an active pooled grantee); null clears it (back to the split). 422
+            TXN_SPENT_BY_NOT_ALLOWED with details.reason not_pooled | not_participant | not_spending.
         status (TransactionStatus | Unset):
         tag_ids (list[str] | None | Unset): Replaces the transaction's tags (tags of the space, at most 20); [] removes
             them all, absent keeps them. On a transfer it applies to the edited leg.
@@ -99,6 +103,7 @@ class UpdateTransactionRequest:
     place: CreatePlaceRequest | Unset = UNSET
     place_id: None | str | Unset = UNSET
     place_source: None | Unset | UpdateTransactionRequestPlaceSourceType0 = UNSET
+    spent_by: None | str | Unset = UNSET
     status: TransactionStatus | Unset = UNSET
     tag_ids: list[str] | None | Unset = UNSET
     to_amount: None | Decimal | Unset = UNSET
@@ -210,6 +215,12 @@ class UpdateTransactionRequest:
         else:
             place_source = self.place_source
 
+        spent_by: None | str | Unset
+        if isinstance(self.spent_by, Unset):
+            spent_by = UNSET
+        else:
+            spent_by = self.spent_by
+
         status: str | Unset = UNSET
         if not isinstance(self.status, Unset):
             status = self.status
@@ -274,6 +285,8 @@ class UpdateTransactionRequest:
             field_dict["place_id"] = place_id
         if place_source is not UNSET:
             field_dict["place_source"] = place_source
+        if spent_by is not UNSET:
+            field_dict["spent_by"] = spent_by
         if status is not UNSET:
             field_dict["status"] = status
         if tag_ids is not UNSET:
@@ -450,6 +463,15 @@ class UpdateTransactionRequest:
 
         place_source = _parse_place_source(d.pop("place_source", UNSET))
 
+        def _parse_spent_by(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        spent_by = _parse_spent_by(d.pop("spent_by", UNSET))
+
         _status = d.pop("status", UNSET)
         status: TransactionStatus | Unset
         if isinstance(_status, Unset):
@@ -518,6 +540,7 @@ class UpdateTransactionRequest:
             place=place,
             place_id=place_id,
             place_source=place_source,
+            spent_by=spent_by,
             status=status,
             tag_ids=tag_ids,
             to_amount=to_amount,

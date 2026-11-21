@@ -3,6 +3,21 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b13 (2026-11-21)
+
+### API
+
+- A transaction on an account shared as pooled money can say whose spending it is: `spent_by` (a user id) and
+  `spent_by_name` on `GET /v1/transactions`, `GET` and `PATCH /v1/transactions/{id}`, `POST /v1/transactions` and in
+  the `transaction.created` and `transaction.updated` webhooks. `PATCH /v1/transactions/{id}` takes `spent_by` (a user
+  id, or null to make it shared again), and `GET /v1/transactions` and `GET /v1/transactions/day-totals` filter by
+  `spent_by`.
+- Pushed items in `POST /v1/sources/{id}/transactions/batch` can carry `transfer: {account}`: the transaction is one leg
+  of a transfer, and `account` is another account of the source (its `external_id`) or any account of the space (its
+  `id`). Such an item links to the other leg on that account (the same amount the other way within 3 days; in another
+  currency, the only one the other way). If none is there yet, it waits up to 3 days for one. Degroshi never creates the
+  other leg.
+
 ## 1.0.0b12 (2026-11-21)
 
 ### API

@@ -150,6 +150,9 @@ class TransactionCreatedEventDataObject:
         service_period_from (datetime.date | None | Unset): `service_period_from` and `service_period_to` are the period
             a business operation pays for: the accrual P&L spreads it over these days.
         service_period_to (datetime.date | None | Unset):
+        spent_by (None | str | Unset): The user id of the participant whose own spending this row of a pooled shared
+            account is: the share takes it whole from their part. Omitted while the share splits it.
+        spent_by_name (None | str | Unset): That participant's first name (as created_by_name); omitted with spent_by.
         splits (list[TransactionResponse] | None | Unset):
         tags (list[TransactionTag] | None | Unset): The transaction's tags, by name; omitted when it has none.
         treatment (None | TransactionTreatment | Unset): The tax treatment of a business-space row (its class, who
@@ -233,6 +236,8 @@ class TransactionCreatedEventDataObject:
     recurring_rule_id: None | str | Unset = UNSET
     service_period_from: datetime.date | None | Unset = UNSET
     service_period_to: datetime.date | None | Unset = UNSET
+    spent_by: None | str | Unset = UNSET
+    spent_by_name: None | str | Unset = UNSET
     splits: list[TransactionResponse] | None | Unset = UNSET
     tags: list[TransactionTag] | None | Unset = UNSET
     treatment: None | TransactionTreatment | Unset = UNSET
@@ -578,6 +583,18 @@ class TransactionCreatedEventDataObject:
         else:
             service_period_to = self.service_period_to
 
+        spent_by: None | str | Unset
+        if isinstance(self.spent_by, Unset):
+            spent_by = UNSET
+        else:
+            spent_by = self.spent_by
+
+        spent_by_name: None | str | Unset
+        if isinstance(self.spent_by_name, Unset):
+            spent_by_name = UNSET
+        else:
+            spent_by_name = self.spent_by_name
+
         splits: list[dict[str, Any]] | None | Unset
         if isinstance(self.splits, Unset):
             splits = UNSET
@@ -757,6 +774,10 @@ class TransactionCreatedEventDataObject:
             field_dict["service_period_from"] = service_period_from
         if service_period_to is not UNSET:
             field_dict["service_period_to"] = service_period_to
+        if spent_by is not UNSET:
+            field_dict["spent_by"] = spent_by
+        if spent_by_name is not UNSET:
+            field_dict["spent_by_name"] = spent_by_name
         if splits is not UNSET:
             field_dict["splits"] = splits
         if tags is not UNSET:
@@ -1309,6 +1330,24 @@ class TransactionCreatedEventDataObject:
 
         service_period_to = _parse_service_period_to(d.pop("service_period_to", UNSET))
 
+        def _parse_spent_by(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        spent_by = _parse_spent_by(d.pop("spent_by", UNSET))
+
+        def _parse_spent_by_name(data: object) -> None | str | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(None | str | Unset, data)
+
+        spent_by_name = _parse_spent_by_name(d.pop("spent_by_name", UNSET))
+
         def _parse_splits(data: object) -> list[TransactionResponse] | None | Unset:
             if data is None:
                 return data
@@ -1498,6 +1537,8 @@ class TransactionCreatedEventDataObject:
             recurring_rule_id=recurring_rule_id,
             service_period_from=service_period_from,
             service_period_to=service_period_to,
+            spent_by=spent_by,
+            spent_by_name=spent_by_name,
             splits=splits,
             tags=tags,
             treatment=treatment,

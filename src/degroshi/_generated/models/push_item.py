@@ -16,6 +16,7 @@ import datetime
 
 if TYPE_CHECKING:
     from ..models.push_original import PushOriginal
+    from ..models.push_transfer import PushTransfer
 
 
 T = TypeVar("T", bound="PushItem")
@@ -43,6 +44,7 @@ class PushItem:
             booked row a new id.
         status (PushItemStatus | Unset): Booked (default) or pending; a pending row is replaced when the same external
             id comes booked.
+        transfer (PushTransfer | Unset):
     """
 
     account: str | Unset = UNSET
@@ -58,10 +60,12 @@ class PushItem:
     original: PushOriginal | Unset = UNSET
     replaces: str | Unset = UNSET
     status: PushItemStatus | Unset = UNSET
+    transfer: PushTransfer | Unset = UNSET
     additional_properties: dict[str, Any] = _attrs_field(init=False, factory=dict)
 
     def to_dict(self) -> dict[str, Any]:
         from ..models.push_original import PushOriginal  # noqa: PLC0415
+        from ..models.push_transfer import PushTransfer  # noqa: PLC0415
 
         account = self.account
 
@@ -95,6 +99,10 @@ class PushItem:
         if not isinstance(self.status, Unset):
             status = self.status
 
+        transfer: dict[str, Any] | Unset = UNSET
+        if not isinstance(self.transfer, Unset):
+            transfer = self.transfer.to_dict()
+
         field_dict: dict[str, Any] = {}
         field_dict.update(self.additional_properties)
         field_dict.update({})
@@ -124,12 +132,15 @@ class PushItem:
             field_dict["replaces"] = replaces
         if status is not UNSET:
             field_dict["status"] = status
+        if transfer is not UNSET:
+            field_dict["transfer"] = transfer
 
         return field_dict
 
     @classmethod
     def from_dict(cls: type[T], src_dict: Mapping[str, Any]) -> T:
         from ..models.push_original import PushOriginal  # noqa: PLC0415
+        from ..models.push_transfer import PushTransfer  # noqa: PLC0415
 
         d = dict(src_dict)
         account = d.pop("account", UNSET)
@@ -173,6 +184,13 @@ class PushItem:
         else:
             status = check_push_item_status(_status)
 
+        _transfer = d.pop("transfer", UNSET)
+        transfer: PushTransfer | Unset
+        if isinstance(_transfer, Unset):
+            transfer = UNSET
+        else:
+            transfer = PushTransfer.from_dict(_transfer)
+
         push_item = cls(
             account=account,
             amount=amount,
@@ -187,6 +205,7 @@ class PushItem:
             original=original,
             replaces=replaces,
             status=status,
+            transfer=transfer,
         )
 
         push_item.additional_properties = d

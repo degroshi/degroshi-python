@@ -180,6 +180,7 @@ from .push_item_result_envelope import PushItemResultEnvelope
 from .push_item_result_status import PushItemResultStatus
 from .push_item_status import PushItemStatus
 from .push_original import PushOriginal
+from .push_transfer import PushTransfer
 from .pushed_page import PushedPage
 from .pushed_page_envelope import PushedPageEnvelope
 from .pushed_row import PushedRow
@@ -465,6 +466,7 @@ __all__ = (
     "PushItemResultStatus",
     "PushItemStatus",
     "PushOriginal",
+    "PushTransfer",
     "ReactionsSummary",
     "ReactionsSummaryGlyphType0",
     "RecurringDueEvent",
