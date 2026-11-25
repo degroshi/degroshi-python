@@ -86,6 +86,8 @@ class AccountResponse:
             an account that never had one. Clients tell an instalment plan's loan apart by it.
         interest_payout (InterestPayout | None | Unset): When a deposit pays its interest: monthly, quarterly,
             at_maturity (with the deposit) or capitalized (added to it).
+        keeps_share_history (bool | None | Unset): The account is the archived copy of the caller's part of a shared
+            account whose access ended. It stays archived: it is never reopened (422), only deleted for good.
         metadata (AccountResponseMetadataType0 | None | Unset):
         minimum_payment_amount (None | Decimal | Unset): The least the minimum payment can be, in the account's currency.
             The minimum due is the larger of the percent of the debt and this, at most the debt.
@@ -146,6 +148,7 @@ class AccountResponse:
     icon: None | str | Unset = UNSET
     instalment_plan_id: None | str | Unset = UNSET
     interest_payout: InterestPayout | None | Unset = UNSET
+    keeps_share_history: bool | None | Unset = UNSET
     metadata: AccountResponseMetadataType0 | None | Unset = UNSET
     minimum_payment_amount: None | Decimal | Unset = UNSET
     minimum_payment_percent: None | Decimal | Unset = UNSET
@@ -330,6 +333,12 @@ class AccountResponse:
         else:
             interest_payout = self.interest_payout
 
+        keeps_share_history: bool | None | Unset
+        if isinstance(self.keeps_share_history, Unset):
+            keeps_share_history = UNSET
+        else:
+            keeps_share_history = self.keeps_share_history
+
         metadata: dict[str, Any] | None | Unset
         if isinstance(self.metadata, Unset):
             metadata = UNSET
@@ -469,6 +478,8 @@ class AccountResponse:
             field_dict["instalment_plan_id"] = instalment_plan_id
         if interest_payout is not UNSET:
             field_dict["interest_payout"] = interest_payout
+        if keeps_share_history is not UNSET:
+            field_dict["keeps_share_history"] = keeps_share_history
         if metadata is not UNSET:
             field_dict["metadata"] = metadata
         if minimum_payment_amount is not UNSET:
@@ -766,6 +777,15 @@ class AccountResponse:
 
         interest_payout = _parse_interest_payout(d.pop("interest_payout", UNSET))
 
+        def _parse_keeps_share_history(data: object) -> bool | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(bool | None | Unset, data)
+
+        keeps_share_history = _parse_keeps_share_history(d.pop("keeps_share_history", UNSET))
+
         def _parse_metadata(data: object) -> AccountResponseMetadataType0 | None | Unset:
             if data is None:
                 return data
@@ -939,6 +959,7 @@ class AccountResponse:
             icon=icon,
             instalment_plan_id=instalment_plan_id,
             interest_payout=interest_payout,
+            keeps_share_history=keeps_share_history,
             metadata=metadata,
             minimum_payment_amount=minimum_payment_amount,
             minimum_payment_percent=minimum_payment_percent,

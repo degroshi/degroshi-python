@@ -3,6 +3,17 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b15 (2026-11-25)
+
+### API
+
+- An account that is the archived copy of your part of a shared account, after access to it ended, says so:
+  `keeps_share_history` on `GET /v1/accounts`, `GET /v1/accounts/{id}` and the accounts in
+  `GET /v1/accounts/net-worth`. Such an account stays archived; it can only be deleted for good.
+- A transaction booked at the card's rate carries the correction it was booked with, in basis points from our rate
+  (460 = +4.6%): `fx_correction_bps` on `GET /v1/transactions`, `GET` and `PATCH /v1/transactions/{id}`,
+  `POST /v1/transactions`, and the `transaction.created` and `transaction.updated` webhooks.
+
 ## 1.0.0b14 (2026-11-22)
 
 ### API

@@ -124,6 +124,9 @@ class TransactionResponse:
         fx_basis (None | TransactionResponseFxBasisType0 | Unset): How amount was found from the original: reference
             (our rate), card (with the account's own rate, learned from the bank's figures) or bank (the bank's figure);
             absent without an original or before it was recorded.
+        fx_correction_bps (int | None | Unset): `fx_correction_bps` is, for a row booked at the card's rate (fx_basis
+            card), the account's correction it was booked with, in basis points from our rate (460 = +4.6%): the
+            transaction's card-rate hint. Absent otherwise, and once a typed charge or our rate replaced it.
         kind (None | TransactionResponseKindType0 | Unset): "portfolio_transfer" for a transfer between two of the
             space's portfolio accounts (include_portfolio_transfers): its other fields are a list row's,
             `portfolio_transfer` carries the transfer, and it is read-only. Absent on a transaction.
@@ -221,6 +224,7 @@ class TransactionResponse:
     fee_for_transfer_id: None | str | Unset = UNSET
     fee_transaction_id: None | str | Unset = UNSET
     fx_basis: None | TransactionResponseFxBasisType0 | Unset = UNSET
+    fx_correction_bps: int | None | Unset = UNSET
     kind: None | TransactionResponseKindType0 | Unset = UNSET
     linked_activity: LinkedActivityResponse | None | Unset = UNSET
     linked_transfer_id: None | str | Unset = UNSET
@@ -453,6 +457,12 @@ class TransactionResponse:
             fx_basis = self.fx_basis
         else:
             fx_basis = self.fx_basis
+
+        fx_correction_bps: int | None | Unset
+        if isinstance(self.fx_correction_bps, Unset):
+            fx_correction_bps = UNSET
+        else:
+            fx_correction_bps = self.fx_correction_bps
 
         kind: None | str | Unset
         if isinstance(self.kind, Unset):
@@ -743,6 +753,8 @@ class TransactionResponse:
             field_dict["fee_transaction_id"] = fee_transaction_id
         if fx_basis is not UNSET:
             field_dict["fx_basis"] = fx_basis
+        if fx_correction_bps is not UNSET:
+            field_dict["fx_correction_bps"] = fx_correction_bps
         if kind is not UNSET:
             field_dict["kind"] = kind
         if linked_activity is not UNSET:
@@ -1092,6 +1104,15 @@ class TransactionResponse:
             return cast(None | TransactionResponseFxBasisType0 | Unset, data)
 
         fx_basis = _parse_fx_basis(d.pop("fx_basis", UNSET))
+
+        def _parse_fx_correction_bps(data: object) -> int | None | Unset:
+            if data is None:
+                return data
+            if isinstance(data, Unset):
+                return data
+            return cast(int | None | Unset, data)
+
+        fx_correction_bps = _parse_fx_correction_bps(d.pop("fx_correction_bps", UNSET))
 
         def _parse_kind(data: object) -> None | TransactionResponseKindType0 | Unset:
             if data is None:
@@ -1529,6 +1550,7 @@ class TransactionResponse:
             fee_for_transfer_id=fee_for_transfer_id,
             fee_transaction_id=fee_transaction_id,
             fx_basis=fx_basis,
+            fx_correction_bps=fx_correction_bps,
             kind=kind,
             linked_activity=linked_activity,
             linked_transfer_id=linked_transfer_id,
