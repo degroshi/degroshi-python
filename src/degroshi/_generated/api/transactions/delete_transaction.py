@@ -12,11 +12,13 @@ from ...models.delete_data_envelope import DeleteDataEnvelope
 from ...models.error_response import ErrorResponse
 from ...types import UNSET, Unset
 from typing import cast
+from uuid import UUID
 
 
 def _get_kwargs(
     id: str,
     *,
+    as_duplicate_of: UUID | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     if_match: str | Unset = UNSET,
 ) -> dict[str, Any]:
@@ -27,11 +29,21 @@ def _get_kwargs(
     if not isinstance(if_match, Unset):
         headers["If-Match"] = if_match
 
+    params: dict[str, Any] = {}
+
+    json_as_duplicate_of: str | Unset = UNSET
+    if not isinstance(as_duplicate_of, Unset):
+        json_as_duplicate_of = str(as_duplicate_of)
+    params["as_duplicate_of"] = json_as_duplicate_of
+
+    params = {k: v for k, v in params.items() if v is not UNSET and v is not None}
+
     _kwargs: dict[str, Any] = {
         "method": "delete",
         "url": "/v1/transactions/{id}".format(
             id=quote(str(id), safe=""),
         ),
+        "params": params,
     }
 
     _kwargs["headers"] = headers
@@ -87,6 +99,7 @@ def sync_detailed(
     id: str,
     *,
     client: AuthenticatedClient,
+    as_duplicate_of: UUID | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     if_match: str | Unset = UNSET,
 ) -> Response[DeleteDataEnvelope | ErrorResponse]:
@@ -99,6 +112,7 @@ def sync_detailed(
 
     Args:
         id (str):
+        as_duplicate_of (UUID | Unset):
         x_space_id (str | Unset):
         if_match (str | Unset):
 
@@ -112,6 +126,7 @@ def sync_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        as_duplicate_of=as_duplicate_of,
         x_space_id=x_space_id,
         if_match=if_match,
     )
@@ -127,6 +142,7 @@ def sync(
     id: str,
     *,
     client: AuthenticatedClient,
+    as_duplicate_of: UUID | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     if_match: str | Unset = UNSET,
 ) -> DeleteDataEnvelope | ErrorResponse | None:
@@ -139,6 +155,7 @@ def sync(
 
     Args:
         id (str):
+        as_duplicate_of (UUID | Unset):
         x_space_id (str | Unset):
         if_match (str | Unset):
 
@@ -153,6 +170,7 @@ def sync(
     return sync_detailed(
         id=id,
         client=client,
+        as_duplicate_of=as_duplicate_of,
         x_space_id=x_space_id,
         if_match=if_match,
     ).parsed
@@ -162,6 +180,7 @@ async def asyncio_detailed(
     id: str,
     *,
     client: AuthenticatedClient,
+    as_duplicate_of: UUID | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     if_match: str | Unset = UNSET,
 ) -> Response[DeleteDataEnvelope | ErrorResponse]:
@@ -174,6 +193,7 @@ async def asyncio_detailed(
 
     Args:
         id (str):
+        as_duplicate_of (UUID | Unset):
         x_space_id (str | Unset):
         if_match (str | Unset):
 
@@ -187,6 +207,7 @@ async def asyncio_detailed(
 
     kwargs = _get_kwargs(
         id=id,
+        as_duplicate_of=as_duplicate_of,
         x_space_id=x_space_id,
         if_match=if_match,
     )
@@ -200,6 +221,7 @@ async def asyncio(
     id: str,
     *,
     client: AuthenticatedClient,
+    as_duplicate_of: UUID | Unset = UNSET,
     x_space_id: str | Unset = UNSET,
     if_match: str | Unset = UNSET,
 ) -> DeleteDataEnvelope | ErrorResponse | None:
@@ -212,6 +234,7 @@ async def asyncio(
 
     Args:
         id (str):
+        as_duplicate_of (UUID | Unset):
         x_space_id (str | Unset):
         if_match (str | Unset):
 
@@ -227,6 +250,7 @@ async def asyncio(
         await asyncio_detailed(
             id=id,
             client=client,
+            as_duplicate_of=as_duplicate_of,
             x_space_id=x_space_id,
             if_match=if_match,
         )

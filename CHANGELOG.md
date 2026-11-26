@@ -3,6 +3,13 @@
 Versions follow semver; the major version follows the API's (v1). The API part of each entry comes from comparing the
 public spec with the last release (oasdiff); the SDK part lists SDK-only changes.
 
+## 1.0.0b16 (2026-11-26)
+
+### API
+
+- `DELETE /v1/transactions/{id}` takes an optional `as_duplicate_of` query parameter: the id of the transaction kept
+  when this one is deleted as its duplicate.
+
 ## 1.0.0b15 (2026-11-25)
 
 ### API
